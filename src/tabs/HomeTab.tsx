@@ -6,7 +6,7 @@ import { CertificatesPortal } from '../components/CertificatesPortal';
 import { AITutorPortal } from '../components/AITutorPortal';
 
 export const HomeTab = () => {
-  const { language } = useAppContext();
+  const { language, userXP } = useAppContext();
   
   const [activePortal, setActivePortal] = useState<'leaderboard' | 'certificates' | 'ai' | null>(null);
 
@@ -113,7 +113,7 @@ export const HomeTab = () => {
       <div style={{ margin: '0 20px', marginTop: '10px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
           <h3 style={{ fontSize: '1.2rem' }}>{language === 'EN' ? 'This Week' : 'ಈ ವಾರ'}</h3>
-          <span style={{ color: 'var(--accent-green)', fontSize: '0.85rem', fontWeight: 700 }}>+340 XP</span>
+          <span style={{ color: 'var(--accent-green)', fontSize: '0.85rem', fontWeight: 700 }}>+{userXP} XP</span>
         </div>
         
         <div className="card" style={{ padding: '24px 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>

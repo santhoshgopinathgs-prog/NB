@@ -7,6 +7,13 @@ export interface Certificate {
   classLevel: number;
 }
 
+export interface LeaderboardUser {
+  id: string;
+  name: string;
+  xp: number;
+  avatar: string;
+}
+
 interface AppContextType {
   language: Language;
   toggleLanguage: () => void;
@@ -19,6 +26,8 @@ interface AppContextType {
   markQuizComplete: (id: string, xpGained: number) => Promise<boolean>;
   userXP: number;
   certificates: Certificate[];
+  leaderboard: LeaderboardUser[];
+  fetchLeaderboard: () => Promise<void>;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -31,6 +40,37 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [completedQuizzes, setCompletedQuizzes] = useState<string[]>([]);
   const [userXP, setUserXP] = useState<number>(0);
   const [certificates, setCertificates] = useState<Certificate[]>([]);
+  const [leaderboard, setLeaderboard] = useState<LeaderboardUser[]>([]);
+
+  const fetchLeaderboard = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('user_progress')
+        .select(`
+          total_xp,
+          user_id,
+          profiles ( name, phone )
+        `)
+        .order('total_xp', { ascending: false })
+        .limit(10);
+      
+      if (data && !error) {
+        const formattedLeaderboard = data.map(item => {
+          const profile = item.profiles as any; 
+          const name = profile?.name || profile?.phone?.slice(-4) || 'User';
+          return {
+            name: name,
+            xp: item.total_xp,
+            id: item.user_id,
+            avatar: name.charAt(0).toUpperCase()
+          };
+        });
+        setLeaderboard(formattedLeaderboard);
+      }
+    } catch (err) {
+      console.error('Error fetching leaderboard:', err);
+    }
+  };
 
   // Fetch all user data when auth state changes
   const fetchUserData = async (userId: string) => {
@@ -68,6 +108,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         setCertificates(certs.map(c => ({ subject: c.subject, classLevel: c.class_level })));
       }
       
+      await fetchLeaderboard();
       setIsAuthenticated(true);
     } catch (error) {
       console.error('Error fetching user data:', error);
@@ -156,7 +197,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AppContext.Provider value={{ language, toggleLanguage, t, user, isAuthenticated, isLoading, logout, completedQuizzes, markQuizComplete, userXP, certificates }}>
+    <AppContext.Provider value={{ language, toggleLanguage, t, user, isAuthenticated, isLoading, logout, completedQuizzes, markQuizComplete, userXP, certificates, leaderboard, fetchLeaderboard }}>
       {children}
     </AppContext.Provider>
   );

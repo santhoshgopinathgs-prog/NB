@@ -3,19 +3,12 @@ import { Trophy } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 
 export const LeaderboardPortal = ({ onClose }: { onClose: () => void }) => {
-  const { userXP, language, user } = useAppContext();
+  const { userXP, language, user, leaderboard } = useAppContext();
 
-  const mockUsers = [
-    { name: 'Arjun K.', xp: 4500, avatar: 'A' },
-    { name: 'Priya R.', xp: 4120, avatar: 'P' },
-    { name: 'Karthik S.', xp: 3950, avatar: 'K' },
-    { name: 'Megha V.', xp: 3800, avatar: 'M' },
-    { name: 'Sneha T.', xp: 3200, avatar: 'S' },
-  ];
-
-  // Insert current user and sort
-  const allUsers: any[] = [...mockUsers, { name: user?.phone?.slice(-4) || 'You', xp: userXP, avatar: 'Me', isCurrent: true }];
-  allUsers.sort((a, b) => b.xp - a.xp);
+  const allUsers = leaderboard.map(u => ({
+    ...u,
+    isCurrent: u.id === user?.id
+  }));
 
   return (
     <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'var(--bg-app)', zIndex: 1000, display: 'flex', flexDirection: 'column' }}>
