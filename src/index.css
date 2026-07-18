@@ -1,0 +1,207 @@
+:root {
+  /* Light Modern Palette based on screenshots */
+  --bg-app: #f0fdfa; /* Very soft mint/teal background for a calming feel */
+  --bg-surface: #ffffff;
+  
+  --text-primary: #111827; /* Very dark gray for crisp readability */
+  --text-secondary: #4b5563; /* Medium gray for secondary text */
+  --text-tertiary: #9ca3af;
+  
+  --accent-purple: #8b5cf6; /* Soft violet for special highlights */
+  --accent-blue: #0d9488; /* Primary Teal - Very calming, trustworthy, and modern */
+  --accent-green: #10b981; /* Fresh green for success states */
+  --accent-orange: #f97316; /* Warm coral/orange for contrast and energy */
+  --accent-red: #f43f5e; /* Soft rose/red for errors */
+  
+  --border-light: #e5e7eb;
+  
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+  --shadow-lg: 0 10px 25px rgba(0,0,0,0.08);
+  
+  --font-main: 'Inter', system-ui, -apple-system, sans-serif;
+  --transition-fast: 0.2s ease;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* App Layout */
+#root {
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: var(--bg-surface);
+  position: relative;
+  overflow-x: hidden;
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Scrollbar hide */
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+/* Utilities */
+.card {
+  background: var(--bg-surface);
+  border-radius: 20px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+}
+
+/* Buttons */
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  outline: none;
+  color: inherit;
+  transition: var(--transition-fast);
+}
+
+/* Page Container */
+.page-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 20px 100px 20px; /* Space for bottom nav */
+  background: var(--bg-surface);
+}
+
+/* Animations */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.3s ease forwards;
+}
+
+/* Header */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: var(--bg-surface);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+/* Bottom Nav */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 480px;
+  padding: 10px 20px 20px 20px;
+  background: linear-gradient(to top, #ffffff 80%, rgba(255,255,255,0));
+  z-index: 100;
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 24px;
+  background: var(--bg-surface);
+  border-radius: 30px;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-tertiary);
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.nav-item.active {
+  color: var(--accent-blue);
+}
+
+.nav-item.active svg {
+  stroke: var(--accent-blue);
+}
+
+/* Search Bar */
+.search-bar {
+  display: flex;
+  align-items: center;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-light);
+  border-radius: 25px;
+  padding: 12px 20px;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 20px;
+  gap: 12px;
+}
+.search-bar input {
+  border: none;
+  outline: none;
+  font-family: inherit;
+  font-size: 0.9rem;
+  width: 100%;
+  color: var(--text-primary);
+}
+.search-bar input::placeholder {
+  color: var(--text-tertiary);
+}
+
+/* Level Bar */
+.level-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 16px;
+  border-radius: 20px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+  margin-bottom: 24px;
+}
+.level-badge {
+  background: var(--accent-purple);
+  color: white;
+  font-weight: 700;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Progress bar generic */
+.progress-track {
+  height: 6px;
+  background: var(--border-light);
+  border-radius: 4px;
+  overflow: hidden;
+  width: 100%;
+}
+.progress-fill {
+  height: 100%;
+  border-radius: 4px;
+}
