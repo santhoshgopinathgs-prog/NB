@@ -20,6 +20,12 @@ function AppContent() {
   };
   const { isAuthenticated, isLoading } = useAppContext();
 
+  React.useEffect(() => {
+    if (!isAuthenticated) {
+      setActiveTab('home');
+    }
+  }, [isAuthenticated]);
+
   if (isLoading) {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', background: 'var(--bg-app)', color: 'var(--accent-blue)', fontWeight: 700, fontSize: '1.2rem', flexDirection: 'column', gap: '16px' }}>
