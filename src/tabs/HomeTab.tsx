@@ -6,7 +6,7 @@ import { CertificatesPortal } from '../components/CertificatesPortal';
 import { AITutorPortal } from '../components/AITutorPortal';
 
 export const HomeTab = () => {
-  const { language, userXP, user } = useAppContext();
+  const { language, userXP, user, completedQuizzes } = useAppContext();
   
   const [activePortal, setActivePortal] = useState<'leaderboard' | 'certificates' | 'ai' | null>(null);
 
