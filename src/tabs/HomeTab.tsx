@@ -143,14 +143,14 @@ export const HomeTab = ({ navigateToChapter }: { navigateToChapter?: (subjectId:
       </div>
 
       {/* Today's Mission */}
-      <div style={{ margin: '0 20px', background: 'linear-gradient(135deg, var(--accent-blue), #2563eb)', borderRadius: '24px', padding: '24px', color: 'white', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', right: '-20px', bottom: '-20px', opacity: 0.1, fontSize: '150px' }}>📐</div>
+      <div style={{ margin: '0 20px', background: 'var(--accent-blue)', borderRadius: '24px', padding: '24px', color: 'white', position: 'relative', overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', right: '-20px', bottom: '-20px', opacity: 0.05, fontSize: '150px' }}>📐</div>
         
-        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(255,255,255,0.2)', padding: '4px 12px', borderRadius: '16px', fontSize: '0.75rem', fontWeight: 600, marginBottom: '16px' }}>
+        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: '#3D4455', padding: '4px 12px', borderRadius: '16px', fontSize: '0.75rem', fontWeight: 600, marginBottom: '16px' }}>
           <Moon size={14} fill="#FCD34D" color="#FCD34D" /> {language === 'EN' ? "Today's Mission" : "ಇಂದಿನ ಮಿಷನ್"}
         </div>
         
-        <h2 style={{ fontSize: '1.4rem', marginBottom: '8px', position: 'relative', zIndex: 1 }}>{language === 'EN' ? "Coordinate Geometry" : "ನಿರ್ದೇಶಾಂಕ ರೇಖಾಗಣಿತ"}</h2>
+        <h2 style={{ fontSize: '1.4rem', marginBottom: '8px', position: 'relative', zIndex: 1, fontFamily: 'Georgia, "Times New Roman", Times, serif' }}>{language === 'EN' ? "Coordinate Geometry" : "ನಿರ್ದೇಶಾಂಕ ರೇಖಾಗಣಿತ"}</h2>
         <div style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.8)', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '6px' }}>
           {language === 'EN' ? "Chapter 3 • 5 Questions" : "ಅಧ್ಯಾಯ 3 • 5 ಪ್ರಶ್ನೆಗಳು"} <span style={{ color: '#FCD34D' }}>⚡</span> 50 XP
         </div>
@@ -158,7 +158,7 @@ export const HomeTab = ({ navigateToChapter }: { navigateToChapter?: (subjectId:
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px', position: 'relative', zIndex: 1 }}>
           <button 
             onClick={() => navigateToChapter && navigateToChapter('Mathematics', 'Mathematics', 'Coordinate Geometry')}
-            style={{ background: 'white', color: '#2563eb', padding: '10px 20px', borderRadius: '24px', fontWeight: 700, fontSize: '0.9rem', border: 'none', cursor: 'pointer', transition: 'transform 0.1s' }}
+            style={{ background: 'white', color: 'var(--text-primary)', padding: '10px 20px', borderRadius: '24px', fontWeight: 800, fontSize: '0.9rem', border: 'none', cursor: 'pointer', transition: 'transform 0.1s' }}
             onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
             onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
             onMouseDown={(e) => e.currentTarget.style.transform = 'scale(0.95)'}
@@ -173,8 +173,8 @@ export const HomeTab = ({ navigateToChapter }: { navigateToChapter?: (subjectId:
       {/* Daily Quests */}
       <div style={{ margin: '0 20px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-          <h3 style={{ fontSize: '1.2rem' }}>{language === 'EN' ? "Daily Quests" : "ದೈನಂದಿನ ಪ್ರಶ್ನೆಗಳು"}</h3>
-          <span style={{ background: '#D1FAE5', color: '#059669', fontSize: '0.7rem', padding: '4px 10px', borderRadius: '12px', fontWeight: 700 }}>{Math.min(4, Math.floor(userXP / 50))}/4 done</span>
+          <h3 style={{ fontSize: '1.4rem', fontFamily: 'Georgia, "Times New Roman", Times, serif', fontWeight: 800, color: 'var(--text-primary)' }}>{language === 'EN' ? "Daily Quests" : "ದೈನಂದಿನ ಪ್ರಶ್ನೆಗಳು"}</h3>
+          <span style={{ background: '#EBE3D5', color: 'var(--text-primary)', fontSize: '0.75rem', padding: '4px 12px', borderRadius: '12px', fontWeight: 800 }}>{Math.min(4, Math.floor(userXP / 50))}/4 done</span>
         </div>
         
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -277,19 +277,20 @@ export const HomeTab = ({ navigateToChapter }: { navigateToChapter?: (subjectId:
 // Subcomponents
 
 const QuestCard = ({ icon, title, xp, done }: any) => (
-  <div className="card" style={{ padding: '16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+  <div style={{ padding: '16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', border: '1px solid var(--border-light)', borderRadius: '20px', background: 'transparent' }}>
     <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-      <div style={{ width: '36px', height: '36px', background: 'var(--bg-app)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.1rem' }}>
+      <div style={{ width: '36px', height: '36px', background: '#EBE3D5', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.1rem' }}>
         {icon}
       </div>
       <div>
-        <div style={{ fontWeight: 600, fontSize: '0.9rem', color: done ? 'var(--text-secondary)' : 'var(--text-primary)', textDecoration: done ? 'line-through' : 'none' }}>{title}</div>
-        {done && <div className="progress-track" style={{ marginTop: '8px', width: '150px' }}><div className="progress-fill" style={{ width: '100%', background: 'var(--accent-green)' }}></div></div>}
+        <div style={{ fontWeight: 800, fontSize: '0.9rem', color: done ? 'var(--text-tertiary)' : 'var(--text-primary)', textDecoration: done ? 'line-through' : 'none' }}>{title}</div>
+        {done && <div className="progress-track" style={{ marginTop: '8px', width: '150px', background: '#E0D9C8' }}><div className="progress-fill" style={{ width: '100%', background: 'var(--accent-green)' }}></div></div>}
+        {!done && <div className="progress-track" style={{ marginTop: '8px', width: '150px', background: '#E0D9C8' }}><div className="progress-fill" style={{ width: '0%', background: 'var(--accent-green)' }}></div></div>}
       </div>
     </div>
     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-      <div style={{ background: '#D97706', color: 'white', padding: '4px 10px', borderRadius: '12px', fontSize: '0.7rem', fontWeight: 700 }}>{xp}</div>
-      {done && <div style={{ background: 'var(--accent-green)', borderRadius: '4px', padding: '2px' }}><Check size={14} color="white" /></div>}
+      <div style={{ background: 'var(--accent-green)', color: 'var(--text-primary)', padding: '4px 10px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: 800 }}>{xp}</div>
+      {done && <div style={{ background: 'var(--accent-green)', borderRadius: '50%', padding: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Check size={14} color="white" /></div>}
     </div>
   </div>
 );

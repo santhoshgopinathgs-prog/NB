@@ -29,13 +29,12 @@ export const BottomNav = ({ activeTab, setActiveTab }: BottomNavProps) => {
               key={tab.id} 
               className={`nav-item ${isActive ? 'active' : ''}`}
               onClick={() => setActiveTab(tab.id)}
-              style={{ color: isActive ? tab.color : 'var(--text-tertiary)' }}
             >
               <Icon 
                 size={22} 
                 strokeWidth={isActive ? 2.5 : 2} 
-                color={isActive ? tab.color : 'var(--text-tertiary)'}
-                fill={isActive ? `${tab.color}33` : 'none'} 
+                color={isActive ? 'var(--accent-green)' : 'var(--text-tertiary)'}
+                fill={isActive ? 'rgba(203, 167, 90, 0.2)' : 'none'} 
               />
               <span style={{ marginTop: '4px' }}>{tab.label}</span>
             </button>

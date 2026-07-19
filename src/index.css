@@ -1,19 +1,19 @@
 :root {
-  /* Light Modern Palette based on screenshots */
-  --bg-app: #f0fdfa; /* Very soft mint/teal background for a calming feel */
-  --bg-surface: #ffffff;
+  /* Vintage Academic Palette */
+  --bg-app: #F9F6F0; /* Warm cream background */
+  --bg-surface: #F9F6F0;
   
-  --text-primary: #111827; /* Very dark gray for crisp readability */
-  --text-secondary: #4b5563; /* Medium gray for secondary text */
-  --text-tertiary: #9ca3af;
+  --text-primary: #1C2A3A; /* Dark Navy for crisp readability */
+  --text-secondary: #64748B; /* Medium gray for secondary text */
+  --text-tertiary: #94A3B8;
   
-  --accent-purple: #8b5cf6; /* Soft violet for special highlights */
-  --accent-blue: #0d9488; /* Primary Teal - Very calming, trustworthy, and modern */
-  --accent-green: #10b981; /* Fresh green for success states */
-  --accent-orange: #f97316; /* Warm coral/orange for contrast and energy */
-  --accent-red: #f43f5e; /* Soft rose/red for errors */
+  --accent-purple: #8b5cf6; 
+  --accent-blue: #2B3245; /* Dark Slate / Navy for major cards */
+  --accent-green: #CBA75A; /* Gold for success states, XP, active tabs */
+  --accent-orange: #B99341; /* Darker gold/orange for contrast */
+  --accent-red: #f43f5e; 
   
-  --border-light: #e5e7eb;
+  --border-light: #E0D9C8; /* Muted beige for borders */
   
   --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
   --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
@@ -114,7 +114,7 @@ button {
   width: 100%;
   max-width: 480px;
   padding: 10px 20px 20px 20px;
-  background: linear-gradient(to top, #ffffff 80%, rgba(255,255,255,0));
+  background: linear-gradient(to top, #F9F6F0 80%, rgba(249, 246, 240, 0));
   z-index: 100;
 }
 
@@ -125,7 +125,7 @@ button {
   padding: 12px 24px;
   background: var(--bg-surface);
   border-radius: 30px;
-  box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.03);
 }
 
 .nav-item {
@@ -135,15 +135,15 @@ button {
   gap: 4px;
   color: var(--text-tertiary);
   font-size: 0.7rem;
-  font-weight: 600;
+  font-weight: 800;
 }
 
 .nav-item.active {
-  color: var(--accent-blue);
+  color: var(--accent-green);
 }
 
 .nav-item.active svg {
-  stroke: var(--accent-blue);
+  stroke: var(--accent-green);
 }
 
 /* Search Bar */
