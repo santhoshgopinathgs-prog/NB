@@ -156,7 +156,14 @@ export const HomeTab = ({ navigateToChapter }: { navigateToChapter?: (subjectId:
         </div>
         
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px', position: 'relative', zIndex: 1 }}>
-          <button style={{ background: 'white', color: '#2563eb', padding: '10px 20px', borderRadius: '24px', fontWeight: 700, fontSize: '0.9rem', border: 'none' }}>
+          <button 
+            onClick={() => navigateToChapter && navigateToChapter('Mathematics', 'Mathematics', 'Coordinate Geometry')}
+            style={{ background: 'white', color: '#2563eb', padding: '10px 20px', borderRadius: '24px', fontWeight: 700, fontSize: '0.9rem', border: 'none', cursor: 'pointer', transition: 'transform 0.1s' }}
+            onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+            onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
+            onMouseDown={(e) => e.currentTarget.style.transform = 'scale(0.95)'}
+            onMouseUp={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+          >
             {language === 'EN' ? "Start Now 🚀" : "ಈಗ ಪ್ರಾರಂಭಿಸಿ 🚀"}
           </button>
           <span style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.8)' }}>⏱ ~5 min</span>
