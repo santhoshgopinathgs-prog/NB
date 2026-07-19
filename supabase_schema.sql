@@ -53,16 +53,16 @@ ALTER TABLE public.user_progress ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.user_certificates ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.completed_quizzes ENABLE ROW LEVEL SECURITY;
 
--- Profiles: Users can read and update their own profile
-CREATE POLICY "Users can view own profile" 
-  ON public.profiles FOR SELECT USING (auth.uid() = id);
+-- Profiles: Anyone can view profiles (needed for leaderboard), users can update their own
+CREATE POLICY "Anyone can view profiles" 
+  ON public.profiles FOR SELECT USING (true);
 
 CREATE POLICY "Users can update own profile" 
   ON public.profiles FOR UPDATE USING (auth.uid() = id);
 
--- Progress: Users can view and update their own progress
-CREATE POLICY "Users can view own progress" 
-  ON public.user_progress FOR SELECT USING (auth.uid() = user_id);
+-- Progress: Anyone can view progress (needed for leaderboard), users can update their own
+CREATE POLICY "Anyone can view progress" 
+  ON public.user_progress FOR SELECT USING (true);
 
 CREATE POLICY "Users can update own progress" 
   ON public.user_progress FOR UPDATE USING (auth.uid() = user_id);
