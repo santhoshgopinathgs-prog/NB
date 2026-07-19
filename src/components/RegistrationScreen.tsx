@@ -1,67 +1,75 @@
 import React, { useState } from 'react';
-import { BookOpen, User, GraduationCap, ArrowRight, Phone, School, KeyRound, ChevronLeft } from 'lucide-react';
+import { BookOpen, User, GraduationCap, ArrowRight, School, ChevronLeft, Mail, Lock, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import { supabase } from '../utils/supabaseClient';
 
 export const RegistrationScreen = () => {
   const { language, toggleLanguage } = useAppContext();
   const [isLoginMode, setIsLoginMode] = useState(false);
-  const [otpStep, setOtpStep] = useState(false);
-  const [otp, setOtp] = useState('');
+  const [forgotPasswordMode, setForgotPasswordMode] = useState(false);
+  
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   
   const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
   const [school, setSchool] = useState('');
   const [selectedClass, setSelectedClass] = useState<number | null>(null);
   
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const [successMsg, setSuccessMsg] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setErrorMsg('');
+    setSuccessMsg('');
     
-    // Supabase requires E.164 format for the actual API call (must start with +)
-    // even though the dashboard settings strip it out.
-    let formattedPhone = phone.trim();
-    if (!formattedPhone.startsWith('+')) {
-      formattedPhone = '+' + formattedPhone;
-    }
-
-    if (!otpStep) {
-      // Step 1: Send OTP
-      const { error } = await supabase.auth.signInWithOtp({ 
-        phone: formattedPhone 
-      });
-      
-      if (error) {
-        setErrorMsg(error.message);
+    try {
+      if (forgotPasswordMode) {
+        // Forgot Password Flow
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+          redirectTo: window.location.origin,
+        });
+        
+        if (error) throw error;
+        setSuccessMsg(language === 'EN' ? 'Password reset link sent to your email.' : 'ಪಾಸ್‌ವರ್ಡ್ ಮರುಹೊಂದಿಸುವ ಲಿಂಕ್ ಅನ್ನು ನಿಮ್ಮ ಇಮೇಲ್‌ಗೆ ಕಳುಹಿಸಲಾಗಿದೆ.');
+      } else if (isLoginMode) {
+        // Login Flow
+        const { error } = await supabase.auth.signInWithPassword({
+          email: email.trim(),
+          password: password
+        });
+        if (error) throw error;
       } else {
-        setOtpStep(true);
-      }
-    } else {
-      // Step 2: Verify OTP
-      const { error } = await supabase.auth.verifyOtp({
-        phone: formattedPhone,
-        token: otp,
-        type: 'sms',
-        options: (!isLoginMode ? {
-          data: {
-            name: name.trim(),
-            school: school.trim(),
-            class_level: selectedClass
+        // Registration Flow
+        const { error } = await supabase.auth.signUp({
+          email: email.trim(),
+          password: password,
+          options: {
+            data: {
+              name: name.trim(),
+              school: school.trim(),
+              class_level: selectedClass
+            }
           }
-        } : undefined) as any
-      });
-
-      if (error) {
-        setErrorMsg(error.message);
+        });
+        
+        if (error) throw error;
+        // If email confirmation is off, they will be logged in immediately.
+        // If email confirmation is on, we'd show a success message here.
       }
-      // On success, AppContext's onAuthStateChange will pick it up automatically!
+    } catch (error: any) {
+      setErrorMsg(error.message);
+    } finally {
+      setIsLoading(false);
     }
-    
-    setIsLoading(false);
+  };
+
+  const isFormValid = () => {
+    if (forgotPasswordMode) return email.includes('@');
+    if (isLoginMode) return email.includes('@') && password.length >= 6;
+    return email.includes('@') && password.length >= 6 && name.trim().length > 0 && school.trim().length > 0 && selectedClass !== null;
   };
 
   return (
@@ -107,11 +115,11 @@ export const RegistrationScreen = () => {
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', maxWidth: '400px', margin: '0 auto', width: '100%' }}>
         
         {/* Toggle Switch */}
-        {!otpStep && (
+        {!forgotPasswordMode && (
           <div style={{ display: 'flex', background: '#E2E8F0', borderRadius: '24px', padding: '4px', marginBottom: '32px' }}>
             <button
               type="button"
-              onClick={() => setIsLoginMode(false)}
+              onClick={() => { setIsLoginMode(false); setErrorMsg(''); setSuccessMsg(''); }}
               style={{
                 flex: 1, padding: '12px', borderRadius: '20px', border: 'none',
                 background: !isLoginMode ? 'white' : 'transparent',
@@ -125,7 +133,7 @@ export const RegistrationScreen = () => {
             </button>
             <button
               type="button"
-              onClick={() => setIsLoginMode(true)}
+              onClick={() => { setIsLoginMode(true); setErrorMsg(''); setSuccessMsg(''); }}
               style={{
                 flex: 1, padding: '12px', borderRadius: '20px', border: 'none',
                 background: isLoginMode ? 'white' : 'transparent',
@@ -140,37 +148,48 @@ export const RegistrationScreen = () => {
           </div>
         )}
 
-        {otpStep && (
+        {forgotPasswordMode && (
           <button 
             type="button"
-            onClick={() => setOtpStep(false)}
+            onClick={() => { setForgotPasswordMode(false); setErrorMsg(''); setSuccessMsg(''); }}
             style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'none', border: 'none', color: '#64748B', cursor: 'pointer', marginBottom: '24px', fontWeight: 600 }}
           >
-            <ChevronLeft size={20} /> {language === 'EN' ? 'Back' : 'ಹಿಂದೆ'}
+            <ChevronLeft size={20} /> {language === 'EN' ? 'Back to Login' : 'ಲಾಗಿನ್‌ಗೆ ಹಿಂತಿರುಗಿ'}
           </button>
         )}
 
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>
           <h2 style={{ fontSize: '2rem', fontWeight: 800, color: '#1E293B', marginBottom: '12px', lineHeight: 1.2 }}>
-            {isLoginMode 
-              ? (otpStep ? (language === 'EN' ? 'Verify OTP' : 'OTP ಪರಿಶೀಲಿಸಿ') : (language === 'EN' ? 'Welcome back.' : 'ಮತ್ತೆ ಸ್ವಾಗತ.')) 
-              : (language === 'EN' ? 'Start your learning journey today.' : 'ನಿಮ್ಮ ಕಲಿಕೆಯ ಪಯಣವನ್ನು ಇಂದೇ ಪ್ರಾರಂಭಿಸಿ.')}
+            {forgotPasswordMode
+              ? (language === 'EN' ? 'Reset Password' : 'ಪಾಸ್‌ವರ್ಡ್ ಮರುಹೊಂದಿಸಿ')
+              : isLoginMode 
+                ? (language === 'EN' ? 'Welcome back.' : 'ಮತ್ತೆ ಸ್ವಾಗತ.')
+                : (language === 'EN' ? 'Start your learning journey today.' : 'ನಿಮ್ಮ ಕಲಿಕೆಯ ಪಯಣವನ್ನು ಇಂದೇ ಪ್ರಾರಂಭಿಸಿ.')}
           </h2>
           <p style={{ color: '#64748B', fontSize: '1rem', lineHeight: 1.5 }}>
-            {isLoginMode 
-              ? (otpStep ? (language === 'EN' ? `Enter the 4-digit code sent to ${phone}` : `${phone} ಗೆ ಕಳುಹಿಸಿದ 4-ಅಂಕಿಯ ಕೋಡ್ ನಮೂದಿಸಿ`) : (language === 'EN' ? 'Enter your phone number to restore your progress.' : 'ನಿಮ್ಮ ಪ್ರಗತಿಯನ್ನು ಮರುಸ್ಥಾಪಿಸಲು ನಿಮ್ಮ ದೂರವಾಣಿ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ.'))
-              : (language === 'EN' ? 'Create a profile to track your progress, earn XP, and collect certificates.' : 'ನಿಮ್ಮ ಪ್ರಗತಿಯನ್ನು ಟ್ರ್ಯಾಕ್ ಮಾಡಲು, XP ಗಳಿಸಲು ಮತ್ತು ಪ್ರಮಾಣಪತ್ರಗಳನ್ನು ಸಂಗ್ರಹಿಸಲು ಪ್ರೊಫೈಲ್ ರಚಿಸಿ.')}
+            {forgotPasswordMode
+              ? (language === 'EN' ? 'Enter your email to receive a password reset link.' : 'ಪಾಸ್‌ವರ್ಡ್ ಮರುಹೊಂದಿಸುವ ಲಿಂಕ್ ಪಡೆಯಲು ನಿಮ್ಮ ಇಮೇಲ್ ನಮೂದಿಸಿ.')
+              : isLoginMode 
+                ? (language === 'EN' ? 'Enter your email and password to continue learning.' : 'ಕಲಿಕೆಯನ್ನು ಮುಂದುವರಿಸಲು ನಿಮ್ಮ ಇಮೇಲ್ ಮತ್ತು ಪಾಸ್‌ವರ್ಡ್ ಅನ್ನು ನಮೂದಿಸಿ.')
+                : (language === 'EN' ? 'Create a profile to track your progress, earn XP, and collect certificates.' : 'ನಿಮ್ಮ ಪ್ರಗತಿಯನ್ನು ಟ್ರ್ಯಾಕ್ ಮಾಡಲು, XP ಗಳಿಸಲು ಮತ್ತು ಪ್ರಮಾಣಪತ್ರಗಳನ್ನು ಸಂಗ್ರಹಿಸಲು ಪ್ರೊಫೈಲ್ ರಚಿಸಿ.')}
           </p>
         </div>
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
           
           {errorMsg && (
-            <div style={{ padding: '12px', background: '#FEE2E2', color: '#EF4444', borderRadius: '12px', fontSize: '0.9rem', textAlign: 'center', fontWeight: 600 }}>
-              {errorMsg}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '12px', background: '#FEE2E2', color: '#EF4444', borderRadius: '12px', fontSize: '0.9rem', fontWeight: 600 }}>
+              <AlertCircle size={20} /> {errorMsg}
             </div>
           )}
-          {(!isLoginMode) && (
+
+          {successMsg && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '12px', background: '#D1FAE5', color: '#10B981', borderRadius: '12px', fontSize: '0.9rem', fontWeight: 600 }}>
+              <CheckCircle2 size={20} /> {successMsg}
+            </div>
+          )}
+
+          {(!isLoginMode && !forgotPasswordMode) && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <label style={{ fontSize: '0.9rem', fontWeight: 700, color: '#334155', display: 'flex', alignItems: 'center', gap: '6px' }}>
                 <User size={16} /> {language === 'EN' ? 'What is your name?' : 'ನಿಮ್ಮ ಹೆಸರೇನು?'}
@@ -187,21 +206,52 @@ export const RegistrationScreen = () => {
                 }}
                 onFocus={(e) => e.target.style.borderColor = 'var(--accent-blue)'}
                 onBlur={(e) => e.target.style.borderColor = 'transparent'}
-                required={!isLoginMode}
+                required={!isLoginMode && !forgotPasswordMode}
               />
             </div>
           )}
 
-          {(!otpStep) && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <label style={{ fontSize: '0.9rem', fontWeight: 700, color: '#334155', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <Mail size={16} /> {language === 'EN' ? 'Email Address' : 'ಇಮೇಲ್ ವಿಳಾಸ'}
+            </label>
+            <input 
+              type="email" 
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder={language === 'EN' ? 'Enter your email' : 'ನಿಮ್ಮ ಇಮೇಲ್ ನಮೂದಿಸಿ'}
+              style={{ 
+                padding: '16px', borderRadius: '16px', border: '2px solid transparent', 
+                background: 'white', fontSize: '1rem', color: '#1E293B', outline: 'none',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.03)', transition: 'border 0.2s ease'
+              }}
+              onFocus={(e) => e.target.style.borderColor = 'var(--accent-blue)'}
+              onBlur={(e) => e.target.style.borderColor = 'transparent'}
+              required
+            />
+          </div>
+
+          {!forgotPasswordMode && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <label style={{ fontSize: '0.9rem', fontWeight: 700, color: '#334155', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <Phone size={16} /> {language === 'EN' ? 'Phone Number' : 'ದೂರವಾಣಿ ಸಂಖ್ಯೆ'}
-              </label>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <label style={{ fontSize: '0.9rem', fontWeight: 700, color: '#334155', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <Lock size={16} /> {language === 'EN' ? 'Password' : 'ಪಾಸ್ವರ್ಡ್'}
+                </label>
+                {isLoginMode && (
+                  <button 
+                    type="button"
+                    onClick={() => setForgotPasswordMode(true)}
+                    style={{ background: 'none', border: 'none', color: 'var(--accent-blue)', fontSize: '0.85rem', fontWeight: 600, cursor: 'pointer' }}
+                  >
+                    {language === 'EN' ? 'Forgot Password?' : 'ಪಾಸ್ವರ್ಡ್ ಮರೆತಿರಾ?'}
+                  </button>
+                )}
+              </div>
               <input 
-                type="tel" 
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                placeholder={language === 'EN' ? 'Enter your phone number' : 'ನಿಮ್ಮ ದೂರವಾಣಿ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ'}
+                type="password" 
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder={language === 'EN' ? 'Enter at least 6 characters' : 'ಕನಿಷ್ಠ 6 ಅಕ್ಷರಗಳನ್ನು ನಮೂದಿಸಿ'}
                 style={{ 
                   padding: '16px', borderRadius: '16px', border: '2px solid transparent', 
                   background: 'white', fontSize: '1rem', color: '#1E293B', outline: 'none',
@@ -209,12 +259,12 @@ export const RegistrationScreen = () => {
                 }}
                 onFocus={(e) => e.target.style.borderColor = 'var(--accent-blue)'}
                 onBlur={(e) => e.target.style.borderColor = 'transparent'}
-                required={!otpStep}
+                required={!forgotPasswordMode}
               />
             </div>
           )}
 
-          {(!isLoginMode) && (
+          {(!isLoginMode && !forgotPasswordMode) && (
             <>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 <label style={{ fontSize: '0.9rem', fontWeight: 700, color: '#334155', display: 'flex', alignItems: 'center', gap: '6px' }}>
@@ -232,7 +282,7 @@ export const RegistrationScreen = () => {
                   }}
                   onFocus={(e) => e.target.style.borderColor = 'var(--accent-blue)'}
                   onBlur={(e) => e.target.style.borderColor = 'transparent'}
-                  required={!isLoginMode}
+                  required={!isLoginMode && !forgotPasswordMode}
                 />
               </div>
 
@@ -266,50 +316,24 @@ export const RegistrationScreen = () => {
             </>
           )}
 
-          {otpStep && (
-             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <label style={{ fontSize: '0.9rem', fontWeight: 700, color: '#334155', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <KeyRound size={16} /> OTP
-              </label>
-              <input 
-                type="text" 
-                value={otp}
-                onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                placeholder="123456"
-                style={{ 
-                  padding: '16px', borderRadius: '16px', border: '2px solid transparent', 
-                  background: 'white', fontSize: '1.5rem', color: '#1E293B', outline: 'none',
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.03)', transition: 'border 0.2s ease',
-                  letterSpacing: '8px', textAlign: 'center', fontWeight: 800
-                }}
-                onFocus={(e) => e.target.style.borderColor = 'var(--accent-blue)'}
-                onBlur={(e) => e.target.style.borderColor = 'transparent'}
-                required={isLoginMode && otpStep}
-              />
-              <div style={{ fontSize: '0.8rem', color: '#94A3B8', textAlign: 'center', marginTop: '4px' }}>
-                  {language === 'EN' ? 'Enter the 6-digit OTP' : '6-ಅಂಕಿಯ OTP ನಮೂದಿಸಿ'}
-              </div>
-           </div>
-          )}
-
           {/* Submit Button */}
           <button
             type="submit"
-            disabled={isLoading || (otpStep ? otp.length < 6 : phone.trim().length < 10) || (!isLoginMode && (!name.trim() || !school.trim() || !selectedClass))}
+            disabled={isLoading || !isFormValid()}
             style={{
               marginTop: '16px', padding: '18px', borderRadius: '16px',
-              background: (isLoading || (otpStep ? otp.length < 6 : phone.trim().length < 10) || (!isLoginMode && (!name.trim() || !school.trim() || !selectedClass))) ? '#94A3B8' : '#10B981',
+              background: (isLoading || !isFormValid()) ? '#94A3B8' : '#10B981',
               color: 'white', fontSize: '1.1rem', fontWeight: 800, border: 'none',
-              cursor: (isLoading || (otpStep ? otp.length < 6 : phone.trim().length < 10) || (!isLoginMode && (!name.trim() || !school.trim() || !selectedClass))) ? 'not-allowed' : 'pointer',
+              cursor: (isLoading || !isFormValid()) ? 'not-allowed' : 'pointer',
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
-              boxShadow: (isLoading || (otpStep ? otp.length < 6 : phone.trim().length < 10) || (!isLoginMode && (!name.trim() || !school.trim() || !selectedClass))) ? 'none' : '0 8px 20px rgba(16, 185, 129, 0.3)',
+              boxShadow: (isLoading || !isFormValid()) ? 'none' : '0 8px 20px rgba(16, 185, 129, 0.3)',
               transition: 'all 0.2s ease'
             }}
           >
             {isLoading ? (language === 'EN' ? 'Loading...' : 'ಲೋಡ್ ಆಗುತ್ತಿದೆ...') : 
-             (otpStep 
-              ? (language === 'EN' ? 'Verify OTP' : 'OTP ಪರಿಶೀಲಿಸಿ') 
-              : (isLoginMode ? (language === 'EN' ? 'Send OTP' : 'OTP ಕಳುಹಿಸಿ') : (language === 'EN' ? 'Join Now' : 'ಈಗ ಸೇರಿಕೊಳ್ಳಿ')))} 
+             (forgotPasswordMode 
+              ? (language === 'EN' ? 'Send Reset Link' : 'ಮರುಹೊಂದಿಸುವ ಲಿಂಕ್ ಕಳುಹಿಸಿ') 
+              : (isLoginMode ? (language === 'EN' ? 'Log In' : 'ಲಾಗಿನ್ ಮಾಡಿ') : (language === 'EN' ? 'Join Now' : 'ಈಗ ಸೇರಿಕೊಳ್ಳಿ')))} 
             {!isLoading && <ArrowRight size={20} />}
           </button>
           

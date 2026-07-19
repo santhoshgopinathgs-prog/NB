@@ -1,9 +1,17 @@
--- Supabase Schema for Namma Buddy
+-- Supabase Schema for Namma Buddy (Email Auth Version)
+
+-- DROP EXISTING TABLES AND TRIGGERS (Since we are migrating from Phone to Email)
+DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
+DROP FUNCTION IF EXISTS public.handle_new_user();
+DROP TABLE IF EXISTS public.completed_quizzes CASCADE;
+DROP TABLE IF EXISTS public.user_certificates CASCADE;
+DROP TABLE IF EXISTS public.user_progress CASCADE;
+DROP TABLE IF EXISTS public.profiles CASCADE;
 
 -- 1. Create Profiles table (extends Supabase Auth Users)
 CREATE TABLE public.profiles (
   id UUID REFERENCES auth.users(id) ON DELETE CASCADE PRIMARY KEY,
-  phone TEXT UNIQUE NOT NULL,
+  email TEXT UNIQUE NOT NULL,
   name TEXT NOT NULL,
   school TEXT NOT NULL,
   class_level INTEGER NOT NULL,
@@ -77,10 +85,10 @@ CREATE POLICY "Users can insert own completed quizzes"
 CREATE OR REPLACE FUNCTION public.handle_new_user() 
 RETURNS TRIGGER AS $$
 BEGIN
-  INSERT INTO public.profiles (id, phone, name, school, class_level)
+  INSERT INTO public.profiles (id, email, name, school, class_level)
   VALUES (
     new.id, 
-    new.phone, 
+    new.email, 
     COALESCE(new.raw_user_meta_data->>'name', 'Student'), 
     COALESCE(new.raw_user_meta_data->>'school', 'School'), 
     COALESCE((new.raw_user_meta_data->>'class_level')::integer, 9)

@@ -18,7 +18,7 @@ interface AppContextType {
   language: Language;
   toggleLanguage: () => void;
   t: (key: keyof typeof translations.EN) => string;
-  user: { id: string; name: string; phone: string; school: string; class: number; streak: number; lastActive: string } | null;
+  user: { id: string; name: string; email: string; school: string; class: number; streak: number; lastActive: string } | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   logout: () => void;
@@ -36,7 +36,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [language, setLanguage] = useState<Language>('EN');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [user, setUser] = useState<{ id: string; name: string; phone: string; school: string; class: number; streak: number; lastActive: string } | null>(null);
+  const [user, setUser] = useState<{ id: string; name: string; email: string; school: string; class: number; streak: number; lastActive: string } | null>(null);
   const [completedQuizzes, setCompletedQuizzes] = useState<string[]>([]);
   const [userXP, setUserXP] = useState<number>(0);
   const [certificates, setCertificates] = useState<Certificate[]>([]);
@@ -49,7 +49,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         .select(`
           total_xp,
           user_id,
-          profiles ( name, phone )
+          profiles ( name, email )
         `)
         .order('total_xp', { ascending: false })
         .limit(10);
@@ -57,7 +57,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       if (data && !error) {
         const formattedLeaderboard = data.map(item => {
           const profile = item.profiles as any; 
-          const name = profile?.name || profile?.phone?.slice(-4) || 'User';
+          const name = profile?.name || profile?.email?.split('@')[0] || 'User';
           return {
             name: name,
             xp: item.total_xp,
@@ -91,7 +91,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         setUser({
           id: profile.id,
           name: profile.name,
-          phone: profile.phone,
+          email: profile.email,
           school: profile.school,
           class: profile.class_level,
           streak: progress.streak,
