@@ -56,7 +56,7 @@ export const Header: React.FC<HeaderProps> = ({ setActiveTab }) => {
           onClick={() => setActiveTab('achievements')}
           style={{ display: 'flex', alignItems: 'center', gap: '4px', background: '#FEF3C7', padding: '6px 12px', borderRadius: '20px', color: '#D97706', fontWeight: 700, fontSize: '0.8rem', cursor: 'pointer', border: 'none' }}
         >
-          <Flame size={14} fill="#D97706" color="#D97706" /> {user?.streak || 12}
+          <Flame size={14} fill="#D97706" color="#D97706" /> {user?.streak || 0}
         </button>
         
         {/* XP / Coins */}

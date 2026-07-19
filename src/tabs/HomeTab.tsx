@@ -6,9 +6,15 @@ import { CertificatesPortal } from '../components/CertificatesPortal';
 import { AITutorPortal } from '../components/AITutorPortal';
 
 export const HomeTab = () => {
-  const { language, userXP } = useAppContext();
+  const { language, userXP, user } = useAppContext();
   
   const [activePortal, setActivePortal] = useState<'leaderboard' | 'certificates' | 'ai' | null>(null);
+
+  // Dynamic Level Calculation
+  const level = Math.floor(userXP / 500) + 1;
+  const currentLevelXP = userXP % 500;
+  const progressPercent = (currentLevelXP / 500) * 100;
+  const streak = user?.streak || 0;
 
   return (
     <div className="animate-slide-up" style={{ padding: '0 0px 20px 0px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
@@ -25,14 +31,14 @@ export const HomeTab = () => {
 
       {/* Level Card */}
       <div className="level-card" style={{ margin: '0 20px', background: 'var(--bg-surface)' }}>
-        <div className="level-badge">12</div>
+        <div className="level-badge">{level}</div>
         <div style={{ flex: 1 }}>
-          <div style={{ fontSize: '0.75rem', color: 'var(--text-tertiary)', marginBottom: '6px', fontWeight: 600 }}>Level 12 - 3,930 / 5,000 XP</div>
+          <div style={{ fontSize: '0.75rem', color: 'var(--text-tertiary)', marginBottom: '6px', fontWeight: 600 }}>Level {level} - {currentLevelXP} / 500 XP</div>
           <div className="progress-track">
-            <div className="progress-fill" style={{ width: '78%', background: 'var(--accent-purple)' }}></div>
+            <div className="progress-fill" style={{ width: `${progressPercent}%`, background: 'var(--accent-purple)' }}></div>
           </div>
         </div>
-        <div style={{ color: 'var(--accent-orange)' }}>
+        <div style={{ color: streak > 0 ? 'var(--accent-orange)' : 'var(--border-light)' }}>
           <FlameIcon />
         </div>
       </div>
