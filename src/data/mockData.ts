@@ -238,25 +238,25 @@ export const syllabusData = [
   {
     classLevel: 8,
     subjects: [
-      { name: 'Mathematics', name_kn: 'ಗಣಿತ', chapters: ['Rational Numbers', 'Linear Equations in One Variable'], chapters_kn: ['ಭಾಗಲಬ್ಧ ಸಂಖ್ಯೆಗಳು', 'ಒಂದು ಚರಾಕ್ಷರವಿರುವ ರೇಖಾತ್ಮಕ ಸಮೀಕರಣಗಳು'] },
-      { name: 'Science', name_kn: 'ವಿಜ್ಞಾನ', chapters: ['Crop Production and Management', 'Microorganisms'], chapters_kn: ['ಬೆಳೆ ಉತ್ಪಾದನೆ ಮತ್ತು ನಿರ್ವಹಣೆ', 'ಸೂಕ್ಷ್ಮಜೀವಿಗಳು'] },
-      { name: 'Digital Skills', name_kn: 'ಡಿಜಿಟಲ್ ಕೌಶಲ್ಯಗಳು', chapters: ['Introduction to Computers', 'Basic Coding with Scratch'], chapters_kn: ['ಕಂಪ್ಯೂಟರ್ ಪರಿಚಯ', 'ಸ್ಕ್ರ್ಯಾಚ್‌ನೊಂದಿಗೆ ಬೇಸಿಕ್ ಕೋಡಿಂಗ್'] }
+      { name: 'Mathematics', name_kn: 'ಗಣಿತ', chapters: ['Rational Numbers', 'Linear Equations', 'Understanding Quadrilaterals', 'Data Handling', 'Squares and Square Roots'], chapters_kn: ['ಭಾಗಲಬ್ಧ ಸಂಖ್ಯೆಗಳು', 'ರೇಖಾತ್ಮಕ ಸಮೀಕರಣಗಳು', 'ಚತುರ್ಭುಜಗಳನ್ನು ಅರ್ಥಮಾಡಿಕೊಳ್ಳುವುದು', 'ದತ್ತಾಂಶ ನಿರ್ವಹಣೆ', 'ವರ್ಗಗಳು ಮತ್ತು ವರ್ಗಮೂಲಗಳು'] },
+      { name: 'Science', name_kn: 'ವಿಜ್ಞಾನ', chapters: ['Crop Production', 'Microorganisms', 'Synthetic Fibres', 'Metals & Non-Metals', 'Coal and Petroleum'], chapters_kn: ['ಬೆಳೆ ಉತ್ಪಾದನೆ', 'ಸೂಕ್ಷ್ಮಜೀವಿಗಳು', 'ಸಂಶ್ಲೇಷಿತ ಎಳೆಗಳು', 'ಲೋಹಗಳು ಮತ್ತು ಅಲೋಹಗಳು', 'ಕಲ್ಲಿದ್ದಲು ಮತ್ತು ಪೆಟ್ರೋಲಿಯಂ'] },
+      { name: 'Digital Skills', name_kn: 'ಡಿಜಿಟಲ್ ಕೌಶಲ್ಯಗಳು', chapters: ['Intro to Computers', 'Coding with Scratch', 'Typing Mastery', 'Internet Safety', 'Word Processing'], chapters_kn: ['ಕಂಪ್ಯೂಟರ್ ಪರಿಚಯ', 'ಸ್ಕ್ರ್ಯಾಚ್‌ನೊಂದಿಗೆ ಬೇಸಿಕ್ ಕೋಡಿಂಗ್', 'ಟೈಪಿಂಗ್ ಪಾಂಡಿತ್ಯ', 'ಇಂಟರ್ನೆಟ್ ಸುರಕ್ಷತೆ', 'ವರ್ಡ್ ಪ್ರೊಸೆಸಿಂಗ್ ಮೂಲಗಳು'] }
     ]
   },
   {
     classLevel: 9,
     subjects: [
-      { name: 'Mathematics', name_kn: 'ಗಣಿತ', chapters: ['Number Systems', 'Polynomials', 'Coordinate Geometry'], chapters_kn: ['ಸಂಖ್ಯಾ ವ್ಯವಸ್ಥೆಗಳು', 'ಬಹುಪದೋಕ್ತಿಗಳು', 'ನಿರ್ದೇಶಾಂಕ ರೇಖಾಗಣಿತ'] },
-      { name: 'Science', name_kn: 'ವಿಜ್ಞಾನ', chapters: ['Matter in Our Surroundings', 'Is Matter Around Us Pure'], chapters_kn: ['ನಮ್ಮ ಸುತ್ತಮುತ್ತಲಿನ ದ್ರವ್ಯ', 'ನಮ್ಮ ಸುತ್ತಲಿನ ದ್ರವ್ಯ ಶುದ್ಧವೇ'] },
-      { name: 'Digital Skills', name_kn: 'ಡಿಜಿಟಲ್ ಕೌಶಲ್ಯಗಳು', chapters: ['HTML Basics', 'CSS Basics', 'Logic and Flowcharts'], chapters_kn: ['HTML ಮೂಲಗಳು', 'CSS ಮೂಲಗಳು', 'ತರ್ಕ ಮತ್ತು ಫ್ಲೋಚಾರ್ಟ್‌ಗಳು'] }
+      { name: 'Mathematics', name_kn: 'ಗಣಿತ', chapters: ['Number Systems', 'Polynomials', 'Coordinate Geometry', 'Linear Equations in 2 Variables', 'Introduction to Euclid\'s Geometry'], chapters_kn: ['ಸಂಖ್ಯಾ ವ್ಯವಸ್ಥೆಗಳು', 'ಬಹುಪದೋಕ್ತಿಗಳು', 'ನಿರ್ದೇಶಾಂಕ ರೇಖಾಗಣಿತ', 'ಎರಡು ಚರಾಕ್ಷರಗಳಿರುವ ರೇಖಾತ್ಮಕ ಸಮೀಕರಣಗಳು', 'ಯೂಕ್ಲಿಡ್‌ನ ರೇಖಾಗಣಿತದ ಪರಿಚಯ'] },
+      { name: 'Science', name_kn: 'ವಿಜ್ಞಾನ', chapters: ['Matter in Our Surroundings', 'Is Matter Around Us Pure', 'Atoms and Molecules', 'Structure of the Atom', 'The Fundamental Unit of Life'], chapters_kn: ['ನಮ್ಮ ಸುತ್ತಮುತ್ತಲಿನ ದ್ರವ್ಯ', 'ನಮ್ಮ ಸುತ್ತಲಿನ ದ್ರವ್ಯ ಶುದ್ಧವೇ', 'ಪರಮಾಣುಗಳು ಮತ್ತು ಅಣುಗಳು', 'ಪರಮಾಣುವಿನ ರಚನೆ', 'ಜೀವದ ಮೂಲಭೂತ ಘಟಕ'] },
+      { name: 'Digital Skills', name_kn: 'ಡಿಜಿಟಲ್ ಕೌಶಲ್ಯಗಳು', chapters: ['HTML Basics', 'CSS Basics', 'Logic and Flowcharts', 'Presentation Software', 'Spreadsheet Fundamentals'], chapters_kn: ['HTML ಮೂಲಗಳು', 'CSS ಮೂಲಗಳು', 'ತರ್ಕ ಮತ್ತು ಫ್ಲೋಚಾರ್ಟ್‌ಗಳು', 'ಪ್ರಸ್ತುತಿ ಸಾಫ್ಟ್‌ವೇರ್', 'ಸ್ಪ್ರೆಡ್‌ಶೀಟ್ ಮೂಲಭೂತ ಅಂಶಗಳು'] }
     ]
   },
   {
     classLevel: 10,
     subjects: [
-      { name: 'Mathematics', name_kn: 'ಗಣಿತ', chapters: ['Real Numbers', 'Polynomials', 'Quadratic Equations'], chapters_kn: ['ವಾಸ್ತವ ಸಂಖ್ಯೆಗಳು', 'ಬಹುಪದೋಕ್ತಿಗಳು', 'ವರ್ಗ ಸಮೀಕರಣಗಳು'] },
-      { name: 'Science', name_kn: 'ವಿಜ್ಞಾನ', chapters: ['Chemical Reactions and Equations', 'Acids, Bases and Salts'], chapters_kn: ['ರಾಸಾಯನಿಕ ಕ್ರಿಯೆಗಳು ಮತ್ತು ಸಮೀಕರಣಗಳು', 'ಆಮ್ಲಗಳು, ಪ್ರತ್ಯಾಮ್ಲಗಳು ಮತ್ತು ಲವಣಗಳು'] },
-      { name: 'Digital Skills', name_kn: 'ಡಿಜಿಟಲ್ ಕೌಶಲ್ಯಗಳು', chapters: ['JavaScript Basics', 'Introduction to Python'], chapters_kn: ['ಜಾವಾಸ್ಕ್ರಿಪ್ಟ್ ಮೂಲಗಳು', 'ಪೈಥಾನ್ ಪರಿಚಯ'] }
+      { name: 'Mathematics', name_kn: 'ಗಣಿತ', chapters: ['Real Numbers', 'Polynomials', 'Quadratic Equations', 'Arithmetic Progressions', 'Triangles'], chapters_kn: ['ವಾಸ್ತವ ಸಂಖ್ಯೆಗಳು', 'ಬಹುಪದೋಕ್ತಿಗಳು', 'ವರ್ಗ ಸಮೀಕರಣಗಳು', 'ಸಮಾಂತರ ಶ್ರೇಢಿಗಳು', 'ತ್ರಿಕೋನಗಳು'] },
+      { name: 'Science', name_kn: 'ವಿಜ್ಞಾನ', chapters: ['Chemical Reactions', 'Acids, Bases & Salts', 'Metals & Non-Metals', 'Carbon & its Compounds', 'Periodic Classification'], chapters_kn: ['ರಾಸಾಯನಿಕ ಕ್ರಿಯೆಗಳು ಮತ್ತು ಸಮೀಕರಣಗಳು', 'ಆಮ್ಲಗಳು, ಪ್ರತ್ಯಾಮ್ಲಗಳು ಮತ್ತು ಲವಣಗಳು', 'ಲೋಹಗಳು ಮತ್ತು ಅಲೋಹಗಳು', 'ಇಂಗಾಲ ಮತ್ತು ಅದರ ಸಂಯುಕ್ತಗಳು', 'ಧಾತುಗಳ ಆವರ್ತಕ ವರ್ಗೀಕರಣ'] },
+      { name: 'Digital Skills', name_kn: 'ಡಿಜಿಟಲ್ ಕೌಶಲ್ಯಗಳು', chapters: ['JavaScript Basics', 'Introduction to Python', 'Web Development', 'Data Analysis with Python', 'Cybersecurity Fundamentals'], chapters_kn: ['ಜಾವಾಸ್ಕ್ರಿಪ್ಟ್ ಮೂಲಗಳು', 'ಪೈಥಾನ್ ಪರಿಚಯ', 'ವೆಬ್ ಅಭಿವೃದ್ಧಿ ಯೋಜನೆ', 'ಪೈಥಾನ್‌ನೊಂದಿಗೆ ಡೇಟಾ ವಿಶ್ಲೇಷಣೆ', 'ಸೈಬರ್ ಭದ್ರತೆ ಮೂಲಭೂತ ಅಂಶಗಳು'] }
     ]
   }
 ];
