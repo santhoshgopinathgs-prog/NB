@@ -21,9 +21,8 @@ function AppContent() {
   const { isAuthenticated, isLoading } = useAppContext();
 
   React.useEffect(() => {
-    if (!isAuthenticated) {
-      setActiveTab('home');
-    }
+    // Always reset to home tab when auth state changes (login or logout)
+    setActiveTab('home');
   }, [isAuthenticated]);
 
   if (isLoading) {
