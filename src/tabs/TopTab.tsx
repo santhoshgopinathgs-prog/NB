@@ -3,15 +3,16 @@ import { useAppContext } from '../context/AppContext';
 import { Trophy, Medal } from 'lucide-react';
 
 export const TopTab = () => {
-  const { t } = useAppContext();
+  const { t, language, user, leaderboard } = useAppContext();
   const [filter, setFilter] = useState<'regional' | 'overall'>('regional');
 
-  const leaderboard = [
-    { rank: 1, name: 'Rahul D.', xp: 3450, region: 'Bengaluru' },
-    { rank: 2, name: 'Kavya S.', xp: 3100, region: 'Mysuru' },
-    { rank: 3, name: 'Ananya S.', xp: 1250, region: 'Bengaluru', isMe: true },
-    { rank: 4, name: 'Vivek M.', xp: 1100, region: 'Hubli' },
-  ];
+  const displayLeaderboard = leaderboard.map((u, index) => ({
+    rank: index + 1,
+    name: u.name,
+    xp: u.xp,
+    region: language === 'EN' ? 'Karnataka' : 'ಕರ್ನಾಟಕ',
+    isMe: u.id === user?.id
+  }));
 
   return (
     <div className="animate-slide-up" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
@@ -37,7 +38,7 @@ export const TopTab = () => {
       </div>
 
       <div className="card" style={{ padding: '8px', margin: '0 20px' }}>
-        {leaderboard.map((user) => (
+        {displayLeaderboard.length > 0 ? displayLeaderboard.map((user) => (
           <div key={user.rank} style={{ 
             display: 'flex', 
             alignItems: 'center', 
@@ -57,7 +58,11 @@ export const TopTab = () => {
             </div>
             <div style={{ fontWeight: 700, color: 'var(--accent-blue)' }}>{user.xp} XP</div>
           </div>
-        ))}
+        )) : (
+          <div style={{ padding: '20px', textAlign: 'center', color: 'var(--text-tertiary)' }}>
+            {language === 'EN' ? 'No one is on the leaderboard yet!' : 'ಯಾರೂ ಲೀಡರ್‌ಬೋರ್ಡ್‌ನಲ್ಲಿಲ್ಲ!'}
+          </div>
+        )}
       </div>
     </div>
   );
