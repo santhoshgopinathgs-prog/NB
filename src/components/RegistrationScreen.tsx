@@ -84,7 +84,7 @@ export const RegistrationScreen = () => {
       {/* Top Bar */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <img src="/logo.png" alt="Namma Buddy Logo" style={{ height: '40px' }} />
+          <img src="/logo.jpg" alt="Namma Buddy Logo" style={{ height: '40px' }} />
           <h1 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#1E293B', margin: 0 }}>Namma<span style={{ color: 'var(--accent-blue)' }}> Buddy</span></h1>
         </div>
         

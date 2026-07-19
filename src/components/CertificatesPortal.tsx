@@ -37,7 +37,7 @@ export const CertificatesPortal = ({ onClose }: { onClose: () => void }) => {
                 <div key={quizId} style={{ background: 'white', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 10px 25px rgba(0,0,0,0.08)' }}>
                   <div style={{ background: 'linear-gradient(135deg, var(--accent-blue), var(--accent-purple))', padding: '32px 24px', display: 'flex', flexDirection: 'column', alignItems: 'center', color: 'white' }}>
                     <div style={{ marginBottom: '16px', background: 'white', padding: '12px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <img src="/logo.png" alt="Logo" style={{ height: '48px', width: 'auto' }} />
+                      <img src="/logo.jpg" alt="Logo" style={{ height: '48px', width: 'auto' }} />
                     </div>
                     <h3 style={{ fontSize: '1.4rem', textAlign: 'center', marginBottom: '8px' }}>Certificate of Completion</h3>
                     <p style={{ opacity: 0.9 }}>Awarded for mastering</p>
