@@ -11,6 +11,18 @@ export const Header: React.FC<HeaderProps> = ({ setActiveTab }) => {
   const { t, language, toggleLanguage, user, userXP } = useAppContext();
   const [showNotifications, setShowNotifications] = useState(false);
   const [hasUnread, setHasUnread] = useState(true);
+  const [isOffline, setIsOffline] = useState(!navigator.onLine);
+
+  React.useEffect(() => {
+    const handleOnline = () => setIsOffline(false);
+    const handleOffline = () => setIsOffline(true);
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
 
   const getSalutation = () => {
     const hour = new Date().getHours();
@@ -42,6 +54,12 @@ export const Header: React.FC<HeaderProps> = ({ setActiveTab }) => {
       
       <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
         
+        {isOffline && (
+          <div style={{ background: 'var(--accent-red)', color: 'white', padding: '4px 8px', borderRadius: '12px', fontSize: '0.65rem', fontWeight: 700 }}>
+            Offline
+          </div>
+        )}
+
         {/* Language Toggle */}
         <button 
           onClick={toggleLanguage}
