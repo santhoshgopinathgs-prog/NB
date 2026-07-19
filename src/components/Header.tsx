@@ -10,6 +10,7 @@ interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({ setActiveTab }) => {
   const { t, language, toggleLanguage, user, userXP } = useAppContext();
   const [showNotifications, setShowNotifications] = useState(false);
+  const [hasUnread, setHasUnread] = useState(true);
 
   const getSalutation = () => {
     const hour = new Date().getHours();
@@ -80,11 +81,14 @@ export const Header: React.FC<HeaderProps> = ({ setActiveTab }) => {
         {/* Bell & Notifications Dropdown */}
         <div style={{ position: 'relative' }}>
           <button 
-            onClick={() => setShowNotifications(!showNotifications)}
+            onClick={() => {
+              setShowNotifications(!showNotifications);
+              setHasUnread(false);
+            }}
             style={{ position: 'relative', background: 'none', border: 'none', padding: 0, cursor: 'pointer', display: 'flex' }}
           >
             <Bell size={20} color="var(--text-tertiary)" />
-            <div style={{ position: 'absolute', top: -2, right: -2, width: '10px', height: '10px', background: 'var(--accent-red)', borderRadius: '50%', border: '2px solid white' }}></div>
+            {hasUnread && <div style={{ position: 'absolute', top: -2, right: -2, width: '10px', height: '10px', background: 'var(--accent-red)', borderRadius: '50%', border: '2px solid white' }}></div>}
           </button>
 
           {showNotifications && (
