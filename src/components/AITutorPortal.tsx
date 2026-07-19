@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { MessageSquare, Key, Loader2 } from 'lucide-react';
+import { MessageSquare, Loader2 } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
 export const AITutorPortal = ({ onClose, initialQuery }: { onClose: () => void, initialQuery?: string }) => {
   const { language } = useAppContext();
   
-  const [apiKey, setApiKey] = useState(localStorage.getItem('gemini_api_key') || import.meta.env.VITE_GEMINI_API_KEY || '');
-  const [showSettings, setShowSettings] = useState(!apiKey);
+  // Use environment variable for the API key (configured in Vercel/Netlify for production)
+  const apiKey = import.meta.env.VITE_GEMINI_API_KEY || '';
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -31,12 +31,6 @@ export const AITutorPortal = ({ onClose, initialQuery }: { onClose: () => void, 
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  const saveApiKey = (key: string) => {
-    setApiKey(key);
-    localStorage.setItem('gemini_api_key', key);
-    setShowSettings(false);
-  };
-
   const handleSend = async () => {
     const userMsg = input.trim();
     if (!userMsg) return;
@@ -50,13 +44,12 @@ export const AITutorPortal = ({ onClose, initialQuery }: { onClose: () => void, 
       setTimeout(() => {
         setMessages([...newMsgs, { 
           text: language === 'EN' 
-            ? "Please enter your Gemini API Key in the settings to activate me!" 
-            : "ನನ್ನನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಲು ದಯವಿಟ್ಟು ನಿಮ್ಮ Gemini API ಕೀಲಿಯನ್ನು ನಮೂದಿಸಿ!",
+            ? "The AI Tutor is currently offline. Please contact the administrator to configure the AI service." 
+            : "AI ಟ್ಯೂಟರ್ ಪ್ರಸ್ತುತ ಆಫ್‌ಲೈನ್‌ನಲ್ಲಿದೆ. AI ಸೇವೆಯನ್ನು ಕಾನ್ಫಿಗರ್ ಮಾಡಲು ದಯವಿಟ್ಟು ನಿರ್ವಾಹಕರನ್ನು ಸಂಪರ್ಕಿಸಿ.",
           isBot: true 
         }]);
         setIsLoading(false);
-        setShowSettings(true);
-      }, 500);
+      }, 1000);
       return;
     }
 
@@ -104,26 +97,7 @@ export const AITutorPortal = ({ onClose, initialQuery }: { onClose: () => void, 
           </h2>
           <div style={{ fontSize: '0.8rem', color: 'var(--text-tertiary)' }}>Online • Kannada, English</div>
         </div>
-        <button onClick={() => setShowSettings(!showSettings)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-secondary)' }}>
-          <Key size={20} />
-        </button>
       </div>
-
-      {showSettings && (
-        <div style={{ padding: '16px 20px', background: '#F8FAFC', borderBottom: '1px solid var(--border-light)', display: 'flex', gap: '12px', alignItems: 'center' }}>
-          <input 
-            type="password" 
-            placeholder="Enter Gemini API Key..."
-            defaultValue={apiKey}
-            onBlur={(e) => saveApiKey(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && saveApiKey(e.currentTarget.value)}
-            style={{ flex: 1, padding: '12px 16px', borderRadius: '12px', border: '1px solid var(--border-light)', outline: 'none' }}
-          />
-          <button onClick={() => setShowSettings(false)} style={{ padding: '12px 20px', background: 'var(--accent-blue)', color: 'white', borderRadius: '12px', border: 'none', fontWeight: 600, cursor: 'pointer' }}>
-            Save
-          </button>
-        </div>
-      )}
 
       <div style={{ padding: '24px', flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '16px' }}>
         {messages.map((msg, i) => (
