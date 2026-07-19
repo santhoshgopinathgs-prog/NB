@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { ChevronLeft, Flame, Coins, Bell, Check, Book, Star, CheckCircle } from 'lucide-react';
+import { ChevronLeft, Flame, Coins, Bell, Check, Book, Star, CheckCircle, Trophy, Target } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
+import { NotificationsMenu } from '../components/NotificationsMenu';
 
 interface AchievementsTabProps {
   setActiveTab: (tab: string) => void;
@@ -64,49 +65,7 @@ export const AchievementsTab: React.FC<AchievementsTabProps> = ({ setActiveTab }
             </button>
 
             {showNotifications && (
-              <>
-                <div 
-                  style={{ position: 'fixed', inset: 0, zIndex: 99 }} 
-                  onClick={() => setShowNotifications(false)}
-                ></div>
-                <div style={{ 
-                  position: 'absolute', top: '32px', right: 0, width: '280px', 
-                  background: 'white', borderRadius: '16px', boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)', 
-                  border: '1px solid var(--border-light)', zIndex: 100, overflow: 'hidden', textAlign: 'left'
-                }}>
-                  <div style={{ padding: '16px', borderBottom: '1px solid var(--border-light)', fontWeight: 800, fontSize: '0.9rem', color: 'var(--text-primary)' }}>
-                    {language === 'EN' ? 'Notifications' : 'ಅಧಿಸೂಚನೆಗಳು'}
-                  </div>
-                  <div style={{ display: 'flex', flexDirection: 'column' }}>
-                    <div style={{ padding: '16px', borderBottom: '1px solid var(--border-light)', display: 'flex', gap: '12px', background: '#F8FAFC' }}>
-                      <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#DCFCE7', color: '#16A34A', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                        <CheckCircle size={16} />
-                      </div>
-                      <div>
-                        <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '4px' }}>
-                          {language === 'EN' ? 'New Certificate Earned!' : 'ಹೊಸ ಪ್ರಮಾಣಪತ್ರವನ್ನು ಗಳಿಸಲಾಗಿದೆ!'}
-                        </div>
-                        <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
-                          {language === 'EN' ? 'You completed all Science quizzes.' : 'ನೀವು ಎಲ್ಲಾ ವಿಜ್ಞಾನ ರಸಪ್ರಶ್ನೆಗಳನ್ನು ಪೂರ್ಣಗೊಳಿಸಿದ್ದೀರಿ.'}
-                        </div>
-                      </div>
-                    </div>
-                    <div style={{ padding: '16px', display: 'flex', gap: '12px' }}>
-                      <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#FEF3C7', color: '#D97706', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                        <Flame size={16} fill="#D97706" />
-                      </div>
-                      <div>
-                        <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '4px' }}>
-                          {language === 'EN' ? '12 Day Streak!' : '12 ದಿನದ ಸ್ಟ್ರೀಕ್!'}
-                        </div>
-                        <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
-                          {language === 'EN' ? 'Keep up the great work and practice daily.' : 'ಉತ್ತಮ ಕೆಲಸವನ್ನು ಮುಂದುವರಿಸಿ ಮತ್ತು ಪ್ರತಿದಿನ ಅಭ್ಯಾಸ ಮಾಡಿ.'}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </>
+              <NotificationsMenu onClose={() => setShowNotifications(false)} />
             )}
           </div>
         </div>
