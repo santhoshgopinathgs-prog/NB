@@ -12,7 +12,15 @@ import { useAppContext } from './context/AppContext';
 
 function AppContent() {
   const [activeTab, setActiveTab] = useState('home');
-  const { isAuthenticated } = useAppContext();
+  const { isAuthenticated, isLoading } = useAppContext();
+
+  if (isLoading) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', background: 'var(--bg-app)', color: 'var(--accent-blue)', fontWeight: 700, fontSize: '1.2rem', flexDirection: 'column', gap: '16px' }}>
+        <div className="animate-slide-up">Loading Namma Buddy...</div>
+      </div>
+    );
+  }
 
   if (!isAuthenticated) {
     return <RegistrationScreen />;
