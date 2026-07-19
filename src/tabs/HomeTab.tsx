@@ -68,14 +68,14 @@ export const HomeTab = () => {
       <div style={{ margin: '0 20px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
           <h3 style={{ fontSize: '1.2rem' }}>{language === 'EN' ? "Daily Quests" : "ದೈನಂದಿನ ಪ್ರಶ್ನೆಗಳು"}</h3>
-          <span style={{ background: '#D1FAE5', color: '#059669', fontSize: '0.7rem', padding: '4px 10px', borderRadius: '12px', fontWeight: 700 }}>1/4 done</span>
+          <span style={{ background: '#D1FAE5', color: '#059669', fontSize: '0.7rem', padding: '4px 10px', borderRadius: '12px', fontWeight: 700 }}>{Math.min(4, Math.floor(userXP / 50))}/4 done</span>
         </div>
         
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-          <QuestCard icon="📚" title={language === 'EN' ? "Complete 2 Lessons" : "2 ಪಾಠಗಳನ್ನು ಪೂರ್ಣಗೊಳಿಸಿ"} xp="+50 XP" done />
-          <QuestCard icon="🎯" title={language === 'EN' ? "Score 80%+ in a Quiz" : "ರಸಪ್ರಶ್ನೆಯಲ್ಲಿ 80%+ ಸ್ಕೋರ್ ಮಾಡಿ"} xp="+75 XP" />
-          <QuestCard icon="🤖" title={language === 'EN' ? "Use AI Tutor" : "AI ಟ್ಯೂಟರ್ ಬಳಸಿ"} xp="+25 XP" />
-          <QuestCard icon="⌨️" title={language === 'EN' ? "Practice Typing 5 min" : "5 ನಿಮಿಷ ಟೈಪಿಂಗ್ ಅಭ್ಯಾಸ ಮಾಡಿ"} xp="+30 XP" />
+          <QuestCard icon="📚" title={language === 'EN' ? "Complete 2 Lessons" : "2 ಪಾಠಗಳನ್ನು ಪೂರ್ಣಗೊಳಿಸಿ"} xp="+50 XP" done={userXP >= 50} />
+          <QuestCard icon="🎯" title={language === 'EN' ? "Score 80%+ in a Quiz" : "ರಸಪ್ರಶ್ನೆಯಲ್ಲಿ 80%+ ಸ್ಕೋರ್ ಮಾಡಿ"} xp="+75 XP" done={userXP >= 125} />
+          <QuestCard icon="🤖" title={language === 'EN' ? "Use AI Tutor" : "AI ಟ್ಯೂಟರ್ ಬಳಸಿ"} xp="+25 XP" done={userXP >= 150} />
+          <QuestCard icon="⌨️" title={language === 'EN' ? "Practice Typing 5 min" : "5 ನಿಮಿಷ ಟೈಪಿಂಗ್ ಅಭ್ಯಾಸ ಮಾಡಿ"} xp="+30 XP" done={userXP >= 180} />
         </div>
       </div>
 
