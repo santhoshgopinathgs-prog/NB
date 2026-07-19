@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
-import { BookOpen, User, GraduationCap, ArrowRight, School, ChevronLeft, Mail, Lock, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { Mail, Lock, User, School, GraduationCap, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import { supabase } from '../utils/supabaseClient';
 
 export const RegistrationScreen = () => {
   const { language, toggleLanguage } = useAppContext();
-  const [isLoginMode, setIsLoginMode] = useState(false);
+  const [isLoginMode, setIsLoginMode] = useState(true);
   const [forgotPasswordMode, setForgotPasswordMode] = useState(false);
   
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
   
   const [name, setName] = useState('');
   const [school, setSchool] = useState('');
@@ -27,22 +29,18 @@ export const RegistrationScreen = () => {
     
     try {
       if (forgotPasswordMode) {
-        // Forgot Password Flow
         const { error } = await supabase.auth.resetPasswordForEmail(email, {
           redirectTo: window.location.origin,
         });
-        
         if (error) throw error;
         setSuccessMsg(language === 'EN' ? 'Password reset link sent to your email.' : 'ಪಾಸ್‌ವರ್ಡ್ ಮರುಹೊಂದಿಸುವ ಲಿಂಕ್ ಅನ್ನು ನಿಮ್ಮ ಇಮೇಲ್‌ಗೆ ಕಳುಹಿಸಲಾಗಿದೆ.');
       } else if (isLoginMode) {
-        // Login Flow
         const { error } = await supabase.auth.signInWithPassword({
           email: email.trim(),
           password: password
         });
         if (error) throw error;
       } else {
-        // Registration Flow
         const { error } = await supabase.auth.signUp({
           email: email.trim(),
           password: password,
@@ -54,10 +52,7 @@ export const RegistrationScreen = () => {
             }
           }
         });
-        
         if (error) throw error;
-        // If email confirmation is off, they will be logged in immediately.
-        // If email confirmation is on, we'd show a success message here.
       }
     } catch (error: any) {
       setErrorMsg(error.message);
@@ -72,234 +67,217 @@ export const RegistrationScreen = () => {
     return email.includes('@') && password.length >= 6 && name.trim().length > 0 && school.trim().length > 0 && selectedClass !== null;
   };
 
+  const inputStyle = {
+    width: '100%',
+    padding: '8px 8px 8px 36px',
+    border: 'none',
+    borderBottom: '1px solid #D1CFC7',
+    background: 'transparent',
+    fontSize: '1rem',
+    color: '#1C2A3A',
+    outline: 'none',
+    transition: 'border-color 0.2s ease',
+  };
+
+  const labelStyle = {
+    fontSize: '0.75rem',
+    fontWeight: 800,
+    color: '#1C2A3A',
+    textTransform: 'uppercase' as const,
+    letterSpacing: '1px',
+    marginBottom: '8px',
+    display: 'block'
+  };
+
+  const iconStyle = {
+    position: 'absolute' as const,
+    left: '0px',
+    top: '50%',
+    transform: 'translateY(-50%)',
+    color: '#64748B',
+    width: '18px',
+    height: '18px'
+  };
+
   return (
     <div style={{ 
       minHeight: '100vh', 
       display: 'flex', 
-      flexDirection: 'column',
-      background: 'linear-gradient(135deg, #F8FAFC 0%, #EFF6FF 100%)',
-      padding: '24px'
+      justifyContent: 'center',
+      alignItems: 'center',
+      background: '#171F2E',
+      backgroundImage: 'radial-gradient(#2A3441 1px, transparent 1px)',
+      backgroundSize: '24px 24px',
+      padding: '24px',
+      position: 'relative'
     }}>
       
-      {/* Top Bar */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <img src="/logo.jpg" alt="Namma Buddy Logo" style={{ height: '56px', borderRadius: '50%' }} />
-          <h1 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#1E293B', margin: 0 }}>Namma<span style={{ color: 'var(--accent-blue)' }}> Buddy</span></h1>
-        </div>
-        
+      {/* Language Toggle */}
+      <div style={{ position: 'absolute', top: '24px', right: '24px' }}>
         <button 
           onClick={toggleLanguage}
           style={{ 
-            background: 'white', 
-            border: '1px solid var(--border-light)',
+            background: 'rgba(255,255,255,0.1)', 
+            border: '1px solid rgba(255,255,255,0.2)',
             borderRadius: '20px',
-            padding: '2px',
+            padding: '4px',
             display: 'flex',
             alignItems: 'center',
             fontSize: '0.75rem',
             fontWeight: 700,
-            color: 'var(--text-primary)',
+            color: 'white',
             cursor: 'pointer',
-            boxShadow: '0 2px 10px rgba(0,0,0,0.05)'
+            backdropFilter: 'blur(10px)'
           }}
         >
-          <span style={{ padding: '6px 12px', borderRadius: '16px', background: language === 'EN' ? 'var(--accent-blue)' : 'transparent', color: language === 'EN' ? 'white' : 'inherit', transition: 'all 0.2s ease' }}>EN</span>
-          <span style={{ padding: '6px 12px', borderRadius: '16px', background: language === 'KN' ? 'var(--accent-blue)' : 'transparent', color: language === 'KN' ? 'white' : 'inherit', transition: 'all 0.2s ease' }}>KN</span>
+          <span style={{ padding: '6px 12px', borderRadius: '16px', background: language === 'EN' ? '#CBA75A' : 'transparent', color: language === 'EN' ? '#171F2E' : 'inherit', transition: 'all 0.2s ease' }}>EN</span>
+          <span style={{ padding: '6px 12px', borderRadius: '16px', background: language === 'KN' ? '#CBA75A' : 'transparent', color: language === 'KN' ? '#171F2E' : 'inherit', transition: 'all 0.2s ease' }}>KN</span>
         </button>
       </div>
 
-      {/* Main Content */}
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', maxWidth: '400px', margin: '0 auto', width: '100%' }}>
+      <div style={{
+        background: '#F9F6F0',
+        borderRadius: '24px',
+        padding: '48px 40px',
+        width: '100%',
+        maxWidth: '440px',
+        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
+        display: 'flex',
+        flexDirection: 'column'
+      }}>
         
-        {/* Toggle Switch */}
-        {!forgotPasswordMode && (
-          <div style={{ display: 'flex', background: '#E2E8F0', borderRadius: '24px', padding: '4px', marginBottom: '32px' }}>
-            <button
-              type="button"
-              onClick={() => { setIsLoginMode(false); setErrorMsg(''); setSuccessMsg(''); }}
-              style={{
-                flex: 1, padding: '12px', borderRadius: '20px', border: 'none',
-                background: !isLoginMode ? 'white' : 'transparent',
-                color: !isLoginMode ? 'var(--accent-blue)' : '#64748B',
-                fontWeight: 700, fontSize: '0.95rem', cursor: 'pointer',
-                boxShadow: !isLoginMode ? '0 4px 10px rgba(0,0,0,0.05)' : 'none',
-                transition: 'all 0.2s ease'
-              }}
-            >
-              {language === 'EN' ? 'Sign Up' : 'ಸೈನ್ ಅಪ್ ಮಾಡಿ'}
-            </button>
-            <button
-              type="button"
-              onClick={() => { setIsLoginMode(true); setErrorMsg(''); setSuccessMsg(''); }}
-              style={{
-                flex: 1, padding: '12px', borderRadius: '20px', border: 'none',
-                background: isLoginMode ? 'white' : 'transparent',
-                color: isLoginMode ? 'var(--accent-blue)' : '#64748B',
-                fontWeight: 700, fontSize: '0.95rem', cursor: 'pointer',
-                boxShadow: isLoginMode ? '0 4px 10px rgba(0,0,0,0.05)' : 'none',
-                transition: 'all 0.2s ease'
-              }}
-            >
-              {language === 'EN' ? 'Log In' : 'ಲಾಗಿನ್ ಮಾಡಿ'}
-            </button>
+        {/* Header Section */}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '40px' }}>
+          <div style={{ 
+            width: '80px', height: '80px', borderRadius: '50%', 
+            background: '#171F2E', display: 'flex', alignItems: 'center', justifyContent: 'center',
+            marginBottom: '20px', border: '2px solid #CBA75A', padding: '4px'
+          }}>
+            <img src="/logo.jpg" alt="Logo" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
           </div>
-        )}
-
-        {forgotPasswordMode && (
-          <button 
-            type="button"
-            onClick={() => { setForgotPasswordMode(false); setErrorMsg(''); setSuccessMsg(''); }}
-            style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'none', border: 'none', color: '#64748B', cursor: 'pointer', marginBottom: '24px', fontWeight: 600 }}
-          >
-            <ChevronLeft size={20} /> {language === 'EN' ? 'Back to Login' : 'ಲಾಗಿನ್‌ಗೆ ಹಿಂತಿರುಗಿ'}
-          </button>
-        )}
-
-        <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-          <h2 style={{ fontSize: '2rem', fontWeight: 800, color: '#1E293B', marginBottom: '12px', lineHeight: 1.2 }}>
-            {forgotPasswordMode
-              ? (language === 'EN' ? 'Reset Password' : 'ಪಾಸ್‌ವರ್ಡ್ ಮರುಹೊಂದಿಸಿ')
-              : isLoginMode 
-                ? (language === 'EN' ? 'Welcome back.' : 'ಮತ್ತೆ ಸ್ವಾಗತ.')
-                : (language === 'EN' ? 'Start your learning journey today.' : 'ನಿಮ್ಮ ಕಲಿಕೆಯ ಪಯಣವನ್ನು ಇಂದೇ ಪ್ರಾರಂಭಿಸಿ.')}
-          </h2>
-          <p style={{ color: '#64748B', fontSize: '1rem', lineHeight: 1.5 }}>
-            {forgotPasswordMode
-              ? (language === 'EN' ? 'Enter your email to receive a password reset link.' : 'ಪಾಸ್‌ವರ್ಡ್ ಮರುಹೊಂದಿಸುವ ಲಿಂಕ್ ಪಡೆಯಲು ನಿಮ್ಮ ಇಮೇಲ್ ನಮೂದಿಸಿ.')
-              : isLoginMode 
-                ? (language === 'EN' ? 'Enter your email and password to continue learning.' : 'ಕಲಿಕೆಯನ್ನು ಮುಂದುವರಿಸಲು ನಿಮ್ಮ ಇಮೇಲ್ ಮತ್ತು ಪಾಸ್‌ವರ್ಡ್ ಅನ್ನು ನಮೂದಿಸಿ.')
-                : (language === 'EN' ? 'Create a profile to track your progress, earn XP, and collect certificates.' : 'ನಿಮ್ಮ ಪ್ರಗತಿಯನ್ನು ಟ್ರ್ಯಾಕ್ ಮಾಡಲು, XP ಗಳಿಸಲು ಮತ್ತು ಪ್ರಮಾಣಪತ್ರಗಳನ್ನು ಸಂಗ್ರಹಿಸಲು ಪ್ರೊಫೈಲ್ ರಚಿಸಿ.')}
+          <h1 style={{ 
+            fontSize: '2rem', fontWeight: 800, color: '#1C2A3A', margin: '0 0 8px 0',
+            fontFamily: 'Georgia, "Times New Roman", Times, serif'
+          }}>
+            Namma Buddy
+          </h1>
+          <p style={{ 
+            fontSize: '0.75rem', color: '#64748B', margin: 0, 
+            textTransform: 'uppercase', letterSpacing: '2px', fontWeight: 600
+          }}>
+            {language === 'EN' ? 'Bridging the digital divide' : 'ಡಿಜಿಟಲ್ ವಿಭಜನೆಯನ್ನು ಸೇತುವೆ ಮಾಡುವುದು'}
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
           
           {errorMsg && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '12px', background: '#FEE2E2', color: '#EF4444', borderRadius: '12px', fontSize: '0.9rem', fontWeight: 600 }}>
-              <AlertCircle size={20} /> {errorMsg}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '12px', background: '#FEE2E2', color: '#EF4444', borderRadius: '8px', fontSize: '0.85rem', fontWeight: 600 }}>
+              <AlertCircle size={18} /> {errorMsg}
             </div>
           )}
 
           {successMsg && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '12px', background: '#D1FAE5', color: '#10B981', borderRadius: '12px', fontSize: '0.9rem', fontWeight: 600 }}>
-              <CheckCircle2 size={20} /> {successMsg}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '12px', background: '#D1FAE5', color: '#10B981', borderRadius: '8px', fontSize: '0.85rem', fontWeight: 600 }}>
+              <CheckCircle2 size={18} /> {successMsg}
             </div>
           )}
 
           {(!isLoginMode && !forgotPasswordMode) && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <label style={{ fontSize: '0.9rem', fontWeight: 700, color: '#334155', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <User size={16} /> {language === 'EN' ? 'What is your name?' : 'ನಿಮ್ಮ ಹೆಸರೇನು?'}
-              </label>
-              <input 
-                type="text" 
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder={language === 'EN' ? 'Enter your full name' : 'ನಿಮ್ಮ ಪೂರ್ಣ ಹೆಸರನ್ನು ನಮೂದಿಸಿ'}
-                style={{ 
-                  padding: '16px', borderRadius: '16px', border: '2px solid transparent', 
-                  background: 'white', fontSize: '1rem', color: '#1E293B', outline: 'none',
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.03)', transition: 'border 0.2s ease'
-                }}
-                onFocus={(e) => e.target.style.borderColor = 'var(--accent-blue)'}
-                onBlur={(e) => e.target.style.borderColor = 'transparent'}
-                required={!isLoginMode && !forgotPasswordMode}
-              />
+            <div style={{ position: 'relative' }}>
+              <label style={labelStyle}>{language === 'EN' ? 'Full Name' : 'ಪೂರ್ಣ ಹೆಸರು'}</label>
+              <div style={{ position: 'relative' }}>
+                <User style={iconStyle} />
+                <input 
+                  type="text" 
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder={language === 'EN' ? 'Enter your full name' : 'ನಿಮ್ಮ ಪೂರ್ಣ ಹೆಸರನ್ನು ನಮೂದಿಸಿ'}
+                  style={inputStyle}
+                  onFocus={(e) => e.target.style.borderBottomColor = '#1C2A3A'}
+                  onBlur={(e) => e.target.style.borderBottomColor = '#D1CFC7'}
+                  required={!isLoginMode && !forgotPasswordMode}
+                />
+              </div>
             </div>
           )}
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <label style={{ fontSize: '0.9rem', fontWeight: 700, color: '#334155', display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <Mail size={16} /> {language === 'EN' ? 'Email Address' : 'ಇಮೇಲ್ ವಿಳಾಸ'}
-            </label>
-            <input 
-              type="email" 
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder={language === 'EN' ? 'Enter your email' : 'ನಿಮ್ಮ ಇಮೇಲ್ ನಮೂದಿಸಿ'}
-              style={{ 
-                padding: '16px', borderRadius: '16px', border: '2px solid transparent', 
-                background: 'white', fontSize: '1rem', color: '#1E293B', outline: 'none',
-                boxShadow: '0 4px 12px rgba(0,0,0,0.03)', transition: 'border 0.2s ease'
-              }}
-              onFocus={(e) => e.target.style.borderColor = 'var(--accent-blue)'}
-              onBlur={(e) => e.target.style.borderColor = 'transparent'}
-              required
-            />
+          <div style={{ position: 'relative' }}>
+            <label style={labelStyle}>{language === 'EN' ? 'Email' : 'ಇಮೇಲ್'}</label>
+            <div style={{ position: 'relative' }}>
+              <Mail style={iconStyle} />
+              <input 
+                type="email" 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder={language === 'EN' ? 'you@school.edu' : 'you@school.edu'}
+                style={inputStyle}
+                onFocus={(e) => e.target.style.borderBottomColor = '#1C2A3A'}
+                onBlur={(e) => e.target.style.borderBottomColor = '#D1CFC7'}
+                required
+              />
+            </div>
           </div>
 
           {!forgotPasswordMode && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <label style={{ fontSize: '0.9rem', fontWeight: 700, color: '#334155', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <Lock size={16} /> {language === 'EN' ? 'Password' : 'ಪಾಸ್ವರ್ಡ್'}
-                </label>
-                {isLoginMode && (
-                  <button 
-                    type="button"
-                    onClick={() => setForgotPasswordMode(true)}
-                    style={{ background: 'none', border: 'none', color: 'var(--accent-blue)', fontSize: '0.85rem', fontWeight: 600, cursor: 'pointer' }}
-                  >
-                    {language === 'EN' ? 'Forgot Password?' : 'ಪಾಸ್ವರ್ಡ್ ಮರೆತಿರಾ?'}
-                  </button>
-                )}
+            <div style={{ position: 'relative' }}>
+              <label style={labelStyle}>{language === 'EN' ? 'Password' : 'ಪಾಸ್ವರ್ಡ್'}</label>
+              <div style={{ position: 'relative' }}>
+                <Lock style={iconStyle} />
+                <input 
+                  type={showPassword ? 'text' : 'password'} 
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder={language === 'EN' ? 'Enter your password' : 'ನಿಮ್ಮ ಗುಪ್ತಪದವನ್ನು ನಮೂದಿಸಿ'}
+                  style={{...inputStyle, paddingRight: '60px'}}
+                  onFocus={(e) => e.target.style.borderBottomColor = '#1C2A3A'}
+                  onBlur={(e) => e.target.style.borderBottomColor = '#D1CFC7'}
+                  required={!forgotPasswordMode}
+                />
+                <button 
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  style={{
+                    position: 'absolute', right: '0px', top: '50%', transform: 'translateY(-50%)',
+                    background: 'none', border: 'none', color: '#475569', fontSize: '0.75rem', 
+                    fontWeight: 800, cursor: 'pointer', letterSpacing: '1px'
+                  }}
+                >
+                  {showPassword ? (language === 'EN' ? 'HIDE' : 'ಮರೆಮಾಡಿ') : (language === 'EN' ? 'SHOW' : 'ತೋರಿಸು')}
+                </button>
               </div>
-              <input 
-                type="password" 
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder={language === 'EN' ? 'Enter at least 6 characters' : 'ಕನಿಷ್ಠ 6 ಅಕ್ಷರಗಳನ್ನು ನಮೂದಿಸಿ'}
-                style={{ 
-                  padding: '16px', borderRadius: '16px', border: '2px solid transparent', 
-                  background: 'white', fontSize: '1rem', color: '#1E293B', outline: 'none',
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.03)', transition: 'border 0.2s ease'
-                }}
-                onFocus={(e) => e.target.style.borderColor = 'var(--accent-blue)'}
-                onBlur={(e) => e.target.style.borderColor = 'transparent'}
-                required={!forgotPasswordMode}
-              />
             </div>
           )}
 
           {(!isLoginMode && !forgotPasswordMode) && (
             <>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                <label style={{ fontSize: '0.9rem', fontWeight: 700, color: '#334155', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <School size={16} /> {language === 'EN' ? 'School Name' : 'ಶಾಲೆಯ ಹೆಸರು'}
-                </label>
-                <input 
-                  type="text" 
-                  value={school}
-                  onChange={(e) => setSchool(e.target.value)}
-                  placeholder={language === 'EN' ? 'Enter your school name' : 'ನಿಮ್ಮ ಶಾಲೆಯ ಹೆಸರನ್ನು ನಮೂದಿಸಿ'}
-                  style={{ 
-                    padding: '16px', borderRadius: '16px', border: '2px solid transparent', 
-                    background: 'white', fontSize: '1rem', color: '#1E293B', outline: 'none',
-                    boxShadow: '0 4px 12px rgba(0,0,0,0.03)', transition: 'border 0.2s ease'
-                  }}
-                  onFocus={(e) => e.target.style.borderColor = 'var(--accent-blue)'}
-                  onBlur={(e) => e.target.style.borderColor = 'transparent'}
-                  required={!isLoginMode && !forgotPasswordMode}
-                />
+              <div style={{ position: 'relative' }}>
+                <label style={labelStyle}>{language === 'EN' ? 'School Name' : 'ಶಾಲೆಯ ಹೆಸರು'}</label>
+                <div style={{ position: 'relative' }}>
+                  <School style={iconStyle} />
+                  <input 
+                    type="text" 
+                    value={school}
+                    onChange={(e) => setSchool(e.target.value)}
+                    placeholder={language === 'EN' ? 'Enter your school name' : 'ನಿಮ್ಮ ಶಾಲೆಯ ಹೆಸರನ್ನು ನಮೂದಿಸಿ'}
+                    style={inputStyle}
+                    onFocus={(e) => e.target.style.borderBottomColor = '#1C2A3A'}
+                    onBlur={(e) => e.target.style.borderBottomColor = '#D1CFC7'}
+                    required={!isLoginMode && !forgotPasswordMode}
+                  />
+                </div>
               </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                <label style={{ fontSize: '0.9rem', fontWeight: 700, color: '#334155', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <GraduationCap size={16} /> {language === 'EN' ? 'Select your class' : 'ನಿಮ್ಮ ತರಗತಿಯನ್ನು ಆಯ್ಕೆಮಾಡಿ'}
-                </label>
+              <div style={{ position: 'relative' }}>
+                <label style={labelStyle}>{language === 'EN' ? 'Class' : 'ತರಗತಿ'}</label>
                 <div style={{ position: 'relative' }}>
+                  <GraduationCap style={iconStyle} />
                   <select
                     value={selectedClass || ''}
                     onChange={(e) => setSelectedClass(Number(e.target.value))}
-                    style={{ 
-                      width: '100%', padding: '16px', borderRadius: '16px', border: '2px solid transparent', 
-                      background: 'white', fontSize: '1rem', color: selectedClass ? '#1E293B' : '#94A3B8', outline: 'none',
-                      boxShadow: '0 4px 12px rgba(0,0,0,0.03)', transition: 'border 0.2s ease',
-                      appearance: 'none', cursor: 'pointer', fontWeight: 600
-                    }}
-                    onFocus={(e) => e.target.style.borderColor = 'var(--accent-blue)'}
-                    onBlur={(e) => e.target.style.borderColor = 'transparent'}
+                    style={{...inputStyle, appearance: 'none', cursor: 'pointer'}}
+                    onFocus={(e) => e.target.style.borderBottomColor = '#1C2A3A'}
+                    onBlur={(e) => e.target.style.borderBottomColor = '#D1CFC7'}
                     required={!isLoginMode && !forgotPasswordMode}
                   >
                     <option value="" disabled hidden>
@@ -311,39 +289,105 @@ export const RegistrationScreen = () => {
                       </option>
                     ))}
                   </select>
-                  <div style={{ position: 'absolute', right: '16px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: '#94A3B8', fontSize: '0.8rem' }}>
+                  <div style={{ position: 'absolute', right: '0px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: '#64748B', fontSize: '0.7rem' }}>
                     ▼
                   </div>
-                </div>
-                <div style={{ fontSize: '0.8rem', color: '#94A3B8', textAlign: 'center', marginTop: '4px' }}>
-                  {language === 'EN' ? '*You cannot change your class later' : '*ನಂತರ ನಿಮ್ಮ ತರಗತಿಯನ್ನು ಬದಲಾಯಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ'}
                 </div>
               </div>
             </>
           )}
 
-          {/* Submit Button */}
+          {isLoginMode && !forgotPasswordMode && (
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '-8px' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '0.9rem', color: '#64748B' }}>
+                <input 
+                  type="checkbox" 
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  style={{ 
+                    width: '16px', height: '16px', accentColor: '#CBA75A', cursor: 'pointer',
+                    border: '1px solid #D1CFC7', borderRadius: '4px'
+                  }}
+                />
+                {language === 'EN' ? 'Remember me' : 'ನನ್ನನ್ನು ನೆನಪಿನಲ್ಲಿಡು'}
+              </label>
+              
+              <button 
+                type="button"
+                onClick={() => setForgotPasswordMode(true)}
+                style={{ background: 'none', border: 'none', color: '#B99341', fontSize: '0.9rem', fontWeight: 700, cursor: 'pointer' }}
+              >
+                {language === 'EN' ? 'Forgot password?' : 'ಪಾಸ್ವರ್ಡ್ ಮರೆತಿರಾ?'}
+              </button>
+            </div>
+          )}
+
           <button
             type="submit"
             disabled={isLoading || !isFormValid()}
             style={{
-              marginTop: '16px', padding: '18px', borderRadius: '16px',
-              background: (isLoading || !isFormValid()) ? '#94A3B8' : '#10B981',
-              color: 'white', fontSize: '1.1rem', fontWeight: 800, border: 'none',
+              padding: '16px', borderRadius: '8px',
+              background: (isLoading || !isFormValid()) ? '#E2E8F0' : '#CBA75A',
+              color: (isLoading || !isFormValid()) ? '#94A3B8' : '#1C2A3A',
+              fontSize: '1rem', fontWeight: 800, border: 'none',
               cursor: (isLoading || !isFormValid()) ? 'not-allowed' : 'pointer',
-              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
-              boxShadow: (isLoading || !isFormValid()) ? 'none' : '0 8px 20px rgba(16, 185, 129, 0.3)',
-              transition: 'all 0.2s ease'
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              boxShadow: (isLoading || !isFormValid()) ? 'none' : '0 4px 12px rgba(203, 167, 90, 0.3)',
+              transition: 'all 0.2s ease',
+              marginTop: '8px'
             }}
           >
-            {isLoading ? (language === 'EN' ? 'Loading...' : 'ಲೋಡ್ ಆಗುತ್ತಿದೆ...') : 
+            {isLoading ? (language === 'EN' ? 'Processing...' : 'ಪ್ರಕ್ರಿಯೆಗೊಳಿಸಲಾಗುತ್ತಿದೆ...') : 
              (forgotPasswordMode 
               ? (language === 'EN' ? 'Send Reset Link' : 'ಮರುಹೊಂದಿಸುವ ಲಿಂಕ್ ಕಳುಹಿಸಿ') 
-              : (isLoginMode ? (language === 'EN' ? 'Log In' : 'ಲಾಗಿನ್ ಮಾಡಿ') : (language === 'EN' ? 'Join Now' : 'ಈಗ ಸೇರಿಕೊಳ್ಳಿ')))} 
-            {!isLoading && <ArrowRight size={20} />}
+              : (isLoginMode ? (language === 'EN' ? 'Sign in' : 'ಸೈನ್ ಇನ್ ಮಾಡಿ') : (language === 'EN' ? 'Create Account' : 'ಖಾತೆ ತೆರೆಯಿರಿ')))} 
           </button>
           
         </form>
+
+        <div style={{ 
+          display: 'flex', alignItems: 'center', margin: '32px 0 24px', 
+          color: '#94A3B8', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 600
+        }}>
+          <div style={{ flex: 1, height: '1px', background: '#D1CFC7' }}></div>
+          <span style={{ padding: '0 16px' }}>OR</span>
+          <div style={{ flex: 1, height: '1px', background: '#D1CFC7' }}></div>
+        </div>
+
+        <div style={{ textAlign: 'center', fontSize: '0.95rem', color: '#64748B' }}>
+          {forgotPasswordMode ? (
+            <button 
+              type="button"
+              onClick={() => { setForgotPasswordMode(false); setIsLoginMode(true); }}
+              style={{ background: 'none', border: 'none', color: '#1C2A3A', fontWeight: 700, cursor: 'pointer', textDecoration: 'underline', textDecorationColor: '#CBA75A', textDecorationThickness: '2px', textUnderlineOffset: '4px' }}
+            >
+              {language === 'EN' ? 'Back to Sign in' : 'ಸೈನ್ ಇನ್‌ಗೆ ಹಿಂತಿರುಗಿ'}
+            </button>
+          ) : isLoginMode ? (
+            <>
+              {language === 'EN' ? 'New to Namma Buddy? ' : 'ನಮ್ಮ ಬಡ್ಡಿಗೆ ಹೊಸಬರೇ? '}
+              <button 
+                type="button"
+                onClick={() => { setIsLoginMode(false); setErrorMsg(''); setSuccessMsg(''); }}
+                style={{ background: 'none', border: 'none', color: '#1C2A3A', fontWeight: 700, cursor: 'pointer', textDecoration: 'underline', textDecorationColor: '#CBA75A', textDecorationThickness: '2px', textUnderlineOffset: '4px' }}
+              >
+                {language === 'EN' ? 'Create an account' : 'ಖಾತೆ ತೆರೆಯಿರಿ'}
+              </button>
+            </>
+          ) : (
+            <>
+              {language === 'EN' ? 'Already have an account? ' : 'ಈಗಾಗಲೇ ಖಾತೆ ಹೊಂದಿರುವಿರಾ? '}
+              <button 
+                type="button"
+                onClick={() => { setIsLoginMode(true); setErrorMsg(''); setSuccessMsg(''); }}
+                style={{ background: 'none', border: 'none', color: '#1C2A3A', fontWeight: 700, cursor: 'pointer', textDecoration: 'underline', textDecorationColor: '#CBA75A', textDecorationThickness: '2px', textUnderlineOffset: '4px' }}
+              >
+                {language === 'EN' ? 'Sign in' : 'ಸೈನ್ ಇನ್ ಮಾಡಿ'}
+              </button>
+            </>
+          )}
+        </div>
+
       </div>
       
     </div>
