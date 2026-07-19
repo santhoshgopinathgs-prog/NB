@@ -128,13 +128,20 @@ export const HomeTab = () => {
         </div>
         
         <div className="card" style={{ padding: '24px 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-          <ChartBar day={language === 'EN' ? "Mon" : "ಸೋಮ"} height="60%" val="80" color="var(--accent-blue)" />
-          <ChartBar day={language === 'EN' ? "Tue" : "ಮಂಗಳ"} height="75%" val="95" color="var(--accent-blue)" />
-          <ChartBar day={language === 'EN' ? "Wed" : "ಬುಧ"} height="50%" val="70" color="var(--accent-blue)" />
-          <ChartBar day={language === 'EN' ? "Thu" : "ಗುರು"} height="80%" val="100" color="var(--accent-green)" />
-          <ChartBar day={language === 'EN' ? "Fri" : "ಶುಕ್ರ"} height="65%" val="85" color="var(--accent-blue)" />
-          <ChartBar day={language === 'EN' ? "Sat" : "ಶನಿ"} height="40%" val="60" color="var(--accent-orange)" />
-          <ChartBar day={language === 'EN' ? "Sun" : "ಭಾನು"} height="25%" val="40" color="var(--accent-orange)" />
+          {Array(7).fill(0).map((_, index) => {
+            const daysEN = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+            const daysKN = ['ಸೋಮ', 'ಮಂಗಳ', 'ಬುಧ', 'ಗುರು', 'ಶುಕ್ರ', 'ಶನಿ', 'ಭಾನು'];
+            const currentDayIndex = new Date().getDay() === 0 ? 6 : new Date().getDay() - 1; 
+            
+            const xp = index === currentDayIndex ? userXP : 0;
+            const maxWeeklyXP = Math.max(userXP, 100);
+            
+            const height = xp === 0 ? '5%' : `${Math.max((xp / maxWeeklyXP) * 100, 5)}%`;
+            const dayLabel = language === 'EN' ? daysEN[index] : daysKN[index];
+            const color = xp > 0 ? "var(--accent-green)" : "var(--accent-blue)";
+            
+            return <ChartBar key={index} day={dayLabel} height={height} val={xp} color={color} />;
+          })}
         </div>
       </div>
 
@@ -228,12 +235,20 @@ const SubjectRow = ({ icon, title, subtitle, progress, total, color, pct }: any)
   </div>
 );
 
-const ChartBar = ({ day, height, val, color }: any) => (
-  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px', flex: 1 }}>
-    <div style={{ fontSize: '0.65rem', fontWeight: 700, color: color }}>{val}</div>
-    <div style={{ width: '20px', height: '100px', background: 'var(--bg-app)', borderRadius: '4px', position: 'relative', display: 'flex', alignItems: 'flex-end' }}>
-      <div style={{ width: '100%', height: height, background: color, borderRadius: '4px' }}></div>
+const ChartBar = ({ day, height, val, color }: any) => {
+  const [isHovered, setIsHovered] = useState(false);
+  
+  return (
+    <div 
+      style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px', flex: 1, cursor: 'pointer', transform: isHovered ? 'scale(1.1)' : 'scale(1)', transition: 'all 0.2s ease-in-out' }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <div style={{ fontSize: '0.65rem', fontWeight: 700, color: color, opacity: isHovered ? 1 : 0.7 }}>{val}</div>
+      <div style={{ width: '20px', height: '100px', background: 'var(--bg-app)', borderRadius: '4px', position: 'relative', display: 'flex', alignItems: 'flex-end' }}>
+        <div style={{ width: '100%', height: height, background: color, borderRadius: '4px', filter: isHovered ? 'brightness(1.1)' : 'none', transition: 'height 1s cubic-bezier(0.4, 0, 0.2, 1)' }}></div>
+      </div>
+      <div style={{ fontSize: '0.65rem', color: 'var(--text-tertiary)', fontWeight: isHovered ? 700 : 500 }}>{day}</div>
     </div>
-    <div style={{ fontSize: '0.65rem', color: 'var(--text-tertiary)' }}>{day}</div>
-  </div>
-);
+  );
+};
