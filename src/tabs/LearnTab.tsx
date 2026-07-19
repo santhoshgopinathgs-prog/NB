@@ -5,9 +5,16 @@ import { syllabusData, textbookContent, LEARN_MATH_QUESTIONS, LEARN_SCIENCE_QUES
 
 import { CHAPTER_QUESTIONS } from '../data/chapterQuestions';
 
-export const LearnTab = () => {
+export const LearnTab = ({ initialChapter, clearInitialChapter }: { initialChapter?: { subjectId: string, subjectDisplay: string, chapter: string } | null, clearInitialChapter?: () => void }) => {
   const { t, language, user, markQuizComplete, userXP, completedQuizzes } = useAppContext();
   const [activeChapter, setActiveChapter] = useState<{ subjectId: string, subjectDisplay: string, chapter: string } | null>(null);
+  
+  useEffect(() => {
+    if (initialChapter) {
+      setActiveChapter(initialChapter);
+      clearInitialChapter?.();
+    }
+  }, [initialChapter, clearInitialChapter]);
   
   // Quiz State
   const [isQuizActive, setIsQuizActive] = useState(false);

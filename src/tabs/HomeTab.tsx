@@ -6,7 +6,7 @@ import { CertificatesPortal } from '../components/CertificatesPortal';
 import { AITutorPortal } from '../components/AITutorPortal';
 import { syllabusData } from '../data/mockData';
 
-export const HomeTab = () => {
+export const HomeTab = ({ navigateToChapter }: { navigateToChapter?: (subjectId: string, subjectDisplay: string, chapter: string) => void }) => {
   const { language, userXP, user, completedQuizzes } = useAppContext();
   
   const [activePortal, setActivePortal] = useState<'leaderboard' | 'certificates' | 'ai' | null>(null);
@@ -17,7 +17,7 @@ export const HomeTab = () => {
   const getSearchResults = () => {
     if (!searchQuery.trim()) return [];
     
-    const results: { classLevel: number; subject: string; chapter: string; chapter_kn: string }[] = [];
+    const results: { classLevel: number; subjectId: string; subject: string; chapter: string; chapter_kn: string }[] = [];
     const query = searchQuery.toLowerCase();
     
     syllabusData.forEach(level => {
@@ -27,6 +27,7 @@ export const HomeTab = () => {
           if (chapter.toLowerCase().includes(query) || chapterKn.includes(query) || subject.name.toLowerCase().includes(query)) {
             results.push({
               classLevel: level.classLevel,
+              subjectId: subject.name,
               subject: language === 'EN' ? subject.name : subject.name_kn,
               chapter: chapter,
               chapter_kn: chapterKn
@@ -40,9 +41,13 @@ export const HomeTab = () => {
 
   const searchResults = getSearchResults();
 
-  const handleSearchSelect = (query: string) => {
-    setAiInitialQuery(query);
-    setActivePortal('ai');
+  const handleSearchSelect = (res: any) => {
+    if (navigateToChapter) {
+      navigateToChapter(res.subjectId, res.subject, res.chapter);
+    } else {
+      setAiInitialQuery(language === 'EN' ? res.chapter : res.chapter_kn);
+      setActivePortal('ai');
+    }
     setSearchQuery('');
   };
 
@@ -75,7 +80,13 @@ export const HomeTab = () => {
             onChange={(e) => setSearchQuery(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === 'Enter' && searchQuery.trim()) {
-                handleSearchSelect(searchQuery);
+                if (searchResults.length > 0) {
+                  handleSearchSelect(searchResults[0]);
+                } else {
+                  setAiInitialQuery(searchQuery);
+                  setActivePortal('ai');
+                  setSearchQuery('');
+                }
               }
             }}
           />
@@ -92,7 +103,7 @@ export const HomeTab = () => {
               searchResults.map((res, i) => (
                 <div 
                   key={i}
-                  onClick={() => handleSearchSelect(language === 'EN' ? res.chapter : res.chapter_kn)}
+                  onClick={() => handleSearchSelect(res)}
                   style={{ 
                     padding: '12px 16px', borderBottom: i < searchResults.length - 1 ? '1px solid var(--border-light)' : 'none',
                     display: 'flex', flexDirection: 'column', cursor: 'pointer', background: 'white', transition: 'background 0.2s'

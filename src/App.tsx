@@ -12,6 +12,12 @@ import { useAppContext } from './context/AppContext';
 
 function AppContent() {
   const [activeTab, setActiveTab] = useState('home');
+  const [targetChapter, setTargetChapter] = useState<{ subjectId: string, subjectDisplay: string, chapter: string } | null>(null);
+
+  const navigateToChapter = (subjectId: string, subjectDisplay: string, chapter: string) => {
+    setTargetChapter({ subjectId, subjectDisplay, chapter });
+    setActiveTab('learn');
+  };
   const { isAuthenticated, isLoading } = useAppContext();
 
   if (isLoading) {
@@ -28,13 +34,13 @@ function AppContent() {
 
   const renderTab = () => {
     switch (activeTab) {
-      case 'home': return <HomeTab />;
-      case 'learn': return <LearnTab />;
+      case 'home': return <HomeTab navigateToChapter={navigateToChapter} />;
+      case 'learn': return <LearnTab initialChapter={targetChapter} clearInitialChapter={() => setTargetChapter(null)} />;
       case 'practice': return <PracticeTab />;
       case 'top': return <TopTab />;
       case 'profile': return <ProfileTab />;
       case 'achievements': return <AchievementsTab setActiveTab={setActiveTab} />;
-      default: return <HomeTab />;
+      default: return <HomeTab navigateToChapter={navigateToChapter} />;
     }
   };
 
