@@ -30,7 +30,9 @@ export const LearnTab = () => {
     : [
         { question_en: `What is the core concept of ${activeChapter?.chapter}?`, question_kn: `${activeChapter?.chapter} ದ ಪ್ರಮುಖ ಪರಿಕಲ್ಪನೆ ಏನು?`, options_en: ['Definition', 'Application', 'Both', 'None'], options_kn: ['ವ್ಯಾಖ್ಯಾನ', 'ಅಪ್ಲಿಕೇಶನ್', 'ಎರಡೂ', 'ಯಾವುದೂ ಅಲ್ಲ'], correctAnswer: 2 },
         { question_en: `Identify the main principle in ${activeChapter?.chapter}.`, question_kn: `${activeChapter?.chapter} ದಲ್ಲಿ ಮುಖ್ಯ ತತ್ವವನ್ನು ಗುರುತಿಸಿ.`, options_en: ['Principle A', 'Principle B', 'Principle C', 'Principle D'], options_kn: ['ತತ್ವ ಎ', 'ತತ್ವ ಬಿ', 'ತತ್ವ ಸಿ', 'ತತ್ವ ಡಿ'], correctAnswer: 0 },
-        { question_en: `Apply ${activeChapter?.chapter} to a real-world scenario.`, question_kn: `ನೈಜ-ಪ್ರಪಂಚದ ಸನ್ನಿವೇಶಕ್ಕೆ ${activeChapter?.chapter} ಅನ್ವಯಿಸಿ.`, options_en: ['Scenario 1', 'Scenario 2', 'Scenario 3', 'Scenario 4'], options_kn: ['ಸನ್ನಿವೇಶ 1', 'ಸನ್ನಿವೇಶ 2', 'ಸನ್ನಿವೇಶ 3', 'ಸನ್ನಿವೇಶ 4'], correctAnswer: 1 }
+        { question_en: `Apply ${activeChapter?.chapter} to a real-world scenario.`, question_kn: `ನೈಜ-ಪ್ರಪಂಚದ ಸನ್ನಿವೇಶಕ್ಕೆ ${activeChapter?.chapter} ಅನ್ವಯಿಸಿ.`, options_en: ['Scenario 1', 'Scenario 2', 'Scenario 3', 'Scenario 4'], options_kn: ['ಸನ್ನಿವೇಶ 1', 'ಸನ್ನಿವೇಶ 2', 'ಸನ್ನಿವೇಶ 3', 'ಸನ್ನಿವೇಶ 4'], correctAnswer: 1 },
+        { question_en: `Which of the following is related to ${activeChapter?.chapter}?`, question_kn: `ಇವುಗಳಲ್ಲಿ ಯಾವುದು ${activeChapter?.chapter} ಗೆ ಸಂಬಂಧಿಸಿದೆ?`, options_en: ['Option X', 'Option Y', 'Option Z', 'None'], options_kn: ['ಆಯ್ಕೆ ಎಕ್ಸ್', 'ಆಯ್ಕೆ ವೈ', 'ಆಯ್ಕೆ ಝೆಡ್', 'ಯಾವುದೂ ಅಲ್ಲ'], correctAnswer: 0 },
+        { question_en: `What is the final outcome of ${activeChapter?.chapter}?`, question_kn: `${activeChapter?.chapter} ದ ಅಂತಿಮ ಫಲಿತಾಂಶವೇನು?`, options_en: ['Result 1', 'Result 2', 'Result 3', 'Result 4'], options_kn: ['ಫಲಿತಾಂಶ 1', 'ಫಲಿತಾಂಶ 2', 'ಫಲಿತಾಂಶ 3', 'ಫಲಿತಾಂಶ 4'], correctAnswer: 2 }
       ];
 
   const handleNext = React.useCallback(async () => {
