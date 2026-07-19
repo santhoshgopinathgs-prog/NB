@@ -3,6 +3,8 @@ import { BookOpen, PlayCircle, CheckCircle } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import { syllabusData, textbookContent, LEARN_MATH_QUESTIONS, LEARN_SCIENCE_QUESTIONS, LEARN_DIGITAL_QUESTIONS } from '../data/mockData';
 
+import { CHAPTER_QUESTIONS } from '../data/chapterQuestions';
+
 export const LearnTab = () => {
   const { t, language, user, markQuizComplete, userXP, completedQuizzes } = useAppContext();
   const [activeChapter, setActiveChapter] = useState<{ subjectId: string, subjectDisplay: string, chapter: string } | null>(null);
@@ -22,9 +24,14 @@ export const LearnTab = () => {
   const prefix = activeChapter?.subjectId === 'Digital Skills' ? 'd' : activeChapter?.subjectId?.charAt(0).toLowerCase();
   const mockQuizId = `c${user?.class}-${prefix}-${chapterIdx + 1}`;
 
-  let activeQuestions = LEARN_MATH_QUESTIONS;
-  if (activeChapter?.subjectId === 'Science') activeQuestions = LEARN_SCIENCE_QUESTIONS;
-  if (activeChapter?.subjectId === 'Digital Skills') activeQuestions = LEARN_DIGITAL_QUESTIONS;
+  // Fetch specific questions or generate a dynamic fallback based on the chapter name
+  let activeQuestions = activeChapter && CHAPTER_QUESTIONS[activeChapter.chapter] 
+    ? CHAPTER_QUESTIONS[activeChapter.chapter]
+    : [
+        { question_en: `What is the core concept of ${activeChapter?.chapter}?`, question_kn: `${activeChapter?.chapter} ದ ಪ್ರಮುಖ ಪರಿಕಲ್ಪನೆ ಏನು?`, options_en: ['Definition', 'Application', 'Both', 'None'], options_kn: ['ವ್ಯಾಖ್ಯಾನ', 'ಅಪ್ಲಿಕೇಶನ್', 'ಎರಡೂ', 'ಯಾವುದೂ ಅಲ್ಲ'], correctAnswer: 2 },
+        { question_en: `Identify the main principle in ${activeChapter?.chapter}.`, question_kn: `${activeChapter?.chapter} ದಲ್ಲಿ ಮುಖ್ಯ ತತ್ವವನ್ನು ಗುರುತಿಸಿ.`, options_en: ['Principle A', 'Principle B', 'Principle C', 'Principle D'], options_kn: ['ತತ್ವ ಎ', 'ತತ್ವ ಬಿ', 'ತತ್ವ ಸಿ', 'ತತ್ವ ಡಿ'], correctAnswer: 0 },
+        { question_en: `Apply ${activeChapter?.chapter} to a real-world scenario.`, question_kn: `ನೈಜ-ಪ್ರಪಂಚದ ಸನ್ನಿವೇಶಕ್ಕೆ ${activeChapter?.chapter} ಅನ್ವಯಿಸಿ.`, options_en: ['Scenario 1', 'Scenario 2', 'Scenario 3', 'Scenario 4'], options_kn: ['ಸನ್ನಿವೇಶ 1', 'ಸನ್ನಿವೇಶ 2', 'ಸನ್ನಿವೇಶ 3', 'ಸನ್ನಿವೇಶ 4'], correctAnswer: 1 }
+      ];
 
   const handleNext = React.useCallback(async () => {
     if (currentQuestionIndex < activeQuestions.length - 1) {
@@ -111,7 +118,7 @@ export const LearnTab = () => {
               {questionText}
             </h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {options.map((opt, i) => {
+              {options.map((opt: string, i: number) => {
                 const isSelected = selectedOption === i;
                 const isCorrect = i === currentQuestion.correctAnswer;
                 
