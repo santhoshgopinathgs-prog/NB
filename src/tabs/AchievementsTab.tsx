@@ -15,14 +15,15 @@ export const AchievementsTab: React.FC<AchievementsTabProps> = ({ setActiveTab }
   const xpToNextLevel = 1000 - (userXP % 1000);
   const progressPercentage = ((userXP % 1000) / 1000) * 100; // 0 to 100
 
+  const streak = user?.streak || 0;
   const days = [
-    { label: 'Mo', active: true },
-    { label: 'Tu', active: true },
-    { label: 'We', active: true },
-    { label: 'Th', active: true },
-    { label: 'Fr', active: true },
-    { label: 'Sa', active: true },
-    { label: 'Su', active: false }
+    { label: 'Mo', active: streak > 6 },
+    { label: 'Tu', active: streak > 5 },
+    { label: 'We', active: streak > 4 },
+    { label: 'Th', active: streak > 3 },
+    { label: 'Fr', active: streak > 2 },
+    { label: 'Sa', active: streak > 1 },
+    { label: 'Su', active: streak > 0 }
   ];
 
   return (
@@ -48,7 +49,7 @@ export const AchievementsTab: React.FC<AchievementsTabProps> = ({ setActiveTab }
         
         <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '4px', background: '#FEF3C7', padding: '6px 12px', borderRadius: '20px', color: '#D97706', fontWeight: 700, fontSize: '0.8rem' }}>
-            <Flame size={14} fill="#D97706" color="#D97706" /> {user?.streak || 15}
+            <Flame size={14} fill="#D97706" color="#D97706" /> {streak}
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '4px', background: '#FEF3C7', padding: '6px 12px', borderRadius: '20px', color: '#D97706', fontWeight: 700, fontSize: '0.8rem' }}>
             <Coins size={14} fill="#F59E0B" color="#F59E0B" /> {userXP}
@@ -154,7 +155,7 @@ export const AchievementsTab: React.FC<AchievementsTabProps> = ({ setActiveTab }
                 <Flame size={32} fill="white" color="white" />
               </div>
               <div>
-                <div style={{ fontSize: '2rem', fontWeight: 800, color: '#9A3412', lineHeight: 1.2 }}>{user?.streak || 15}</div>
+                <div style={{ fontSize: '2rem', fontWeight: 800, color: '#9A3412', lineHeight: 1.2 }}>{streak}</div>
                 <div style={{ fontSize: '1rem', fontWeight: 700, color: '#B45309' }}>{language === 'EN' ? 'Day Streak!' : 'ದಿನದ ಸ್ಟ್ರೀಕ್!'}</div>
                 <div style={{ fontSize: '0.8rem', color: '#D97706', marginTop: '4px' }}>
                   {language === 'EN' ? 'Keep learning every day!' : 'ಪ್ರತಿದಿನ ಕಲಿಯುತ್ತಲೇ ಇರಿ!'}

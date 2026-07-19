@@ -16,6 +16,11 @@ export const HomeTab = () => {
   const progressPercent = (currentLevelXP / 500) * 100;
   const streak = user?.streak || 0;
 
+  // Dynamic Subject Progress
+  const mathCompleted = completedQuizzes.filter(q => q.includes('-m-')).length;
+  const scienceCompleted = completedQuizzes.filter(q => q.includes('-s-')).length;
+  const digitalCompleted = completedQuizzes.filter(q => q.includes('-d-')).length;
+
   return (
     <div className="animate-slide-up" style={{ padding: '0 0px 20px 0px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
       
@@ -84,9 +89,9 @@ export const HomeTab = () => {
         <h3 style={{ fontSize: '1.2rem', marginBottom: '16px' }}>{language === 'EN' ? 'Continue Learning' : 'ಕಲಿಯುವುದನ್ನು ಮುಂದುವರಿಸಿ'}</h3>
         
         <div className="card" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
-          <SubjectRow icon={<Book color="var(--accent-blue)" />} title="Mathematics" subtitle="ಗಣಿತ" progress={13} total={28} color="var(--accent-blue)" pct={45} />
-          <SubjectRow icon={<Microscope color="var(--accent-green)" />} title="Science" subtitle="ವಿಜ್ಞಾನ" progress={8} total={24} color="var(--accent-green)" pct={32} />
-          <SubjectRow icon={<Monitor color="var(--accent-purple)" />} title="Digital Skills" subtitle="ಡಿಜಿಟಲ್ ಕೌಶಲ್ಯಗಳು" progress={14} total={20} color="var(--accent-purple)" pct={68} />
+          <SubjectRow icon={<Book color="var(--accent-blue)" />} title="Mathematics" subtitle="ಗಣಿತ" progress={mathCompleted} total={28} color="var(--accent-blue)" pct={Math.round((mathCompleted/28)*100)} />
+          <SubjectRow icon={<Microscope color="var(--accent-green)" />} title="Science" subtitle="ವಿಜ್ಞಾನ" progress={scienceCompleted} total={24} color="var(--accent-green)" pct={Math.round((scienceCompleted/24)*100)} />
+          <SubjectRow icon={<Monitor color="var(--accent-purple)" />} title="Digital Skills" subtitle="ಡಿಜಿಟಲ್ ಕೌಶಲ್ಯಗಳು" progress={digitalCompleted} total={20} color="var(--accent-purple)" pct={Math.round((digitalCompleted/20)*100)} />
           
           <button 
             onClick={() => setActivePortal('ai')}
