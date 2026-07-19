@@ -2,10 +2,22 @@ import React, { useState } from 'react';
 import { MessageSquare } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 
-export const AITutorPortal = ({ onClose }: { onClose: () => void }) => {
+export const AITutorPortal = ({ onClose, initialQuery }: { onClose: () => void, initialQuery?: string }) => {
   const { language } = useAppContext();
+  
+  const getInitialMessage = () => {
+    if (initialQuery) {
+      return language === 'EN' 
+        ? `Hi! I see you want to learn about "${initialQuery}". What specific questions do you have?` 
+        : `ನಮಸ್ಕಾರ! ನೀವು "${initialQuery}" ಬಗ್ಗೆ ಕಲಿಯಲು ಬಯಸುತ್ತೀರಿ ಎಂದು ನಾನು ನೋಡುತ್ತಿದ್ದೇನೆ. ನಿಮಗೆ ಯಾವ ನಿರ್ದಿಷ್ಟ ಪ್ರಶ್ನೆಗಳಿವೆ?`;
+    }
+    return language === 'EN' 
+      ? "Hi there! I'm your AI Tutor. What would you like to learn today?" 
+      : "ನಮಸ್ಕಾರ! ನಾನು ನಿಮ್ಮ AI ಶಿಕ್ಷಕ. ಇಂದು ನೀವು ಏನು ಕಲಿಯಲು ಬಯಸುತ್ತೀರಿ?";
+  };
+
   const [messages, setMessages] = useState([
-    { text: language === 'EN' ? "Hi there! I'm your AI Tutor. What would you like to learn today?" : "ನಮಸ್ಕಾರ! ನಾನು ನಿಮ್ಮ AI ಶಿಕ್ಷಕ. ಇಂದು ನೀವು ಏನು ಕಲಿಯಲು ಬಯಸುತ್ತೀರಿ?", isBot: true }
+    { text: getInitialMessage(), isBot: true }
   ]);
   const [input, setInput] = useState('');
 

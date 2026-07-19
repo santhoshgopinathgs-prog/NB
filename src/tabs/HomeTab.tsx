@@ -4,11 +4,47 @@ import { Search, Moon, Check, Book, Microscope, Monitor, MessageSquare, Trophy, 
 import { LeaderboardPortal } from '../components/LeaderboardPortal';
 import { CertificatesPortal } from '../components/CertificatesPortal';
 import { AITutorPortal } from '../components/AITutorPortal';
+import { syllabusData } from '../data/mockData';
 
 export const HomeTab = () => {
   const { language, userXP, user, completedQuizzes } = useAppContext();
   
   const [activePortal, setActivePortal] = useState<'leaderboard' | 'certificates' | 'ai' | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [aiInitialQuery, setAiInitialQuery] = useState('');
+
+  // Filter syllabus data based on search query
+  const getSearchResults = () => {
+    if (!searchQuery.trim()) return [];
+    
+    const results: { classLevel: number; subject: string; chapter: string; chapter_kn: string }[] = [];
+    const query = searchQuery.toLowerCase();
+    
+    syllabusData.forEach(level => {
+      level.subjects.forEach(subject => {
+        subject.chapters.forEach((chapter, idx) => {
+          const chapterKn = subject.chapters_kn[idx];
+          if (chapter.toLowerCase().includes(query) || chapterKn.includes(query) || subject.name.toLowerCase().includes(query)) {
+            results.push({
+              classLevel: level.classLevel,
+              subject: language === 'EN' ? subject.name : subject.name_kn,
+              chapter: chapter,
+              chapter_kn: chapterKn
+            });
+          }
+        });
+      });
+    });
+    return results.slice(0, 5); // Limit to 5 results
+  };
+
+  const searchResults = getSearchResults();
+
+  const handleSearchSelect = (query: string) => {
+    setAiInitialQuery(query);
+    setActivePortal('ai');
+    setSearchQuery('');
+  };
 
   // Dynamic Level Calculation
   const level = Math.floor(userXP / 500) + 1;
@@ -26,12 +62,59 @@ export const HomeTab = () => {
       
       {activePortal === 'leaderboard' && <LeaderboardPortal onClose={() => setActivePortal(null)} />}
       {activePortal === 'certificates' && <CertificatesPortal onClose={() => setActivePortal(null)} />}
-      {activePortal === 'ai' && <AITutorPortal onClose={() => setActivePortal(null)} />}
+      {activePortal === 'ai' && <AITutorPortal onClose={() => setActivePortal(null)} initialQuery={aiInitialQuery} />}
 
       {/* Search Bar */}
-      <div className="search-bar" style={{ margin: '0 20px' }}>
-        <Search size={20} color="var(--accent-blue)" />
-        <input type="text" placeholder={language === 'EN' ? "What would you like to learn today?" : "ಇಂದು ನೀವು ಏನು ಕಲಿಯಲು ಬಯಸುತ್ತೀರಿ?"} />
+      <div style={{ margin: '0 20px', position: 'relative' }}>
+        <div className="search-bar" style={{ margin: 0 }}>
+          <Search size={20} color="var(--accent-blue)" />
+          <input 
+            type="text" 
+            placeholder={language === 'EN' ? "What would you like to learn today?" : "ಇಂದು ನೀವು ಏನು ಕಲಿಯಲು ಬಯಸುತ್ತೀರಿ?"} 
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && searchQuery.trim()) {
+                handleSearchSelect(searchQuery);
+              }
+            }}
+          />
+        </div>
+        
+        {/* Search Results Dropdown */}
+        {searchQuery.trim() && (
+          <div style={{ 
+            position: 'absolute', top: '100%', left: 0, right: 0, marginTop: '8px', 
+            background: 'white', borderRadius: '16px', boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1)', 
+            border: '1px solid var(--border-light)', zIndex: 10, overflow: 'hidden'
+          }}>
+            {searchResults.length > 0 ? (
+              searchResults.map((res, i) => (
+                <div 
+                  key={i}
+                  onClick={() => handleSearchSelect(language === 'EN' ? res.chapter : res.chapter_kn)}
+                  style={{ 
+                    padding: '12px 16px', borderBottom: i < searchResults.length - 1 ? '1px solid var(--border-light)' : 'none',
+                    display: 'flex', flexDirection: 'column', cursor: 'pointer', background: 'white', transition: 'background 0.2s'
+                  }}
+                  onMouseOver={(e) => e.currentTarget.style.background = '#F8FAFC'}
+                  onMouseOut={(e) => e.currentTarget.style.background = 'white'}
+                >
+                  <div style={{ fontWeight: 600, fontSize: '0.9rem', color: 'var(--text-primary)' }}>
+                    {language === 'EN' ? res.chapter : res.chapter_kn}
+                  </div>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--text-tertiary)' }}>
+                    {language === 'EN' ? `Class ${res.classLevel} • ${res.subject}` : `ತರಗತಿ ${res.classLevel} • ${res.subject}`}
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div style={{ padding: '16px', textAlign: 'center', color: 'var(--text-tertiary)', fontSize: '0.85rem' }}>
+                {language === 'EN' ? "No topics found. Press Enter to ask the AI Tutor!" : "ಯಾವುದೇ ವಿಷಯಗಳು ಕಂಡುಬಂದಿಲ್ಲ. AI ಶಿಕ್ಷಕರನ್ನು ಕೇಳಲು Enter ಒತ್ತಿರಿ!"}
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Level Card */}
