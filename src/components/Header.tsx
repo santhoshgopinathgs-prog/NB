@@ -11,6 +11,15 @@ export const Header: React.FC<HeaderProps> = ({ setActiveTab }) => {
   const { t, language, toggleLanguage, user, userXP } = useAppContext();
   const [showNotifications, setShowNotifications] = useState(false);
 
+  const getSalutation = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return t('goodMorning');
+    if (hour < 17) return t('goodAfternoon');
+    return t('goodEvening');
+  };
+
+  const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
+
   return (
     <header className="app-header">
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -20,12 +29,12 @@ export const Header: React.FC<HeaderProps> = ({ setActiveTab }) => {
           alignItems: 'center', justifyContent: 'center',
           color: 'white', fontWeight: 700, fontSize: '1.2rem'
         }}>
-          {user?.name.charAt(0)}
+          {user?.name.charAt(0).toUpperCase()}
         </div>
         <div>
-          <div style={{ fontSize: '0.7rem', color: 'var(--text-tertiary)', fontWeight: 500 }}>{t('goodEvening')},</div>
+          <div style={{ fontSize: '0.7rem', color: 'var(--text-tertiary)', fontWeight: 500 }}>{getSalutation()},</div>
           <div style={{ fontSize: '0.95rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '4px' }}>
-            {user?.name.split(' ')[0]} <span style={{fontSize: '1rem'}}>👋</span>
+            {user?.name ? capitalize(user.name.split(' ')[0]) : ''} <span style={{fontSize: '1rem'}}>👋</span>
           </div>
         </div>
       </div>
