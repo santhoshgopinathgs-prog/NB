@@ -288,24 +288,32 @@ export const RegistrationScreen = () => {
                 <label style={{ fontSize: '0.9rem', fontWeight: 700, color: '#334155', display: 'flex', alignItems: 'center', gap: '6px' }}>
                   <GraduationCap size={16} /> {language === 'EN' ? 'Select your class' : 'ನಿಮ್ಮ ತರಗತಿಯನ್ನು ಆಯ್ಕೆಮಾಡಿ'}
                 </label>
-                <div style={{ display: 'flex', gap: '12px' }}>
-                  {[8, 9, 10].map(cls => (
-                    <button
-                      key={cls}
-                      type="button"
-                      onClick={() => setSelectedClass(cls)}
-                      style={{
-                        flex: 1, padding: '16px', borderRadius: '16px',
-                        background: selectedClass === cls ? 'var(--accent-blue)' : 'white',
-                        color: selectedClass === cls ? 'white' : '#64748B',
-                        border: 'none', fontSize: '1.1rem', fontWeight: 800, cursor: 'pointer',
-                        boxShadow: selectedClass === cls ? '0 8px 16px rgba(59, 130, 246, 0.25)' : '0 4px 12px rgba(0,0,0,0.03)',
-                        transition: 'all 0.2s ease', transform: selectedClass === cls ? 'scale(1.02)' : 'scale(1)'
-                      }}
-                    >
-                      Class {cls}
-                    </button>
-                  ))}
+                <div style={{ position: 'relative' }}>
+                  <select
+                    value={selectedClass || ''}
+                    onChange={(e) => setSelectedClass(Number(e.target.value))}
+                    style={{ 
+                      width: '100%', padding: '16px', borderRadius: '16px', border: '2px solid transparent', 
+                      background: 'white', fontSize: '1rem', color: selectedClass ? '#1E293B' : '#94A3B8', outline: 'none',
+                      boxShadow: '0 4px 12px rgba(0,0,0,0.03)', transition: 'border 0.2s ease',
+                      appearance: 'none', cursor: 'pointer', fontWeight: 600
+                    }}
+                    onFocus={(e) => e.target.style.borderColor = 'var(--accent-blue)'}
+                    onBlur={(e) => e.target.style.borderColor = 'transparent'}
+                    required={!isLoginMode && !forgotPasswordMode}
+                  >
+                    <option value="" disabled hidden>
+                      {language === 'EN' ? 'Select Class (8, 9, or 10)' : 'ತರಗತಿಯನ್ನು ಆಯ್ಕೆಮಾಡಿ (8, 9, ಅಥವಾ 10)'}
+                    </option>
+                    {[8, 9, 10].map(cls => (
+                      <option key={cls} value={cls} style={{ color: '#1E293B' }}>
+                        {language === 'EN' ? `Class ${cls}` : `ತರಗತಿ ${cls}`}
+                      </option>
+                    ))}
+                  </select>
+                  <div style={{ position: 'absolute', right: '16px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: '#94A3B8', fontSize: '0.8rem' }}>
+                    ▼
+                  </div>
                 </div>
                 <div style={{ fontSize: '0.8rem', color: '#94A3B8', textAlign: 'center', marginTop: '4px' }}>
                   {language === 'EN' ? '*You cannot change your class later' : '*ನಂತರ ನಿಮ್ಮ ತರಗತಿಯನ್ನು ಬದಲಾಯಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ'}
