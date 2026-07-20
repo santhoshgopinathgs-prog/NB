@@ -1,25 +1,25 @@
 :root {
-  /* Calm Focus (Blue & Cream) Palette */
-  --bg-app: #EDE6DB; /* Warm Cream background */
-  --bg-surface: #FFFFFF; /* Pure Clean White Card surface */
+  /* Namma Buddy Design System Palette */
+  --bg-app: #F8FAFC; /* Background Off White */
+  --bg-surface: #FFFFFF; /* Pure White Surface */
   
-  --text-primary: #2D3142; /* Dark Navy-Grey for high contrast readability */
-  --text-secondary: #5C6479; /* Medium Slate Navy-Grey for subtitles */
-  --text-tertiary: #8C94A6; /* Muted Slate Gray for secondary labels */
+  --text-primary: #1F2937; /* Dark Navy for Crisp Readability */
+  --text-secondary: #6B7280; /* Muted Slate Gray for Subtitles */
+  --text-tertiary: #9CA3AF; /* Light Slate Gray for Labels & Icons */
   
-  --accent-blue: #4A6FA5; /* Soft Blue Primary */
-  --accent-purple: #4A6FA5; 
-  --accent-green: #38A169; /* Soft Emerald Green for success & completed states */
-  --accent-orange: #F4A261; /* Warm Orange for CTAs & highlights */
-  --accent-red: #E76F51; 
+  --accent-green: #2E8B57; /* Primary Emerald Green */
+  --accent-blue: #4DA8FF; /* Secondary Sky Blue */
+  --accent-orange: #FFC857; /* Accent Warm Yellow / Gold */
+  --accent-purple: #8B5CF6; 
+  --accent-red: #EF4444; 
   
-  --border-light: #D8CFBE; /* Muted warm beige border */
+  --border-light: #E5E7EB; /* Subtle Light Gray Border */
   
-  --shadow-sm: 0 4px 12px rgba(45, 49, 66, 0.05);
-  --shadow-md: 0 8px 20px rgba(45, 49, 66, 0.08);
-  --shadow-lg: 0 12px 30px rgba(45, 49, 66, 0.12);
+  --shadow-sm: 0 2px 8px rgba(31, 41, 55, 0.04);
+  --shadow-md: 0 4px 16px rgba(31, 41, 55, 0.06);
+  --shadow-lg: 0 10px 25px rgba(31, 41, 55, 0.1);
   
-  --font-main: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-main: 'Poppins', 'Inter', system-ui, -apple-system, sans-serif;
   --transition-fast: 0.2s ease;
 }
 
@@ -31,7 +31,7 @@
 
 body {
   font-family: var(--font-main);
-  background-color: #DFD7CB;
+  background-color: #E2E8F0;
   color: var(--text-primary);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
@@ -45,7 +45,7 @@ body {
   background: var(--bg-app);
   position: relative;
   overflow-x: hidden;
-  box-shadow: 0 0 30px rgba(45, 49, 66, 0.15);
+  box-shadow: 0 0 30px rgba(31, 41, 55, 0.12);
   display: flex;
   flex-direction: column;
 }
@@ -59,7 +59,7 @@ body {
 /* Utilities */
 .card {
   background: var(--bg-surface);
-  border-radius: 24px;
+  border-radius: 20px;
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--border-light);
 }
@@ -114,7 +114,7 @@ button {
   width: 100%;
   max-width: 480px;
   padding: 10px 20px 20px 20px;
-  background: linear-gradient(to top, #EDE6DB 85%, rgba(237, 230, 219, 0));
+  background: linear-gradient(to top, #F8FAFC 85%, rgba(248, 250, 252, 0));
   z-index: 100;
 }
 
@@ -126,7 +126,7 @@ button {
   background: #FFFFFF;
   border: 1px solid var(--border-light);
   border-radius: 32px;
-  box-shadow: 0 8px 24px rgba(45, 49, 66, 0.08);
+  box-shadow: 0 8px 24px rgba(31, 41, 55, 0.08);
 }
 
 .nav-item {
@@ -142,9 +142,9 @@ button {
 }
 
 .nav-item.active {
-  background: #4A6FA5;
+  background: #2E8B57;
   color: #FFFFFF;
-  box-shadow: 0 4px 14px rgba(74, 111, 165, 0.35);
+  box-shadow: 0 4px 14px rgba(46, 139, 87, 0.35);
   transform: scale(1.06);
 }
 
@@ -183,14 +183,14 @@ button {
   align-items: center;
   gap: 16px;
   padding: 14px 18px;
-  border-radius: 24px;
+  border-radius: 20px;
   background: #FFFFFF;
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--border-light);
   margin-bottom: 24px;
 }
 .level-badge {
-  background: #4A6FA5;
+  background: #2E8B57;
   color: #FFFFFF;
   font-weight: 800;
   width: 42px;
@@ -204,13 +204,13 @@ button {
 /* Progress bar generic */
 .progress-track {
   height: 8px;
-  background: #E5DDD0;
+  background: #E5E7EB;
   border-radius: 6px;
   overflow: hidden;
   width: 100%;
 }
 .progress-fill {
   height: 100%;
-  background: #F4A261;
+  background: #2E8B57;
   border-radius: 6px;
 }
