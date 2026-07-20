@@ -57,15 +57,19 @@ export const PracticeTab = () => {
   }, [isMathActive, mathTimeLeft]);
 
   // Gamified Map State
-  const filteredQuizzes = mockQuizzes.filter(q => q.class === user?.class);
-  
-  const activeQuizData = mockQuizzes.find(q => q.id === activeQuiz);
-  let activeQuestions = MOCK_MATH_QUESTIONS;
+  const activeQuizData = mockQuizzes.find(q => q.id === activeQuiz) || {
+    id: activeQuiz || 'quiz',
+    subject: 'Digital Skills',
+    title: 'Anekal Practice Quiz',
+    xp: 250
+  };
+
+  let activeQuestions = MOCK_DIGITAL_QUESTIONS;
+  if (activeQuizData?.subject === 'Mathematics') activeQuestions = MOCK_MATH_QUESTIONS;
   if (activeQuizData?.subject === 'Science') activeQuestions = MOCK_SCIENCE_QUESTIONS;
-  if (activeQuizData?.subject === 'Digital Skills') activeQuestions = MOCK_DIGITAL_QUESTIONS;
   if (activeQuizData?.subject === 'English') activeQuestions = MOCK_ENGLISH_QUESTIONS;
   
-  if (activeQuizData?.id.endsWith('-2')) {
+  if (activeQuizData?.id?.endsWith('-2')) {
     activeQuestions = activeQuestions.slice(15, 30);
   } else {
     activeQuestions = activeQuestions.slice(0, 15);
@@ -76,7 +80,8 @@ export const PracticeTab = () => {
       setCurrentQuestionIndex(prev => prev + 1);
       setSelectedOption(null);
       setIsAnswerRevealed(false);
-      const baseXP = activeQuizData ? activeQuizData.xp : 0;
+    } else {
+      const baseXP = activeQuizData ? activeQuizData.xp : 250;
       const finalXP = baseXP + bonusXP;
       markQuizComplete(activeQuiz!, finalXP).then(earnedCert => {
         setJustEarnedCert(earnedCert);
@@ -86,7 +91,7 @@ export const PracticeTab = () => {
         }
       });
     }
-  }, [currentQuestionIndex, activeQuestions.length, activeQuizData, activeQuiz, markQuizComplete, correctAnswersCount, markQuiz80Percent]);
+  }, [currentQuestionIndex, activeQuestions.length, activeQuizData, activeQuiz, markQuizComplete, correctAnswersCount, markQuiz80Percent, bonusXP]);
 
   // Auto-advance after 1.5 seconds when answer is revealed
   React.useEffect(() => {
@@ -492,6 +497,14 @@ export const PracticeTab = () => {
     } else if (levelObj.id === 'math-game') {
       setIsMathActive(true); setMathTimeLeft(30); setMathScore(0); generateMathProblem();
     } else {
+      setCurrentQuestionIndex(0);
+      setSelectedOption(null);
+      setIsAnswerRevealed(false);
+      setQuizCompleted(false);
+      setJustEarnedCert(false);
+      setCorrectAnswersCount(0);
+      setStreak(0);
+      setBonusXP(0);
       setActiveQuiz(levelObj.id);
     }
   };
