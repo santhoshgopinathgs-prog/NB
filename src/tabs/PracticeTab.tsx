@@ -600,7 +600,7 @@ export const PracticeTab = () => {
         {/* Background Image backdrop */}
         <div style={{
           position: 'absolute', inset: 0,
-          background: 'linear-gradient(to bottom, rgba(15, 23, 42, 0.45) 0%, rgba(15, 23, 42, 0.7) 100%), url("/anekal_map_bg.jpg") center/cover no-repeat',
+          background: 'linear-gradient(to bottom, rgba(15, 23, 42, 0.35) 0%, rgba(15, 23, 42, 0.6) 100%), url("/anekal_map_bg.jpg") center top/cover no-repeat',
           zIndex: 0
         }} />
 
