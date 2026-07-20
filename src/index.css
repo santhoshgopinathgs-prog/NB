@@ -1,8 +1,8 @@
 :root {
   /* Official Namma Buddy Color Palette */
-  --bg-app: #F8FAFC;       /* Background Off White (#F8FAFC) */
+  --bg-app: #F5F5F0;       /* Half White / Soft Ivory Off-White (#F5F5F0) */
   --bg-surface: #FFFFFF;   /* Pure White Card Surface (#FFFFFF) */
-  --bg-input: #F1F5F9;
+  --bg-input: #EFEFEA;
   --bg-nav: #FFFFFF;
   
   --text-primary: #1F2937;   /* Text Dark Navy (#1F2937) */
@@ -15,7 +15,7 @@
   --accent-purple: #8B5CF6;
   --accent-red: #EF4444;
   
-  --border-light: #E5E7EB;   /* Subtle Light Gray Border (#E5E7EB) */
+  --border-light: #E2E2DC;   /* Soft Subtle Border (#E2E2DC) */
   
   --shadow-sm: 0 2px 8px rgba(31, 41, 55, 0.04);
   --shadow-md: 0 4px 16px rgba(31, 41, 55, 0.06);
@@ -72,9 +72,9 @@
 }
 
 [data-theme="light"] {
-  --bg-app: #F8FAFC;
+  --bg-app: #F5F5F0;
   --bg-surface: #FFFFFF;
-  --bg-input: #F1F5F9;
+  --bg-input: #EFEFEA;
   --bg-nav: #FFFFFF;
   --text-primary: #1F2937;
   --text-secondary: #6B7280;
@@ -84,7 +84,7 @@
   --accent-orange: #FFC857;
   --accent-purple: #8B5CF6;
   --accent-red: #EF4444;
-  --border-light: #E5E7EB;
+  --border-light: #E2E2DC;
   --shadow-sm: 0 2px 8px rgba(31, 41, 55, 0.04);
   --shadow-md: 0 4px 16px rgba(31, 41, 55, 0.06);
   --shadow-lg: 0 10px 25px rgba(31, 41, 55, 0.1);
