@@ -1,10 +1,12 @@
 import React from 'react';
 import { useAppContext } from '../context/AppContext';
-import { User, Award, Download, CheckCircle2, LogOut } from 'lucide-react';
+import { User, Award, Download, CheckCircle2, LogOut, Edit2 } from 'lucide-react';
 import { downloadCertificate } from '../utils/generateCertificate';
+import { AvatarSelectionScreen } from '../components/AvatarSelectionScreen';
 
 export const ProfileTab = () => {
   const { t, language, user, logout, userXP, certificates } = useAppContext();
+  const [isEditingAvatar, setIsEditingAvatar] = React.useState(false);
 
   return (
     <div className="animate-slide-up" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
@@ -14,9 +16,20 @@ export const ProfileTab = () => {
         <h2 style={{ fontSize: '1.5rem' }}>{t('profile')}</h2>
       </div>
 
-      <div className="card" style={{ padding: '24px', margin: '0 20px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
+      <div className="card" style={{ padding: '24px', margin: '0 20px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', position: 'relative' }}>
+        <button 
+          onClick={() => setIsEditingAvatar(true)}
+          style={{ position: 'absolute', top: '16px', right: '16px', background: 'var(--bg-app)', border: 'none', padding: '8px', borderRadius: '50%', cursor: 'pointer', display: 'flex', color: 'var(--text-secondary)' }}
+          title={language === 'EN' ? 'Edit Avatar' : 'ಅವತಾರ ಬದಲಾಯಿಸಿ'}
+        >
+          <Edit2 size={16} />
+        </button>
         <div style={{ width: '80px', height: '80px', borderRadius: '50%', background: 'var(--accent-blue)', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
-          <User size={40} color="white" />
+          {user?.avatar ? (
+            <img src={user.avatar} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          ) : (
+            <User size={40} color="white" />
+          )}
         </div>
         <div style={{ textAlign: 'center' }}>
           <h3 style={{ fontSize: '1.4rem' }}>{user?.name}</h3>
@@ -99,6 +112,10 @@ export const ProfileTab = () => {
           {language === 'EN' ? 'Log Out' : 'ಲಾಗ್ ಔಟ್'}
         </button>
       </div>
+
+      {isEditingAvatar && (
+        <AvatarSelectionScreen onClose={() => setIsEditingAvatar(false)} />
+      )}
     </div>
   );
 };

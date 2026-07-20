@@ -8,6 +8,7 @@ import { TopTab } from './tabs/TopTab';
 import { ProfileTab } from './tabs/ProfileTab';
 import { AchievementsTab } from './tabs/AchievementsTab';
 import { RegistrationScreen } from './components/RegistrationScreen';
+import { AvatarSelectionScreen } from './components/AvatarSelectionScreen';
 import { AITutorPortal } from './components/AITutorPortal';
 import { useAppContext } from './context/AppContext';
 
@@ -37,6 +38,10 @@ function AppContent() {
 
   if (!isAuthenticated) {
     return <RegistrationScreen />;
+  }
+
+  if (isAuthenticated && user && !user.avatar) {
+    return <AvatarSelectionScreen />;
   }
 
   const renderTab = () => {
