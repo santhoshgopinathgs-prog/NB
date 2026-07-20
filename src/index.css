@@ -1,8 +1,8 @@
 :root {
   /* Official Namma Buddy Color Palette */
-  --bg-app: #FFFFFF;       /* Pure White Background (#FFFFFF) */
+  --bg-app: #F8FAFC;       /* Background Off White (#F8FAFC) */
   --bg-surface: #FFFFFF;   /* Pure White Card Surface (#FFFFFF) */
-  --bg-input: #F8FAFC;
+  --bg-input: #F1F5F9;
   --bg-nav: #FFFFFF;
   
   --text-primary: #1F2937;   /* Text Dark Navy (#1F2937) */
@@ -72,9 +72,9 @@
 }
 
 [data-theme="light"] {
-  --bg-app: #FFFFFF;
+  --bg-app: #F8FAFC;
   --bg-surface: #FFFFFF;
-  --bg-input: #F8FAFC;
+  --bg-input: #F1F5F9;
   --bg-nav: #FFFFFF;
   --text-primary: #1F2937;
   --text-secondary: #6B7280;
@@ -151,7 +151,7 @@ body {
 @media (min-width: 900px) {
   body {
     padding: 0;
-    background-color: #FFFFFF;
+    background-color: var(--bg-app);
   }
 
   #root {
@@ -162,7 +162,7 @@ body {
     border-radius: 0;
     border: none;
     box-shadow: none;
-    background: #FFFFFF;
+    background: var(--bg-app);
   }
 
   .desktop-layout-wrapper {
