@@ -558,47 +558,47 @@ export const PracticeTab = () => {
     <div className="animate-slide-up" style={{ padding: '0 0px 20px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
       
       {/* Top Game Status Bar */}
-      <div className="game-top-bar">
-        {/* User Info Left */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div style={{ position: 'relative' }}>
-            <img src={user?.avatar || '/avatar_boy.jpg'} alt="Avatar" style={{ width: '42px', height: '42px', borderRadius: '50%', objectFit: 'cover', border: '2.5px solid #38bdf8' }} />
-          </div>
-          <div>
-            <div style={{ fontSize: '0.82rem', fontWeight: 900, color: '#FFFFFF', whiteSpace: 'nowrap' }}>
-              {user?.name || 'Anekal Learner'}
+      <div className="game-top-bar" style={{ flexDirection: 'column', gap: '10px', padding: '12px 16px' }}>
+        {/* Row 1: User Profile Left & Quick Actions Right */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <img src={user?.avatar || '/avatar_boy.jpg'} alt="Avatar" style={{ width: '44px', height: '44px', borderRadius: '50%', objectFit: 'cover', border: '2.5px solid #38bdf8' }} />
+            <div>
+              <div style={{ fontSize: '0.9rem', fontWeight: 900, color: '#FFFFFF', whiteSpace: 'nowrap' }}>
+                {user?.name || 'Anekal Learner'}
+              </div>
+              <div style={{ fontSize: '0.72rem', color: '#38bdf8', fontWeight: 800 }}>
+                Level {completedQuizzes.length + 1} Champion
+              </div>
             </div>
-            <div style={{ fontSize: '0.68rem', color: '#38bdf8', fontWeight: 800 }}>
-              Level {completedQuizzes.length + 1}
+          </div>
+
+          {/* Quick Action Icons Right */}
+          <div style={{ display: 'flex', gap: '14px', alignItems: 'center' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer' }}>
+              <span style={{ fontSize: '1.25rem' }}>🏆</span>
+              <span style={{ fontSize: '0.62rem', fontWeight: 800, color: '#CBD5E1' }}>Badges</span>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer' }}>
+              <span style={{ fontSize: '1.25rem' }}>🎒</span>
+              <span style={{ fontSize: '0.62rem', fontWeight: 800, color: '#CBD5E1' }}>Bag</span>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer' }}>
+              <span style={{ fontSize: '1.25rem' }}>⚙️</span>
             </div>
           </div>
         </div>
 
-        {/* Energy, Stars, Coins Middle */}
-        <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
-          <div className="game-stat-item" style={{ color: '#FACC15' }}>
+        {/* Row 2: Points, Stars, Energy (Brought Down to Dedicated Row) */}
+        <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', width: '100%', paddingTop: '6px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+          <div className="game-stat-item" style={{ color: '#FACC15', flex: 1, justifyContent: 'center' }}>
             ⚡ 120/120 <span className="game-add-btn">+</span>
           </div>
-          <div className="game-stat-item" style={{ color: '#F59E0B' }}>
-            ⭐ 250 <span className="game-add-btn">+</span>
+          <div className="game-stat-item" style={{ color: '#F59E0B', flex: 1, justifyContent: 'center' }}>
+            ⭐ {userXP} XP <span className="game-add-btn">+</span>
           </div>
-          <div className="game-stat-item" style={{ color: '#FBBF24' }}>
+          <div className="game-stat-item" style={{ color: '#FBBF24', flex: 1, justifyContent: 'center' }}>
             🪙 1250 <span className="game-add-btn">+</span>
-          </div>
-        </div>
-
-        {/* Quick Action Icons Right */}
-        <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer' }}>
-            <span style={{ fontSize: '1.2rem' }}>🏆</span>
-            <span style={{ fontSize: '0.58rem', fontWeight: 800, color: '#CBD5E1' }}>Badges</span>
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer' }}>
-            <span style={{ fontSize: '1.2rem' }}>🎒</span>
-            <span style={{ fontSize: '0.58rem', fontWeight: 800, color: '#CBD5E1' }}>Bag</span>
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer' }}>
-            <span style={{ fontSize: '1.2rem' }}>⚙️</span>
           </div>
         </div>
       </div>
