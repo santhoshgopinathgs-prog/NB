@@ -48,68 +48,92 @@ export const AITutorPortal = ({ onClose, initialQuery }: { onClose: () => void, 
     setMessages(newMsgs);
     setInput('');
     setIsLoading(true);
-    
-    // Helper function for mock responses
-    const getMockResponse = (msg: string) => {
-      const lowerMsg = msg.toLowerCase();
-      if (lowerMsg.includes('help') || lowerMsg.includes('number')) {
+
+    const systemPrompt = language === 'EN'
+      ? "You are Namma Buddy, a friendly and encouraging AI tutor for high school students in Karnataka, India. Keep responses concise, clear, and engaging. Assist with Math, Science, and Digital Skills topics."
+      : "ನೀವು ನಮ್ಮ ಬಡ್ಡಿ, ಕರ್ನಾಟಕದ ಪ್ರೌಢಶಾಲಾ ವಿದ್ಯಾರ್ಥಿಗಳಿಗೆ ಸಹಾಯಕವಾದ ಮತ್ತು ಪ್ರೋತ್ಸಾಹದಾಯಕ AI ಶಿಕ್ಷಕರಾಗಿದ್ದೀರಿ. ಉತ್ತರವನು ಸರಳವಾಗಿ ಮತ್ತು ಸ್ಪಷ್ಟವಾಗಿ ನೀಡಿ.";
+
+    // Smart offline fallback
+    const getSmartFallback = (msg: string) => {
+      const lower = msg.toLowerCase().trim();
+      if (['ok', 'okay', 'yes', 'sure', 'fine', 'thanks', 'thank you', 'kk', 'alright'].includes(lower)) {
         return language === 'EN'
-          ? "Numbers are the foundation of math! Did you know that the concept of zero was invented in India? Let's start with basic counting. What comes after 9?"
-          : "ಸಂಖ್ಯೆಗಳು ಗಣಿತದ ಅಡಿಪಾಯ! ಸೊನ್ನೆಯ ಪರಿಕಲ್ಪನೆಯನ್ನು ಭಾರತದಲ್ಲಿ ಕಂಡುಹಿಡಿಯಲಾಗಿದೆ ಎಂದು ನಿಮಗೆ ತಿಳಿದಿದೆಯೇ? ಮೂಲ ಎಣಿಕೆಯೊಂದಿಗೆ ಪ್ರಾರಂಭಿಸೋಣ. 9 ರ ನಂತರ ಏನು ಬರುತ್ತದೆ?";
-      } else if (lowerMsg.includes('hi') || lowerMsg.includes('hello')) {
-        return language === 'EN'
-          ? "Hello there! I'm Namma Buddy. I'm ready to help you learn today. What subject should we tackle?"
-          : "ನಮಸ್ಕಾರ! ನಾನು ನಮ್ಮ ಬಡ್ಡಿ. ಇಂದು ನಿಮಗೆ ಕಲಿಯಲು ಸಹಾಯ ಮಾಡಲು ನಾನು ಸಿದ್ಧನಿದ್ದೇನೆ. ನಾವು ಯಾವ ವಿಷಯವನ್ನು ಕಲಿಯೋಣ?";
-      } else {
-        return language === 'EN'
-          ? `That's a great question about "${msg}". Let's break it down step-by-step so it's easy to understand!`
-          : `ನೀವು "${msg}" ಬಗ್ಗೆ ಕೇಳಿದ್ದೀರಿ. ಅದು ಉತ್ತಮ ವಿಷಯ! ಅದನ್ನು ಹಂತಹಂತವಾಗಿ ಒಡೆಯೋಣ.`;
+          ? "Awesome! What topic would you like to study next? We have Math, Science, and Digital Skills ready!"
+          : "ಅದ್ಭುತ! ನೀವು ಮುಂದೆ ಯಾವ ವಿಷಯವನ್ನು ಓದಲು ಬಯಸುತ್ತೀರಿ? ಗಣಿತ, ವಿಜ್ಞಾನ ಮತ್ತು ಡಿಜಿಟಲ್ ಕೌಶಲ್ಯಗಳು ಸಿದ್ಧವಾಗಿವೆ!";
       }
+      if (lower.includes('hi') || lower.includes('hello') || lower.includes('hey') || lower.includes('namaste')) {
+        return language === 'EN'
+          ? "Hello! I'm Namma Buddy, your AI study tutor. How can I help you with your lessons today?"
+          : "ನಮಸ್ಕಾರ! ನಾನು ನಿಮ್ಮ AI ಶಿಕ್ಷಕ ನಮ್ಮ ಬಡ್ಡಿ. ಇಂದು ನಿಮ್ಮ ಪಾಠಗಳಿಗೆ ನಾನು ಹೇಗೆ ಸಹಾಯ ಮಾಡಲಿ?";
+      }
+      if (lower.includes('number') || lower.includes('math') || lower.includes('algebra') || lower.includes('geometry')) {
+        return language === 'EN'
+          ? "Math is awesome! In Class 9/10, we cover Number Systems, Polynomials, Coordinate Geometry, and Triangles. Which concept would you like to learn?"
+          : "ಗಣಿತವು ಅದ್ಭುತವಾಗಿದೆ! ನಾವು ಸಂಖ್ಯಾ ಪದ್ಧತಿಗಳು, ಬಹುಪದೋಕ್ತಿಗಳು ಮತ್ತು ನಿರ್ದೇಶಾಂಕ ರೇಖಾಗಣಿತವನ್ನು ಕಲಿಯುತ್ತೇವೆ. ನೀವು ಯಾವುದನ್ನು ಕಲಿಯಲು ಬಯಸುತ್ತೀರಿ?";
+      }
+      if (lower.includes('science') || lower.includes('physics') || lower.includes('chemistry') || lower.includes('biology')) {
+        return language === 'EN'
+          ? "Science is full of discoveries! We explore Chemical Reactions, Life Processes, Light Reflection, and Electricity. What topic interests you?"
+          : "ವಿಜ್ಞಾನವು ಆವಿಷ್ಕಾರಗಳಿಂದ ತುಂಬಿದೆ! ನಾವು ರಾಸಾಯನಿಕ ಕ್ರಿಯೆಗಳು, ಜೀವ ಕ್ರಿಯೆಗಳು ಮತ್ತು ಬೆಳಕಿನ ಪ್ರತಿಫಲನವನ್ನು ಕಲಿಯುತ್ತೇವೆ. ನಿಮಗೆ ಯಾವ ವಿಷಯ ಆಸಕ್ತಿದಾಯಕವಾಗಿದೆ?";
+      }
+      return language === 'EN'
+        ? `Great question about "${msg}"! To break it down simply: focus on the key definitions first, then practice step-by-step examples. Would you like a practice question on this?`
+        : `"${msg}" ಬಗ್ಗೆ ಉತ್ತಮ ಪ್ರಶ್ನೆ! ಇದನ್ನು ಸರಳವಾಗಿ ಅರ್ಥಮಾಡಿಕೊಳ್ಳಲು ಮೊದಲು ಮುಖ್ಯ ವ್ಯಾಖ್ಯಾನಗಳನ್ನು ಗಮನಿಸಿ, ನಂತರ ಉದಾಹರಣೆಗಳನ್ನು ಅಭ್ಯಾಸ ಮಾಡಿ.`;
     };
 
-    if (!apiKey || !apiKey.startsWith('AIza')) {
-      setTimeout(() => {
-        setMessages([...newMsgs, { 
-          text: getMockResponse(userMsg),
-          isBot: true 
-        }]);
+    // 1. Try Gemini API if valid key exists
+    if (apiKey && apiKey.startsWith('AIza')) {
+      try {
+        const genAI = new GoogleGenerativeAI(apiKey);
+        const model = genAI.getGenerativeModel({ 
+          model: "gemini-1.5-flash",
+          systemInstruction: systemPrompt
+        });
+        
+        const history = newMsgs.slice(0, -1).map(m => ({
+          role: m.isBot ? "model" : "user",
+          parts: [{ text: m.text }]
+        }));
+
+        const chat = model.startChat({ history });
+        const result = await chat.sendMessage(userMsg);
+        const responseText = result.response.text();
+        setMessages([...newMsgs, { text: responseText, isBot: true }]);
         setIsLoading(false);
-      }, 1000);
-      return;
+        return;
+      } catch (err) {
+        console.warn("Gemini API call failed, falling back to Pollinations AI...", err);
+      }
     }
 
+    // 2. Try Free Real LLM API (Pollinations AI)
     try {
-      const genAI = new GoogleGenerativeAI(apiKey);
-      const model = genAI.getGenerativeModel({ 
-        model: "gemini-1.5-flash",
-        systemInstruction: language === 'EN' 
-          ? "You are a helpful, encouraging AI tutor for high school students in Karnataka, India. Explain concepts simply and clearly. If asked about the syllabus, refer to standard high school topics." 
-          : "ನೀವು ಕರ್ನಾಟಕದ ಪ್ರೌಢಶಾಲಾ ವಿದ್ಯಾರ್ಥಿಗಳಿಗೆ ಸಹಾಯಕವಾದ, ಪ್ರೋತ್ಸಾಹದಾಯಕ AI ಶಿಕ್ಷಕರಾಗಿದ್ದೀರಿ. ಪರಿಕಲ್ಪನೆಗಳನ್ನು ಸರಳವಾಗಿ ಮತ್ತು ಸ್ಪಷ್ಟವಾಗಿ ವಿವರಿಸಿ. ಕನ್ನಡದಲ್ಲಿಯೇ ಉತ್ತರಿಸಿ."
-      });
-      
-      const history = messages.slice(1).map(m => ({
-        role: m.isBot ? "model" : "user",
-        parts: [{ text: m.text }]
-      }));
+      const apiMessages = [
+        { role: 'system', content: systemPrompt },
+        ...newMsgs.slice(-6).map(m => ({ role: m.isBot ? 'assistant' : 'user', content: m.text }))
+      ];
 
-      const chat = model.startChat({
-        history
+      const response = await fetch('https://text.pollinations.ai/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: apiMessages, model: 'openai' })
       });
 
-      const result = await chat.sendMessage(userMsg);
-      const responseText = result.response.text();
-
-      setMessages([...newMsgs, { text: responseText, isBot: true }]);
-    } catch (err: any) {
-      console.error("Gemini API Error:", err);
-      // Fallback to mock response on ANY error to prevent UI breakage
-      setMessages([...newMsgs, { 
-        text: getMockResponse(userMsg),
-        isBot: true 
-      }]);
-    } finally {
-      setIsLoading(false);
+      if (response.ok) {
+        const text = await response.text();
+        if (text && text.trim()) {
+          setMessages([...newMsgs, { text: text.trim(), isBot: true }]);
+          setIsLoading(false);
+          return;
+        }
+      }
+    } catch (err) {
+      console.warn("Pollinations AI fetch failed, using smart fallback...", err);
     }
+
+    // 3. Fallback to smart offline response generator
+    setMessages([...newMsgs, { text: getSmartFallback(userMsg), isBot: true }]);
+    setIsLoading(false);
   };
 
   return createPortal(
