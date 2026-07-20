@@ -16,87 +16,87 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({ setActiveTab }) => {
   return (
     <aside className="desktop-right-sidebar animate-slide-up">
       {/* User Card */}
-      <div className="card" style={{ padding: '20px', marginBottom: '20px', background: 'var(--bg-surface)' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '16px' }}>
+      <div className="card" style={{ padding: '24px', marginBottom: '24px', background: 'var(--bg-surface)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '18px', marginBottom: '18px' }}>
           <div style={{ position: 'relative' }}>
             <img 
               src={user?.avatar || '/avatar_boy.jpg'} 
               alt={user?.name} 
-              style={{ width: '60px', height: '60px', borderRadius: '50%', objectFit: 'cover', border: '3px solid var(--accent-green)', boxShadow: 'var(--shadow-sm)' }}
+              style={{ width: '68px', height: '68px', borderRadius: '50%', objectFit: 'cover', border: '3px solid var(--accent-green)', boxShadow: 'var(--shadow-sm)' }}
             />
-            <span style={{ position: 'absolute', bottom: -2, right: -2, background: 'var(--accent-green)', color: '#FFFFFF', fontSize: '0.65rem', fontWeight: 800, padding: '2px 6px', borderRadius: '10px' }}>
+            <span style={{ position: 'absolute', bottom: -2, right: -2, background: 'var(--accent-green)', color: '#FFFFFF', fontSize: '0.75rem', fontWeight: 800, padding: '3px 8px', borderRadius: '12px' }}>
               Cl {user?.class || 9}
             </span>
           </div>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--text-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--text-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
               {user?.name || 'Student'}
             </h3>
-            <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
               {user?.school || 'Namma Buddy School'}
             </p>
-            <span style={{ fontSize: '0.75rem', color: 'var(--accent-green)', fontWeight: 700 }}>
+            <span style={{ fontSize: '0.85rem', color: 'var(--accent-green)', fontWeight: 700 }}>
               📍 Anekal, Bengaluru Rural
             </span>
           </div>
         </div>
 
         {/* Level & XP Progress Bar */}
-        <div style={{ background: 'var(--bg-input)', padding: '12px 14px', borderRadius: '16px', marginBottom: '14px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', fontWeight: 700, marginBottom: '6px' }}>
+        <div style={{ background: 'var(--bg-input)', padding: '14px 16px', borderRadius: '18px', marginBottom: '16px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem', fontWeight: 800, marginBottom: '8px' }}>
             <span style={{ color: 'var(--text-primary)' }}>Level {Math.floor(userXP / 100) + 1}</span>
             <span style={{ color: 'var(--accent-orange)' }}>{userXP} / {nextLevelXP} XP</span>
           </div>
-          <div className="progress-track" style={{ height: '8px' }}>
+          <div className="progress-track" style={{ height: '10px' }}>
             <div className="progress-fill" style={{ width: `${levelProgress}%`, background: 'linear-gradient(90deg, var(--accent-green), var(--accent-orange))' }}></div>
           </div>
         </div>
 
         <button 
           onClick={() => setActiveTab('profile')}
-          style={{ width: '100%', padding: '10px', borderRadius: '14px', background: 'var(--bg-app)', color: 'var(--text-primary)', border: '1px solid var(--border-light)', fontWeight: 700, fontSize: '0.85rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', cursor: 'pointer' }}
+          style={{ width: '100%', padding: '12px', borderRadius: '16px', background: 'var(--bg-app)', color: 'var(--text-primary)', border: '1px solid var(--border-light)', fontWeight: 800, fontSize: '0.95rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', cursor: 'pointer' }}
         >
-          <User size={16} /> {language === 'EN' ? 'View Full Profile' : 'ಪ್ರೊಫೈಲ್ ವೀಕ್ಷಿಸಿ'}
+          <User size={18} /> {language === 'EN' ? 'View Full Profile' : 'ಪ್ರೊಫೈಲ್ ವೀಕ್ಷಿಸಿ'}
         </button>
       </div>
 
       {/* Gamified Streak & Coins Widget */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '20px' }}>
-        <div className="card" style={{ padding: '16px', display: 'flex', alignItems: 'center', gap: '12px', background: 'rgba(255, 200, 87, 0.12)', border: '1px solid rgba(255, 200, 87, 0.3)' }}>
-          <div style={{ width: '42px', height: '42px', borderRadius: '50%', background: '#FEF3C7', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Flame size={22} fill="#D97706" color="#D97706" />
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px', marginBottom: '24px' }}>
+        <div className="card" style={{ padding: '18px', display: 'flex', alignItems: 'center', gap: '14px', background: 'rgba(255, 200, 87, 0.15)', border: '1px solid rgba(255, 200, 87, 0.4)' }}>
+          <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: '#FEF3C7', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Flame size={26} fill="#D97706" color="#D97706" />
           </div>
           <div>
-            <div style={{ fontSize: '1.2rem', fontWeight: 900, color: '#D97706' }}>{user?.streak || 0} Days</div>
-            <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-secondary)' }}>Daily Streak</div>
+            <div style={{ fontSize: '1.35rem', fontWeight: 900, color: '#D97706' }}>{user?.streak || 0} Days</div>
+            <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-secondary)' }}>Daily Streak</div>
           </div>
         </div>
 
-        <div className="card" style={{ padding: '16px', display: 'flex', alignItems: 'center', gap: '12px', background: 'rgba(77, 168, 255, 0.12)', border: '1px solid rgba(77, 168, 255, 0.3)' }}>
-          <div style={{ width: '42px', height: '42px', borderRadius: '50%', background: '#E0F2FE', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Coins size={22} fill="#0284C7" color="#0284C7" />
+        <div className="card" style={{ padding: '18px', display: 'flex', alignItems: 'center', gap: '14px', background: 'rgba(77, 168, 255, 0.15)', border: '1px solid rgba(77, 168, 255, 0.4)' }}>
+          <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: '#E0F2FE', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Coins size={26} fill="#0284C7" color="#0284C7" />
           </div>
           <div>
-            <div style={{ fontSize: '1.2rem', fontWeight: 900, color: '#0284C7' }}>{userXP} XP</div>
-            <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-secondary)' }}>Total XP Coins</div>
+            <div style={{ fontSize: '1.35rem', fontWeight: 900, color: '#0284C7' }}>{userXP} XP</div>
+            <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-secondary)' }}>Total XP Coins</div>
           </div>
         </div>
       </div>
 
       {/* Leaderboard Preview Widget */}
-      <div className="card" style={{ padding: '20px', marginBottom: '20px', background: 'var(--bg-surface)' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Trophy size={18} color="var(--accent-orange)" />
-            <h4 style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--text-primary)' }}>
+      <div className="card" style={{ padding: '24px', marginBottom: '24px', background: 'var(--bg-surface)' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <Trophy size={22} color="var(--accent-orange)" />
+            <h4 style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--text-primary)' }}>
               {language === 'EN' ? 'Top Learners' : 'ಉನ್ನತ ಕಲಿಯುವವರು'}
             </h4>
           </div>
           <button 
             onClick={() => setActiveTab('top')}
-            style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--accent-green)', display: 'flex', alignItems: 'center', gap: '2px', cursor: 'pointer' }}
+            style={{ fontSize: '0.9rem', fontWeight: 800, color: 'var(--accent-green)', display: 'flex', alignItems: 'center', gap: '4px', cursor: 'pointer' }}
           >
-            {language === 'EN' ? 'See All' : 'ಎಲ್ಲಾ ನೋಡಿ'} <ChevronRight size={14} />
+            {language === 'EN' ? 'See All' : 'ಎಲ್ಲಾ ನೋಡಿ'} <ChevronRight size={16} />
           </button>
         </div>
 

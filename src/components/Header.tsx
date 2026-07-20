@@ -35,13 +35,13 @@ export const Header: React.FC<HeaderProps> = ({ setActiveTab }) => {
 
   return (
     <header className="app-header">
-      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
         <div style={{ 
-          width: '40px', height: '40px', borderRadius: '50%', 
+          width: '48px', height: '48px', borderRadius: '50%', 
           background: 'var(--accent-blue)', display: 'flex', 
           alignItems: 'center', justifyContent: 'center',
-          color: 'white', fontWeight: 700, fontSize: '1.2rem',
-          overflow: 'hidden'
+          color: 'white', fontWeight: 800, fontSize: '1.4rem',
+          overflow: 'hidden', boxShadow: 'var(--shadow-sm)'
         }}>
           {user?.avatar ? (
             <img src={user.avatar} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -50,17 +50,17 @@ export const Header: React.FC<HeaderProps> = ({ setActiveTab }) => {
           )}
         </div>
         <div>
-          <div style={{ fontSize: '0.7rem', color: 'var(--text-tertiary)', fontWeight: 500 }}>{getSalutation()},</div>
-          <div style={{ fontSize: '0.95rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '4px' }}>
-            {user?.name ? capitalize(user.name.split(' ')[0]) : ''} <span style={{fontSize: '1rem'}}>👋</span>
+          <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 600 }}>{getSalutation()},</div>
+          <div style={{ fontSize: '1.2rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--text-primary)' }}>
+            {user?.name ? capitalize(user.name.split(' ')[0]) : ''} <span style={{fontSize: '1.2rem'}}>👋</span>
           </div>
         </div>
       </div>
       
-      <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+      <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
         
         {isOffline && (
-          <div style={{ background: 'var(--accent-red)', color: 'white', padding: '4px 8px', borderRadius: '12px', fontSize: '0.65rem', fontWeight: 700 }}>
+          <div style={{ background: 'var(--accent-red)', color: 'white', padding: '4px 10px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: 800 }}>
             Offline
           </div>
         )}
@@ -71,33 +71,33 @@ export const Header: React.FC<HeaderProps> = ({ setActiveTab }) => {
           style={{ 
             background: 'var(--bg-surface)', 
             border: '1px solid var(--border-light)',
-            borderRadius: '20px',
-            padding: '3px',
+            borderRadius: '24px',
+            padding: '4px',
             display: 'flex',
             alignItems: 'center',
-            fontSize: '0.65rem',
+            fontSize: '0.8rem',
             fontWeight: 800,
             cursor: 'pointer'
           }}
         >
-          <span style={{ padding: '4px 8px', borderRadius: '16px', background: language === 'EN' ? 'var(--accent-purple)' : 'transparent', color: language === 'EN' ? '#FFFFFF' : 'var(--text-secondary)' }}>EN</span>
-          <span style={{ padding: '4px 8px', borderRadius: '16px', background: language === 'KN' ? 'var(--accent-purple)' : 'transparent', color: language === 'KN' ? '#FFFFFF' : 'var(--text-secondary)' }}>KN</span>
+          <span style={{ padding: '6px 12px', borderRadius: '20px', background: language === 'EN' ? 'var(--accent-green)' : 'transparent', color: language === 'EN' ? '#FFFFFF' : 'var(--text-secondary)' }}>EN</span>
+          <span style={{ padding: '6px 12px', borderRadius: '20px', background: language === 'KN' ? 'var(--accent-green)' : 'transparent', color: language === 'KN' ? '#FFFFFF' : 'var(--text-secondary)' }}>KN</span>
         </button>
 
         {/* Streak */}
         <button 
           onClick={() => setActiveTab('achievements')}
-          style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'rgba(245, 158, 11, 0.15)', border: '1px solid rgba(245, 158, 11, 0.3)', padding: '6px 12px', borderRadius: '20px', color: 'var(--accent-orange)', fontWeight: 800, fontSize: '0.8rem', cursor: 'pointer' }}
+          style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'rgba(255, 200, 87, 0.2)', border: '1px solid rgba(255, 200, 87, 0.4)', padding: '8px 14px', borderRadius: '24px', color: '#D97706', fontWeight: 800, fontSize: '0.95rem', cursor: 'pointer' }}
         >
-          <Flame size={15} fill="var(--accent-orange)" color="var(--accent-orange)" /> {user?.streak || 0}
+          <Flame size={20} fill="#D97706" color="#D97706" /> {user?.streak || 0}
         </button>
         
         {/* XP / Coins */}
         <button 
           onClick={() => setActiveTab('achievements')}
-          style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'rgba(245, 158, 11, 0.15)', border: '1px solid rgba(245, 158, 11, 0.3)', padding: '6px 12px', borderRadius: '20px', color: 'var(--accent-orange)', fontWeight: 800, fontSize: '0.8rem', cursor: 'pointer' }}
+          style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'rgba(255, 200, 87, 0.2)', border: '1px solid rgba(255, 200, 87, 0.4)', padding: '8px 14px', borderRadius: '24px', color: '#D97706', fontWeight: 800, fontSize: '0.95rem', cursor: 'pointer' }}
         >
-          <Coins size={15} fill="var(--accent-orange)" color="var(--accent-orange)" /> {userXP}
+          <Coins size={20} fill="#FFC857" color="#FFC857" /> {userXP}
         </button>
 
         {/* Bell & Notifications Dropdown */}
@@ -109,8 +109,8 @@ export const Header: React.FC<HeaderProps> = ({ setActiveTab }) => {
             }}
             style={{ position: 'relative', background: 'none', border: 'none', padding: 0, cursor: 'pointer', display: 'flex' }}
           >
-            <Bell size={20} color="var(--text-tertiary)" />
-            {hasUnread && <div style={{ position: 'absolute', top: -2, right: -2, width: '10px', height: '10px', background: 'var(--accent-red)', borderRadius: '50%', border: '2px solid white' }}></div>}
+            <Bell size={24} color="var(--text-primary)" />
+            {hasUnread && <div style={{ position: 'absolute', top: -2, right: -2, width: '12px', height: '12px', background: 'var(--accent-red)', borderRadius: '50%', border: '2px solid white' }}></div>}
           </button>
 
           {showNotifications && (

@@ -31,7 +31,7 @@ export const BottomNav = ({ activeTab, setActiveTab }: BottomNavProps) => {
               onClick={() => setActiveTab(tab.id)}
             >
               <Icon 
-                size={22} 
+                size={26} 
                 strokeWidth={isActive ? 2.5 : 2} 
                 color={isActive ? '#FFFFFF' : 'var(--text-tertiary)'}
                 fill={isActive ? 'rgba(255, 255, 255, 0.2)' : 'none'} 

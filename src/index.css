@@ -226,12 +226,12 @@ button {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  padding: 8px 16px;
-  max-width: 480px;
+  padding: 10px 24px;
+  max-width: 540px;
   margin: 0 auto;
   background: var(--bg-nav);
   border: 1px solid var(--border-light);
-  border-radius: 32px;
+  border-radius: 40px;
   box-shadow: var(--shadow-md);
   transition: background 0.3s ease, border-color 0.3s ease;
   pointer-events: auto;
@@ -242,17 +242,18 @@ button {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 6px 10px;
-  border-radius: 20px;
+  padding: 8px 16px;
+  border-radius: 24px;
   color: var(--text-tertiary);
   transition: all 0.25s ease;
+  cursor: pointer;
 }
 
 .nav-item.active {
   background: var(--accent-green);
   color: #FFFFFF;
-  box-shadow: 0 4px 14px rgba(46, 139, 87, 0.35);
-  transform: scale(1.05);
+  box-shadow: 0 4px 16px rgba(46, 139, 87, 0.4);
+  transform: scale(1.08);
 }
 
 .nav-item.active svg {
@@ -260,33 +261,10 @@ button {
 }
 
 .nav-item span.nav-label {
-  font-size: 0.65rem;
-  font-weight: 700;
-  margin-top: 3px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  margin-top: 4px;
   white-space: nowrap;
-}
-
-.nav-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  color: var(--text-tertiary);
-  transition: all 0.25s ease;
-}
-
-.nav-item.active {
-  background: var(--accent-green);
-  color: #FFFFFF;
-  box-shadow: 0 4px 14px rgba(46, 139, 87, 0.4);
-  transform: scale(1.06);
-}
-
-.nav-item.active svg {
-  stroke: #FFFFFF !important;
 }
 
 /* Search Bar */
@@ -295,18 +273,19 @@ button {
   align-items: center;
   background: var(--bg-surface);
   border: 1px solid var(--border-light);
-  border-radius: 25px;
-  padding: 14px 20px;
+  border-radius: 28px;
+  padding: 16px 24px;
   box-shadow: var(--shadow-sm);
-  margin-bottom: 20px;
-  gap: 12px;
+  margin-bottom: 24px;
+  gap: 14px;
   transition: background 0.3s ease, border-color 0.3s ease;
 }
 .search-bar input {
   border: none;
   outline: none;
   font-family: inherit;
-  font-size: 0.95rem;
+  font-size: 1.1rem;
+  font-weight: 600;
   width: 100%;
   color: var(--text-primary);
   background: transparent;
@@ -319,36 +298,38 @@ button {
 .level-card {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 14px 18px;
-  border-radius: 20px;
+  gap: 20px;
+  padding: 18px 24px;
+  border-radius: 24px;
   background: var(--bg-surface);
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--border-light);
-  margin-bottom: 24px;
+  margin-bottom: 28px;
 }
 .level-badge {
   background: var(--accent-green);
   color: #FFFFFF;
   font-weight: 800;
-  width: 42px;
-  height: 42px;
+  width: 52px;
+  height: 52px;
+  font-size: 1.3rem;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 4px 12px rgba(46, 139, 87, 0.3);
 }
 
 /* Progress bar generic */
 .progress-track {
-  height: 8px;
+  height: 10px;
   background: var(--border-light);
-  border-radius: 6px;
+  border-radius: 8px;
   overflow: hidden;
   width: 100%;
 }
 .progress-fill {
   height: 100%;
   background: var(--accent-green);
-  border-radius: 6px;
+  border-radius: 8px;
 }
