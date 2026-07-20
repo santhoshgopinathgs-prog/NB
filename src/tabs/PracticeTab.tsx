@@ -594,79 +594,99 @@ export const PracticeTab = () => {
         </div>
       )}
 
-      {/* Anekal School Learning Roadmap Header */}
-      <div style={{ padding: '0 20px', marginTop: '8px' }}>
-        <h3 style={{ fontSize: '1.3rem', fontFamily: 'Georgia, serif', fontWeight: 800, color: 'var(--text-primary)', margin: 0 }}>
+      {/* Vertical Winding Roadmap Path */}
+      <div style={{ padding: '0 20px', marginTop: '8px', marginBottom: '8px' }}>
+        <h3 style={{ fontSize: '1.3rem', fontFamily: 'Georgia, serif', fontWeight: 800, color: 'var(--text-primary)', margin: 0, textAlign: 'center' }}>
           {language === 'EN' ? "Anekal School Learning Roadmap" : "ಆನೆಕಲ್ ಶಾಲಾ ಕಲಿಕಾ ಮಾರ್ಗಸೂಚಿ"}
         </h3>
-        <p style={{ margin: '4px 0 0 0', fontSize: '0.82rem', color: 'var(--text-secondary)' }}>
-          {language === 'EN' ? "Complete each task to unlock the next level!" : "ಮುಂದಿನ ಹಂತವನ್ನು ಅನ್‌ಲಾಕ್ ಮಾಡಲು ಪ್ರತಿಯೊಂದು ಕಾರ್ಯವನ್ನು ಪೂರ್ಣಗೊಳಿಸಿ!"}
+        <p style={{ margin: '4px 0 0 0', fontSize: '0.82rem', color: 'var(--text-secondary)', textAlign: 'center' }}>
+          {language === 'EN' ? "Tap a node to start! Complete each task to unlock the next level." : "ಪ್ರಾರಂಭಿಸಲು ಹಂತವನ್ನು ಸ್ಪರ್ಶಿಸಿ! ಮುಂದಿನ ಹಂತವನ್ನು ಅನ್‌ಲಾಕ್ ಮಾಡಲು ಪೂರ್ಣಗೊಳಿಸಿ."}
         </p>
       </div>
 
-      {/* 10 Level Cards Carousel */}
-      <div className="anekal-card-carousel">
+      <div style={{ padding: '10px 20px 40px 20px', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative', gap: '32px' }}>
+        {/* Dotted Roadmap Path Line */}
+        <div style={{
+          position: 'absolute', top: '50px', bottom: '80px', width: '6px',
+          background: 'repeating-linear-gradient(to bottom, #f59e0b 0px, #f59e0b 12px, transparent 12px, transparent 20px)',
+          borderRadius: '3px', zIndex: 0
+        }} />
+
         {ANEKAL_LEVELS.map((lvl, index) => {
           const unlocked = isLevelUnlocked(index);
           const isCompleted = completedQuizzes.includes(lvl.id);
-          const isSelected = selectedLevelId === lvl.id;
+          const alignOffset = index % 4 === 0 ? '-35px' : (index % 4 === 1 ? '0px' : (index % 4 === 2 ? '35px' : '0px'));
 
           return (
             <div 
               key={lvl.level}
-              className={`anekal-level-card ${isSelected ? 'selected' : ''}`}
               style={{
-                opacity: unlocked ? 1 : 0.75,
-                background: unlocked ? (isSelected ? '#f8fafc' : '#ffffff') : '#f1f5f9',
-                borderColor: isSelected ? lvl.color : (unlocked ? '#e2e8f0' : '#cbd5e1')
-              }}
-              onClick={() => {
-                setSelectedLevelId(lvl.id);
-                handleStartLevel(lvl, index);
+                transform: `translateX(${alignOffset})`,
+                zIndex: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px'
               }}
             >
-              <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-                  <span style={{ background: unlocked ? lvl.color : '#64748b', color: 'white', padding: '4px 10px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: 900 }}>
-                    {lvl.level}. {lvl.subject}
-                  </span>
-                  {isCompleted ? (
-                    <span style={{ color: '#16a34a', fontWeight: 800, fontSize: '0.8rem' }}>✓ Done</span>
-                  ) : (!unlocked && (
-                    <span style={{ color: '#64748b', fontWeight: 800, fontSize: '0.8rem' }}>🔒 Locked</span>
-                  ))}
+              {/* 3D Roadmap Level Node Button */}
+              <div 
+                onClick={() => handleStartLevel(lvl, index)}
+                style={{
+                  position: 'relative', width: '80px', height: '80px', borderRadius: '50%',
+                  background: unlocked ? (isCompleted ? 'linear-gradient(135deg, #dcfce7, #86efac)' : 'linear-gradient(135deg, #ffffff, #f1f5f9)') : '#e2e8f0',
+                  border: `4px solid ${unlocked ? (isCompleted ? '#22c55e' : lvl.color) : '#94a3b8'}`,
+                  boxShadow: unlocked ? `0 8px 0 ${lvl.color}90, 0 12px 25px rgba(0,0,0,0.15)` : '0 4px 0 #cbd5e1',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '34px',
+                  cursor: unlocked ? 'pointer' : 'not-allowed', opacity: unlocked ? 1 : 0.65,
+                  transition: 'all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)'
+                }}
+              >
+                {/* Level Number / Status Badge */}
+                <div style={{
+                  position: 'absolute', top: '-6px', left: '-6px',
+                  background: unlocked ? (isCompleted ? '#16a34a' : '#3b82f6') : '#64748b',
+                  color: 'white', width: '28px', height: '28px', borderRadius: '50%',
+                  border: '2px solid white', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontSize: '0.85rem', fontWeight: 900, boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
+                }}>
+                  {isCompleted ? '✓' : (unlocked ? lvl.level : '🔒')}
                 </div>
-
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
-                  <span style={{ fontSize: '1.8rem', filter: unlocked ? 'none' : 'grayscale(100%)' }}>{lvl.emoji}</span>
-                  <h4 style={{ margin: 0, fontSize: '1rem', fontWeight: 800, color: unlocked ? '#1e293b' : '#64748b' }}>
-                    {language === 'EN' ? lvl.title : lvl.title_kn}
-                  </h4>
+                
+                <div style={{ filter: unlocked ? 'none' : 'grayscale(100%)' }}>
+                  {lvl.emoji}
                 </div>
-
-                <div style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 700, marginBottom: '6px' }}>You will learn (10 Questions):</div>
-                <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.75rem', color: unlocked ? '#334155' : '#64748b', lineHeight: '1.5' }}>
-                  {lvl.bullets.map((b, i) => (
-                    <li key={i}>{b}</li>
-                  ))}
-                </ul>
               </div>
 
-              <div style={{ marginTop: '16px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', fontSize: '0.75rem', fontWeight: 800, color: unlocked ? '#d97706' : '#64748b' }}>
-                  <span>Reward:</span>
-                  <span>⭐ +{lvl.reward} XP</span>
+              {/* Node Card Details & Start Button */}
+              <div 
+                onClick={() => handleStartLevel(lvl, index)}
+                style={{
+                  background: 'white', padding: '12px 18px', borderRadius: '20px',
+                  border: `2px solid ${unlocked ? lvl.color : '#cbd5e1'}`,
+                  boxShadow: '0 6px 18px rgba(0,0,0,0.06)', display: 'flex', flexDirection: 'column',
+                  alignItems: 'center', gap: '4px', cursor: unlocked ? 'pointer' : 'not-allowed',
+                  maxWidth: '230px', textAlign: 'center', opacity: unlocked ? 1 : 0.75
+                }}
+              >
+                <span style={{ background: unlocked ? lvl.color : '#64748b', color: 'white', padding: '3px 10px', borderRadius: '12px', fontSize: '0.72rem', fontWeight: 900 }}>
+                  {lvl.level}. {lvl.subject}
+                </span>
+                
+                <div style={{ fontSize: '0.95rem', fontWeight: 800, color: unlocked ? '#1e293b' : '#64748b', marginTop: '2px' }}>
+                  {language === 'EN' ? lvl.title : lvl.title_kn}
                 </div>
-
+                
+                <div style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 700 }}>
+                  10 Questions • ⭐ +{lvl.reward} XP
+                </div>
+                
                 <button 
                   onClick={(e) => {
                     e.stopPropagation();
                     handleStartLevel(lvl, index);
                   }}
                   style={{
-                    width: '100%', padding: '12px', borderRadius: '14px', border: 'none',
-                    background: unlocked ? lvl.color : '#94a3b8', color: 'white', fontWeight: 800, fontSize: '0.85rem',
-                    cursor: unlocked ? 'pointer' : 'not-allowed', boxShadow: unlocked ? `0 4px 10px ${lvl.color}40` : 'none'
+                    marginTop: '6px', padding: '8px 16px', borderRadius: '14px', border: 'none',
+                    background: unlocked ? (isCompleted ? '#16a34a' : lvl.color) : '#94a3b8',
+                    color: 'white', fontWeight: 800, fontSize: '0.8rem', cursor: unlocked ? 'pointer' : 'not-allowed',
+                    boxShadow: unlocked ? `0 4px 10px ${lvl.color}40` : 'none'
                   }}
                 >
                   {unlocked ? (
