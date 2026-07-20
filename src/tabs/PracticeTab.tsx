@@ -477,30 +477,45 @@ export const PracticeTab = () => {
           <h3 style={{ marginBottom: '24px', fontSize: '1.2rem', lineHeight: 1.4 }}>
             {questionText}
           </h3>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', width: '100%' }}>
             {options.map((opt, i) => {
               const isSelected = selectedOption === i;
               const isCorrectOption = i === currentQuestion.correctAnswer;
               
               let style: React.CSSProperties = {
-                padding: '16px', borderRadius: '16px', border: '2px solid var(--border-light)',
-                background: 'var(--bg-surface)', textAlign: 'left', fontWeight: 600, fontSize: '1rem',
-                cursor: 'pointer', transition: 'all 0.2s', display: 'flex', justifyContent: 'space-between', alignItems: 'center'
+                padding: '18px 24px', 
+                borderRadius: '24px', 
+                border: '2.5px solid #1E293B',
+                background: '#FFFFFF', 
+                color: '#1E293B',
+                textAlign: 'left', 
+                fontWeight: 800, 
+                fontSize: '1.1rem',
+                cursor: 'pointer', 
+                transition: 'all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)', 
+                display: 'flex', 
+                justifyContent: 'space-between', 
+                alignItems: 'center',
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.04)',
+                width: '100%',
+                minHeight: '62px'
               };
 
               if (isAnswerRevealed) {
                 if (isCorrectOption) {
-                  style.background = '#D1FAE5';
-                  style.borderColor = 'var(--accent-green)';
-                  style.color = 'var(--accent-green)';
+                  style.background = '#DCFCE7';
+                  style.borderColor = '#16A34A';
+                  style.color = '#15803D';
                 } else if (isSelected && !isCorrectOption) {
                   style.background = '#FEE2E2';
-                  style.borderColor = 'var(--accent-red)';
-                  style.color = 'var(--accent-red)';
+                  style.borderColor = '#DC2626';
+                  style.color = '#991B1B';
                 }
               } else if (isSelected) {
-                style.borderColor = 'var(--accent-blue)';
+                style.borderColor = '#3B82F6';
                 style.background = '#EFF6FF';
+                style.color = '#1D4ED8';
+                style.boxShadow = '0 0 0 2px #3B82F6, 0 6px 16px rgba(59, 130, 246, 0.25)';
               }
 
               return (
@@ -511,7 +526,7 @@ export const PracticeTab = () => {
                   style={style}
                 >
                   <span>{opt}</span>
-                  {isAnswerRevealed && isCorrectOption && <CheckCircle size={20} color="var(--accent-green)" />}
+                  {isAnswerRevealed && isCorrectOption && <CheckCircle size={22} color="#16A34A" />}
                 </button>
               );
             })}
@@ -522,11 +537,13 @@ export const PracticeTab = () => {
               onClick={handleConfirm}
               disabled={selectedOption === null}
               style={{ 
-                width: '100%', marginTop: '24px', padding: '16px', 
-                background: selectedOption !== null ? 'var(--accent-blue)' : 'var(--border-light)', 
-                color: 'white', fontWeight: 700, borderRadius: '20px', fontSize: '1rem',
+                width: '100%', marginTop: '24px', padding: '18px', 
+                background: selectedOption !== null ? 'var(--accent-blue)' : '#E2E8F0', 
+                color: selectedOption !== null ? 'white' : '#94A3B8',
+                fontWeight: 900, borderRadius: '24px', fontSize: '1.1rem',
                 cursor: selectedOption !== null ? 'pointer' : 'not-allowed',
-                transition: 'background 0.2s'
+                transition: 'all 0.2s', border: 'none',
+                boxShadow: selectedOption !== null ? '0 8px 20px rgba(59, 130, 246, 0.3)' : 'none'
               }}
             >
               {t('confirm')}
