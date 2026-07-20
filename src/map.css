@@ -87,7 +87,7 @@
   position: relative;
   width: 100%;
   max-width: 540px;
-  min-height: 1450px;
+  min-height: 1950px;
   margin: 0 auto;
   border-radius: 32px;
   overflow: hidden;
@@ -129,16 +129,16 @@
 /* 3D Stone Ring Container */
 .node-stone-ring {
   position: relative;
-  width: 82px;
-  height: 82px;
+  width: 74px;
+  height: 74px;
   border-radius: 50%;
   background: linear-gradient(135deg, #ffffff, #e2e8f0);
-  border: 5px solid #1e293b;
-  box-shadow: 0 8px 0 #0f172a, 0 12px 24px rgba(0, 0, 0, 0.5);
+  border: 4.5px solid #1e293b;
+  box-shadow: 0 7px 0 #0f172a, 0 10px 20px rgba(0, 0, 0, 0.45);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 36px;
+  font-size: 32px;
   transition: all 0.3s ease;
 }
 
@@ -148,16 +148,16 @@
   top: -8px;
   left: 50%;
   transform: translateX(-50%);
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   background: #3b82f6;
   color: white;
-  border: 3px solid white;
+  border: 2.5px solid white;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.95rem;
+  font-size: 0.88rem;
   font-weight: 900;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   z-index: 10;
@@ -165,19 +165,19 @@
 
 /* 3D Label Pill Button */
 .node-label-pill {
-  margin-top: 10px;
-  padding: 6px 14px;
-  border-radius: 16px;
+  margin-top: 6px;
+  padding: 4px 12px;
+  border-radius: 14px;
   color: white;
   font-weight: 900;
-  font-size: 0.75rem;
-  letter-spacing: 0.5px;
+  font-size: 0.72rem;
+  letter-spacing: 0.4px;
   text-transform: uppercase;
   text-align: center;
-  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.4), 0 8px 16px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 3.5px 0 rgba(0, 0, 0, 0.4), 0 6px 14px rgba(0, 0, 0, 0.3);
   border: 2px solid white;
   white-space: nowrap;
-  max-width: 170px;
+  max-width: 160px;
   overflow: hidden;
   text-overflow: ellipsis;
 }

@@ -628,18 +628,18 @@ export const PracticeTab = () => {
           const unlocked = isLevelUnlocked(index);
           const isCompleted = completedQuizzes.includes(lvl.id);
           
-          // Reversed path workflow: Level 1 starts at top near school entrance archway & kids, and Level 10 ends at bottom near main school building
+          // Spacious reversed path workflow: Level 1 starts at top archway entrance, winding down to Level 10 at bottom school building with spacious gaps
           const nodePositions = [
-            { left: '46%', top: '4.5%' },   // 1. Basics of Computer (Top Archway Entrance)
-            { left: '60%', top: '11.0%' }, // 2. Typing Champ
-            { left: '41%', top: '18.5%' }, // 3. Internet Navigator
-            { left: '63%', top: '26.0%' }, // 4. Digital Productivity
-            { left: '42%', top: '34.0%' }, // 5. Online Safety
-            { left: '63%', top: '42.0%' }, // 6. Mobile Literacy
-            { left: '41%', top: '49.5%' }, // 7. Digital Creativity
-            { left: '64%', top: '57.5%' }, // 8. Intro to Coding
-            { left: '42%', top: '65.5%' }, // 9. Real Life Project
-            { left: '60%', top: '72.5%' }  // 10. Graduation (Bottom Main School Building)
+            { left: '46%', top: '6.0%' },   // 1. Basics of Computer (Top Archway Entrance)
+            { left: '62%', top: '15.2%' }, // 2. Typing Champ
+            { left: '39%', top: '24.4%' }, // 3. Internet Navigator
+            { left: '64%', top: '33.8%' }, // 4. Digital Productivity
+            { left: '41%', top: '43.2%' }, // 5. Online Safety
+            { left: '63%', top: '52.6%' }, // 6. Mobile Literacy
+            { left: '39%', top: '62.0%' }, // 7. Digital Creativity
+            { left: '65%', top: '71.4%' }, // 8. Intro to Coding
+            { left: '40%', top: '80.8%' }, // 9. Real Life Project
+            { left: '61%', top: '90.2%' }  // 10. Graduation (Bottom Main School Building)
           ];
 
           const pos = nodePositions[index];
