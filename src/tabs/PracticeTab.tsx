@@ -13,6 +13,10 @@ export const PracticeTab = () => {
   const [isAnswerRevealed, setIsAnswerRevealed] = useState<boolean>(false);
   const [quizCompleted, setQuizCompleted] = useState<boolean>(false);
   const [justEarnedCert, setJustEarnedCert] = useState<boolean>(false);
+  const [correctAnswersCount, setCorrectAnswersCount] = useState<number>(0);
+  const [isTypingActive, setIsTypingActive] = useState<boolean>(false);
+  const [typingInput, setTypingInput] = useState<string>('');
+  const { markQuiz80Percent, markTypingPracticed } = useAppContext();
 
   // Filter quizzes to ONLY show the currently registered student's class
   const filteredQuizzes = mockQuizzes.filter(q => q.class === user?.class);
@@ -38,9 +42,12 @@ export const PracticeTab = () => {
       markQuizComplete(activeQuiz!, xpGained).then(earnedCert => {
         setJustEarnedCert(earnedCert);
         setQuizCompleted(true);
+        if (correctAnswersCount / activeQuestions.length >= 0.8) {
+          markQuiz80Percent();
+        }
       });
     }
-  }, [currentQuestionIndex, activeQuestions.length, activeQuizData, activeQuiz, markQuizComplete]);
+  }, [currentQuestionIndex, activeQuestions.length, activeQuizData, activeQuiz, markQuizComplete, correctAnswersCount, markQuiz80Percent]);
 
   // Auto-advance after 1.5 seconds when answer is revealed
   React.useEffect(() => {
@@ -62,6 +69,9 @@ export const PracticeTab = () => {
   const handleConfirm = () => {
     if (selectedOption !== null && !isAnswerRevealed) {
       setIsAnswerRevealed(true);
+      if (selectedOption === activeQuestions[currentQuestionIndex].correctAnswer) {
+        setCorrectAnswersCount(prev => prev + 1);
+      }
     }
   };
 
@@ -72,7 +82,43 @@ export const PracticeTab = () => {
     setIsAnswerRevealed(false);
     setQuizCompleted(false);
     setJustEarnedCert(false);
+    setCorrectAnswersCount(0);
   };
+
+  if (isTypingActive) {
+    const targetText = language === 'EN' ? "The quick brown fox jumps over the lazy dog." : "ಕನ್ನಡ ಭಾಷೆ ಸುಂದರವಾಗಿದೆ ಮತ್ತು ಕಲಿಯಲು ಸುಲಭವಾಗಿದೆ.";
+    
+    const handleTypingChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      const val = e.target.value;
+      setTypingInput(val);
+      if (val === targetText) {
+        markTypingPracticed();
+        setTimeout(() => {
+          setIsTypingActive(false);
+          setTypingInput('');
+          alert(language === 'EN' ? "Typing practice completed! +30 XP" : "ಟೈಪಿಂಗ್ ಅಭ್ಯಾಸ ಪೂರ್ಣಗೊಂಡಿದೆ! +30 XP");
+        }, 500);
+      }
+    };
+
+    return (
+      <div className="animate-slide-up" style={{ padding: '0 20px 20px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        <button onClick={() => setIsTypingActive(false)} style={{ alignSelf: 'flex-start', color: 'var(--accent-blue)', fontWeight: 600 }}>← {t('backToPracticeList')}</button>
+        <div className="card" style={{ padding: '24px' }}>
+          <h3 style={{ marginBottom: '16px', fontSize: '1.2rem' }}>{language === 'EN' ? "Type the following sentence:" : "ಕೆಳಗಿನ ವಾಕ್ಯವನ್ನು ಟೈಪ್ ಮಾಡಿ:"}</h3>
+          <div style={{ padding: '16px', background: 'var(--bg-app)', borderRadius: '12px', marginBottom: '24px', fontSize: '1.1rem', fontWeight: 600, color: 'var(--text-secondary)' }}>
+            {targetText}
+          </div>
+          <textarea
+            value={typingInput}
+            onChange={handleTypingChange}
+            placeholder={language === 'EN' ? "Start typing here..." : "ಇಲ್ಲಿ ಟೈಪ್ ಮಾಡಲು ಪ್ರಾರಂಭಿಸಿ..."}
+            style={{ width: '100%', padding: '16px', borderRadius: '12px', border: '2px solid var(--border-light)', minHeight: '120px', fontSize: '1.1rem', fontFamily: 'inherit', resize: 'vertical' }}
+          />
+        </div>
+      </div>
+    );
+  }
 
   if (activeQuiz) {
     if (quizCompleted) {
@@ -89,7 +135,7 @@ export const PracticeTab = () => {
           </div>
           <h2 style={{ fontSize: '1.5rem', textAlign: 'center' }}>Great Job!</h2>
           <p style={{ textAlign: 'center', color: 'var(--text-secondary)', marginBottom: '10px' }}>
-            You completed this practice test and earned <strong>+{activeQuizData?.xp} XP</strong>.
+            You completed this practice test with a score of <strong>{correctAnswersCount}/{activeQuestions.length}</strong> and earned <strong>+{activeQuizData?.xp} XP</strong>.
           </p>
           <div style={{ background: 'var(--bg-app)', padding: '12px 24px', borderRadius: '20px', fontWeight: 700, color: 'var(--accent-blue)', marginBottom: '20px' }}>
             Total XP: {userXP}
@@ -250,6 +296,30 @@ export const PracticeTab = () => {
             </div>
           );
         })}
+      </div>
+
+      <div style={{ marginTop: '10px' }}>
+        <h3 style={{ fontSize: '1.2rem', marginBottom: '16px' }}>{language === 'EN' ? "Mini Games" : "ಮಿನಿ ಆಟಗಳು"}</h3>
+        <div className="card" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <div>
+            <h3 style={{ fontSize: '1.1rem', marginBottom: '4px' }}>{language === 'EN' ? "Typing Practice" : "ಟೈಪಿಂಗ್ ಅಭ್ಯಾಸ"}</h3>
+            <div style={{ fontSize: '0.85rem', color: 'var(--text-tertiary)' }}>
+              {language === 'EN' ? "Practice typing skills" : "ಟೈಪಿಂಗ್ ಕೌಶಲ್ಯಗಳನ್ನು ಅಭ್ಯಾಸ ಮಾಡಿ"}
+            </div>
+          </div>
+          <button 
+            onClick={() => setIsTypingActive(true)}
+            style={{
+              width: '100%', padding: '12px', borderRadius: '12px', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+              background: 'var(--bg-surface)',
+              color: 'var(--accent-purple)',
+              border: '2px solid #F3E8FF'
+            }}
+          >
+            <Gamepad2 size={18} />
+            {language === 'EN' ? "Start Typing" : "ಟೈಪಿಂಗ್ ಪ್ರಾರಂಭಿಸಿ"}
+          </button>
+        </div>
       </div>
     </div>
   );

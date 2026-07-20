@@ -5,7 +5,7 @@ import { useAppContext } from '../context/AppContext';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
 export const AITutorPortal = ({ onClose, initialQuery }: { onClose: () => void, initialQuery?: string }) => {
-  const { language, user } = useAppContext();
+  const { language, markAITutorUsed } = useAppContext();
   
   // Fallback obfuscated key for demo purposes on Vercel
   const _p1 = "AQ.Ab8RN6Iac8";
@@ -21,12 +21,12 @@ export const AITutorPortal = ({ onClose, initialQuery }: { onClose: () => void, 
   const getInitialMessage = () => {
     if (initialQuery) {
       return language === 'EN' 
-        ? `Hi! I see you want to learn about "${initialQuery}". What specific questions do you have?` 
-        : `ನಮಸ್ಕಾರ! ನೀವು "${initialQuery}" ಬಗ್ಗೆ ಕಲಿಯಲು ಬಯಸುತ್ತೀರಿ ಎಂದು ನಾನು ನೋಡುತ್ತಿದ್ದೇನೆ. ನಿಮಗೆ ಯಾವ ನಿರ್ದಿಷ್ಟ ಪ್ರಶ್ನೆಗಳಿವೆ?`;
+        ? `Let's learn about ${initialQuery}! What would you like to know?`
+        : `${initialQuery} ಬಗ್ಗೆ ಕಲಿಯೋಣ! ನೀವು ಏನು ತಿಳಿಯಲು ಬಯಸುತ್ತೀರಿ?`;
     }
     return language === 'EN' 
       ? "Hi there! I'm your AI Tutor. What would you like to learn today?" 
-      : "ನಮಸ್ಕಾರ! ನಾನು ನಿಮ್ಮ AI ಶಿಕ್ಷಕ. ಇಂದು ನೀವು ಏನು ಕಲಿಯಲು ಬಯಸುತ್ತೀರಿ?";
+      : "ನಮಸ್ಕಾರ! ನಾನು ನಿಮ್ಮ AI ಟ್ಯೂಟರ್. ಇಂದು ನೀವು ಏನು ಕಲಿಯಲು ಬಯಸುತ್ತೀರಿ?";
   };
 
   const [messages, setMessages] = useState([
@@ -42,6 +42,8 @@ export const AITutorPortal = ({ onClose, initialQuery }: { onClose: () => void, 
     const userMsg = input.trim();
     if (!userMsg) return;
     
+    markAITutorUsed();
+
     const newMsgs = [...messages, { text: userMsg, isBot: false }];
     setMessages(newMsgs);
     setInput('');

@@ -7,11 +7,27 @@ import { AITutorPortal } from '../components/AITutorPortal';
 import { syllabusData } from '../data/mockData';
 
 export const HomeTab = ({ navigateToChapter }: { navigateToChapter?: (subjectId: string, subjectDisplay: string, chapter: string) => void }) => {
-  const { language, userXP, user, completedQuizzes } = useAppContext();
+  const { language, userXP, user, completedQuizzes, dailyQuests, claimQuestXP } = useAppContext();
   
   const [activePortal, setActivePortal] = useState<'leaderboard' | 'certificates' | 'ai' | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [aiInitialQuery, setAiInitialQuery] = useState('');
+
+  // Auto-claim quest XP when returning to Home Tab
+  React.useEffect(() => {
+    if (dailyQuests.lessons >= 2 && !dailyQuests.lessonsClaimed) {
+      claimQuestXP('lessons', 50);
+    }
+    if (dailyQuests.quiz80 && !dailyQuests.quiz80Claimed) {
+      claimQuestXP('quiz80', 75);
+    }
+    if (dailyQuests.aiTutor && !dailyQuests.aiTutorClaimed) {
+      claimQuestXP('aiTutor', 25);
+    }
+    if (dailyQuests.typing && !dailyQuests.typingClaimed) {
+      claimQuestXP('typing', 30);
+    }
+  }, [dailyQuests, claimQuestXP]);
 
   // Filter syllabus data based on search query
   const getSearchResults = () => {
@@ -174,14 +190,16 @@ export const HomeTab = ({ navigateToChapter }: { navigateToChapter?: (subjectId:
       <div style={{ margin: '0 20px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
           <h3 style={{ fontSize: '1.4rem', fontFamily: 'Georgia, "Times New Roman", Times, serif', fontWeight: 800, color: 'var(--text-primary)' }}>{language === 'EN' ? "Daily Quests" : "ದೈನಂದಿನ ಪ್ರಶ್ನೆಗಳು"}</h3>
-          <span style={{ background: '#EBE3D5', color: 'var(--text-primary)', fontSize: '0.75rem', padding: '4px 12px', borderRadius: '12px', fontWeight: 800 }}>{Math.min(4, Math.floor(userXP / 50))}/4 done</span>
+          <span style={{ background: '#EBE3D5', color: 'var(--text-primary)', fontSize: '0.75rem', padding: '4px 12px', borderRadius: '12px', fontWeight: 800 }}>
+            {[dailyQuests.lessons >= 2, dailyQuests.quiz80, dailyQuests.aiTutor, dailyQuests.typing].filter(Boolean).length}/4 done
+          </span>
         </div>
         
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-          <QuestCard icon="📚" title={language === 'EN' ? "Complete 2 Lessons" : "2 ಪಾಠಗಳನ್ನು ಪೂರ್ಣಗೊಳಿಸಿ"} xp="+50 XP" done={userXP >= 50} />
-          <QuestCard icon="🎯" title={language === 'EN' ? "Score 80%+ in a Quiz" : "ರಸಪ್ರಶ್ನೆಯಲ್ಲಿ 80%+ ಸ್ಕೋರ್ ಮಾಡಿ"} xp="+75 XP" done={userXP >= 125} />
-          <QuestCard icon="🤖" title={language === 'EN' ? "Use AI Tutor" : "AI ಟ್ಯೂಟರ್ ಬಳಸಿ"} xp="+25 XP" done={userXP >= 150} />
-          <QuestCard icon="⌨️" title={language === 'EN' ? "Practice Typing 5 min" : "5 ನಿಮಿಷ ಟೈಪಿಂಗ್ ಅಭ್ಯಾಸ ಮಾಡಿ"} xp="+30 XP" done={userXP >= 180} />
+          <QuestCard icon="📚" title={language === 'EN' ? "Complete 2 Lessons" : "2 ಪಾಠಗಳನ್ನು ಪೂರ್ಣಗೊಳಿಸಿ"} xp="+50 XP" done={dailyQuests.lessons >= 2} progress={dailyQuests.lessons / 2} />
+          <QuestCard icon="🎯" title={language === 'EN' ? "Score 80%+ in a Quiz" : "ರಸಪ್ರಶ್ನೆಯಲ್ಲಿ 80%+ ಸ್ಕೋರ್ ಮಾಡಿ"} xp="+75 XP" done={dailyQuests.quiz80} progress={dailyQuests.quiz80 ? 1 : 0} />
+          <QuestCard icon="🤖" title={language === 'EN' ? "Use AI Tutor" : "AI ಟ್ಯೂಟರ್ ಬಳಸಿ"} xp="+25 XP" done={dailyQuests.aiTutor} progress={dailyQuests.aiTutor ? 1 : 0} />
+          <QuestCard icon="⌨️" title={language === 'EN' ? "Practice Typing 5 min" : "5 ನಿಮಿಷ ಟೈಪಿಂಗ್ ಅಭ್ಯಾಸ ಮಾಡಿ"} xp="+30 XP" done={dailyQuests.typing} progress={dailyQuests.typing ? 1 : 0} />
         </div>
       </div>
 
@@ -276,7 +294,7 @@ export const HomeTab = ({ navigateToChapter }: { navigateToChapter?: (subjectId:
 
 // Subcomponents
 
-const QuestCard = ({ icon, title, xp, done }: any) => (
+const QuestCard = ({ icon, title, xp, done, progress = 0 }: any) => (
   <div style={{ padding: '16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', border: '1px solid var(--border-light)', borderRadius: '20px', background: 'transparent' }}>
     <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
       <div style={{ width: '36px', height: '36px', background: '#EBE3D5', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.1rem' }}>
@@ -284,8 +302,7 @@ const QuestCard = ({ icon, title, xp, done }: any) => (
       </div>
       <div>
         <div style={{ fontWeight: 800, fontSize: '0.9rem', color: done ? 'var(--text-tertiary)' : 'var(--text-primary)', textDecoration: done ? 'line-through' : 'none' }}>{title}</div>
-        {done && <div className="progress-track" style={{ marginTop: '8px', width: '150px', background: '#E0D9C8' }}><div className="progress-fill" style={{ width: '100%', background: 'var(--accent-green)' }}></div></div>}
-        {!done && <div className="progress-track" style={{ marginTop: '8px', width: '150px', background: '#E0D9C8' }}><div className="progress-fill" style={{ width: '0%', background: 'var(--accent-green)' }}></div></div>}
+        <div className="progress-track" style={{ marginTop: '8px', width: '150px', background: '#E0D9C8' }}><div className="progress-fill" style={{ width: `${Math.min(100, Math.max(0, progress * 100))}%`, background: 'var(--accent-green)' }}></div></div>
       </div>
     </div>
     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>

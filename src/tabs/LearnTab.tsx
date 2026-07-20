@@ -6,15 +6,16 @@ import { syllabusData, textbookContent, LEARN_MATH_QUESTIONS, LEARN_SCIENCE_QUES
 import { CHAPTER_QUESTIONS } from '../data/chapterQuestions';
 
 export const LearnTab = ({ initialChapter, clearInitialChapter }: { initialChapter?: { subjectId: string, subjectDisplay: string, chapter: string } | null, clearInitialChapter?: () => void }) => {
-  const { t, language, user, markQuizComplete, userXP, completedQuizzes } = useAppContext();
+  const { t, language, user, markQuizComplete, userXP, completedQuizzes, incrementLessonsCompleted } = useAppContext();
   const [activeChapter, setActiveChapter] = useState<{ subjectId: string, subjectDisplay: string, chapter: string } | null>(null);
   
   useEffect(() => {
     if (initialChapter) {
       setActiveChapter(initialChapter);
+      incrementLessonsCompleted();
       clearInitialChapter?.();
     }
-  }, [initialChapter, clearInitialChapter]);
+  }, [initialChapter, clearInitialChapter, incrementLessonsCompleted]);
   
   // Quiz State
   const [isQuizActive, setIsQuizActive] = useState(false);
@@ -263,7 +264,10 @@ export const LearnTab = ({ initialChapter, clearInitialChapter }: { initialChapt
                   return (
                     <button 
                       key={chapterIdx} 
-                      onClick={() => setActiveChapter({ subjectId: subject.name, subjectDisplay: subjectName, chapter: chapterName })}
+                      onClick={() => {
+                        setActiveChapter({ subjectId: subject.name, subjectDisplay: subjectName, chapter: chapterName });
+                        incrementLessonsCompleted();
+                      }}
                       className="card" 
                       style={{ 
                         display: 'flex', alignItems: 'center', padding: '16px', gap: '16px', 

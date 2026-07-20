@@ -14,6 +14,18 @@ export interface LeaderboardUser {
   avatar: string;
 }
 
+export interface DailyQuests {
+  date: string;
+  lessons: number;
+  lessonsClaimed: boolean;
+  quiz80: boolean;
+  quiz80Claimed: boolean;
+  aiTutor: boolean;
+  aiTutorClaimed: boolean;
+  typing: boolean;
+  typingClaimed: boolean;
+}
+
 interface AppContextType {
   language: Language;
   toggleLanguage: () => void;
@@ -29,6 +41,12 @@ interface AppContextType {
   leaderboard: LeaderboardUser[];
   fetchLeaderboard: () => Promise<void>;
   updateUserAvatar: (avatarUrl: string) => Promise<void>;
+  dailyQuests: DailyQuests;
+  incrementLessonsCompleted: () => void;
+  markQuiz80Percent: () => void;
+  markAITutorUsed: () => void;
+  markTypingPracticed: () => void;
+  claimQuestXP: (questId: 'lessons' | 'quiz80' | 'aiTutor' | 'typing', xpReward: number) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -42,6 +60,58 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [userXP, setUserXP] = useState<number>(0);
   const [certificates, setCertificates] = useState<Certificate[]>([]);
   const [leaderboard, setLeaderboard] = useState<LeaderboardUser[]>([]);
+
+  // Daily Quests State
+  const [dailyQuests, setDailyQuests] = useState<DailyQuests>(() => {
+    const today = new Date().toISOString().split('T')[0];
+    const saved = localStorage.getItem('nb_daily_quests');
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      if (parsed.date === today) return parsed;
+    }
+    return {
+      date: today,
+      lessons: 0,
+      lessonsClaimed: false,
+      quiz80: false,
+      quiz80Claimed: false,
+      aiTutor: false,
+      aiTutorClaimed: false,
+      typing: false,
+      typingClaimed: false
+    };
+  });
+
+  useEffect(() => {
+    localStorage.setItem('nb_daily_quests', JSON.stringify(dailyQuests));
+  }, [dailyQuests]);
+
+  const incrementLessonsCompleted = () => {
+    setDailyQuests(prev => ({ ...prev, lessons: Math.min(2, prev.lessons + 1) }));
+  };
+
+  const markQuiz80Percent = () => {
+    setDailyQuests(prev => ({ ...prev, quiz80: true }));
+  };
+
+  const markAITutorUsed = () => {
+    setDailyQuests(prev => ({ ...prev, aiTutor: true }));
+  };
+
+  const markTypingPracticed = () => {
+    setDailyQuests(prev => ({ ...prev, typing: true }));
+  };
+
+  const claimQuestXP = async (questId: 'lessons' | 'quiz80' | 'aiTutor' | 'typing', xpReward: number) => {
+    if (!user) return;
+    setDailyQuests(prev => {
+      const next = { ...prev, [`${questId}Claimed`]: true };
+      return next;
+    });
+    const newXp = userXP + xpReward;
+    setUserXP(newXp);
+    await supabase.from('user_progress').update({ total_xp: newXp }).eq('user_id', user.id);
+  };
 
   const fetchLeaderboard = async () => {
     try {
@@ -214,7 +284,14 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AppContext.Provider value={{ language, toggleLanguage, t, user, isAuthenticated, isLoading, logout, completedQuizzes, markQuizComplete, userXP, certificates, leaderboard, fetchLeaderboard, updateUserAvatar }}>
+    <AppContext.Provider value={{ language, toggleLanguage, t, user, isAuthenticated, isLoading, logout, completedQuizzes, markQuizComplete, userXP, certificates, leaderboard, fetchLeaderboard, updateUserAvatar,
+      dailyQuests,
+      incrementLessonsCompleted,
+      markQuiz80Percent,
+      markAITutorUsed,
+      markTypingPracticed,
+      claimQuestXP
+    }}>
       {children}
     </AppContext.Provider>
   );
