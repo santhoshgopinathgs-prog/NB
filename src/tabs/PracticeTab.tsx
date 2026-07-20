@@ -56,7 +56,9 @@ export const PracticeTab = () => {
     }
   }, [isMathActive, mathTimeLeft]);
 
-  // Gamified Map State
+  // Timer & Gamified Map State
+  const [questionTimeLeft, setQuestionTimeLeft] = useState<number>(20);
+
   const activeQuizData = mockQuizzes.find(q => q.id === activeQuiz) || {
     id: activeQuiz || 'quiz',
     subject: 'Digital Skills',
@@ -69,19 +71,33 @@ export const PracticeTab = () => {
   if (activeQuizData?.subject === 'Science') rawQuestions = MOCK_SCIENCE_QUESTIONS;
   if (activeQuizData?.subject === 'English') rawQuestions = MOCK_ENGLISH_QUESTIONS;
 
-  let activeQuestions = rawQuestions.slice(0, 15);
-  if (activeQuizData?.id?.endsWith('-2') && rawQuestions.length >= 30) {
-    activeQuestions = rawQuestions.slice(15, 30);
+  let activeQuestions = rawQuestions.slice(0, 10);
+  if (activeQuizData?.id?.endsWith('-2') && rawQuestions.length >= 20) {
+    activeQuestions = rawQuestions.slice(10, 20);
   }
   if (!activeQuestions || activeQuestions.length === 0) {
-    activeQuestions = MOCK_DIGITAL_QUESTIONS.slice(0, 15);
+    activeQuestions = MOCK_DIGITAL_QUESTIONS.slice(0, 10);
   }
+
+  // Question Timer Countdown Effect
+  React.useEffect(() => {
+    let timerId: any;
+    if (activeQuiz && !quizCompleted && !isAnswerRevealed && questionTimeLeft > 0) {
+      timerId = setInterval(() => {
+        setQuestionTimeLeft(prev => prev - 1);
+      }, 1000);
+    } else if (activeQuiz && !quizCompleted && !isAnswerRevealed && questionTimeLeft === 0) {
+      setIsAnswerRevealed(true);
+    }
+    return () => clearInterval(timerId);
+  }, [activeQuiz, quizCompleted, isAnswerRevealed, questionTimeLeft]);
 
   const handleNext = React.useCallback(() => {
     if (currentQuestionIndex < activeQuestions.length - 1) {
       setCurrentQuestionIndex(prev => prev + 1);
       setSelectedOption(null);
       setIsAnswerRevealed(false);
+      setQuestionTimeLeft(20);
     } else {
       const baseXP = activeQuizData ? activeQuizData.xp : 250;
       const finalXP = baseXP + bonusXP;
@@ -399,9 +415,19 @@ export const PracticeTab = () => {
                 </div>
               )}
             </div>
-            <span style={{ background: diffBg, color: diffColor, padding: '2px 8px', borderRadius: '8px', fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase' }}>
-              {difficulty}
-            </span>
+            
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <div style={{
+                background: questionTimeLeft <= 5 ? '#FEE2E2' : '#EFF6FF',
+                color: questionTimeLeft <= 5 ? 'var(--accent-red)' : 'var(--accent-blue)',
+                padding: '4px 12px', borderRadius: '16px', fontWeight: 800, fontSize: '0.85rem'
+              }}>
+                ⏱️ {questionTimeLeft}s
+              </div>
+              <span style={{ background: diffBg, color: diffColor, padding: '2px 8px', borderRadius: '8px', fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase' }}>
+                {difficulty}
+              </span>
+            </div>
           </div>
           <h3 style={{ marginBottom: '24px', fontSize: '1.2rem', lineHeight: 1.4 }}>
             {questionText}
@@ -492,8 +518,21 @@ export const PracticeTab = () => {
   ];
 
   const [selectedLevelId, setSelectedLevelId] = useState<string>(ANEKAL_LEVELS[0].id);
+  const [lockedMsg, setLockedMsg] = useState<string | null>(null);
 
-  const handleStartLevel = (levelObj: typeof ANEKAL_LEVELS[0]) => {
+  const isLevelUnlocked = (index: number) => {
+    if (index === 0) return true; // Level 1 is always unlocked!
+    const prevLevelId = ANEKAL_LEVELS[index - 1].id;
+    return completedQuizzes.includes(prevLevelId);
+  };
+
+  const handleStartLevel = (levelObj: typeof ANEKAL_LEVELS[0], index: number) => {
+    if (!isLevelUnlocked(index)) {
+      setLockedMsg(language === 'EN' ? `🔒 Please complete Level ${index} first to unlock Level ${index + 1}!` : `🔒 ಹಂತ ${index + 1} ಅನ್‌ಲಾಕ್ ಮಾಡಲು ದಯವಿಟ್ಟು ಮೊದಲು ಹಂತ ${index} ಪೂರ್ಣಗೊಳಿಸಿ!`);
+      setTimeout(() => setLockedMsg(null), 3500);
+      return;
+    }
+    setQuestionTimeLeft(20);
     if (levelObj.id === 'typing-game') {
       setIsTypingActive(true);
     } else if (levelObj.id === 'math-game') {
@@ -512,17 +551,17 @@ export const PracticeTab = () => {
   };
 
   return (
-    <div className="animate-slide-up" style={{ padding: '0 0px 20px', display: 'flex', flexDirection: 'column', gap: '0px' }}>
+    <div className="animate-slide-up" style={{ padding: '0 0px 20px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
       
-      {/* Top Status Bar matching Image 2 */}
-      <div className="game-top-bar">
+      {/* Top Game Status Bar */}
+      <div className="game-top-bar" style={{ margin: '0 20px 0px 20px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <div style={{ width: '38px', height: '38px', borderRadius: '50%', overflow: 'hidden', border: '2px solid #38bdf8' }}>
             <img src={user?.avatar || '/buddy_boy.jpg'} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           </div>
           <div>
             <div style={{ fontSize: '0.85rem', fontWeight: 800 }}>{user?.name || 'Anekal Learner'}</div>
-            <div style={{ fontSize: '0.7rem', color: '#94a3b8' }}>Class {user?.class || 9} • Level 1</div>
+            <div style={{ fontSize: '0.7rem', color: '#94a3b8' }}>Class {user?.class || 9} • Level {completedQuizzes.length + 1}</div>
           </div>
         </div>
 
@@ -533,103 +572,80 @@ export const PracticeTab = () => {
         </div>
       </div>
 
-      {/* Gamified Map Area with Golden Ribbon & Background */}
-      <div style={{ padding: '0 20px', marginBottom: '24px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px', padding: '0 4px' }}>
-          <span style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '4px' }}>
-            👈 👉 {language === 'EN' ? "Swipe horizontally to explore landscape map" : "ನಕ್ಷೆಯನ್ನು ಅನ್ವೇಷಿಸಲು ಅಡ್ಡಲಾಗಿ ಸ್ವೈಪ್ ಮಾಡಿ"}
-          </span>
-        </div>
-
-        <div className="map-wrapper">
-          <div className="map-container">
-            
-            {/* Golden Banner Header */}
-            <div className="golden-ribbon-banner">
-              <div style={{ fontSize: '0.95rem', letterSpacing: '0.5px' }}>DIGITAL CHAMPS</div>
-              <div style={{ fontSize: '0.75rem', opacity: 0.9 }}>ANEKAL SCHOOL</div>
-              <div style={{ fontSize: '0.65rem', background: '#713f12', color: '#fef08a', padding: '1px 8px', borderRadius: '10px', marginTop: '2px' }}>
-                Learn • Practice • Grow
-              </div>
-            </div>
-
-            <svg className="map-path-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
-              {/* Outer stone path shadow */}
-              <polyline 
-                points={ANEKAL_LEVELS.map(l => `${parseFloat(l.pos.left)},${parseFloat(l.pos.top)}`).join(' ')} 
-                fill="none" stroke="#0f172a" strokeWidth="12" strokeDasharray="10 10" strokeLinecap="round" strokeLinejoin="round"
-                vectorEffect="non-scaling-stroke"
-              />
-              {/* Inner golden path */}
-              <polyline 
-                points={ANEKAL_LEVELS.map(l => `${parseFloat(l.pos.left)},${parseFloat(l.pos.top)}`).join(' ')} 
-                fill="none" stroke="#fcd34d" strokeWidth="6" strokeDasharray="10 10" strokeLinecap="round" strokeLinejoin="round"
-                vectorEffect="non-scaling-stroke"
-              />
-            </svg>
-
-            {/* 10 Map Nodes */}
-            {ANEKAL_LEVELS.map((lvl) => {
-              const isCompleted = completedQuizzes.includes(lvl.id);
-              const isSelected = selectedLevelId === lvl.id;
-              
-              return (
-                <div 
-                  key={lvl.level}
-                  className={`map-node ${isCompleted ? 'completed' : ''} ${isSelected ? 'active' : ''}`}
-                  style={{ top: lvl.pos.top, left: lvl.pos.left }}
-                  onClick={() => { setSelectedLevelId(lvl.id); handleStartLevel(lvl); }}
-                >
-                  <div className="map-node-number">{lvl.level}</div>
-                  <div>{lvl.emoji}</div>
-                  <div className={`map-node-label label-${lvl.labelPos}`} style={{ borderColor: lvl.color }}>
-                    {language === 'EN' ? lvl.title : lvl.title_kn}
-                  </div>
-                </div>
-              );
-            })}
+      {/* Header Banner */}
+      <div style={{ padding: '0 20px' }}>
+        <div style={{
+          background: 'linear-gradient(135deg, #fef08a, #eab308)',
+          borderRadius: '24px', padding: '16px 20px', border: '3px solid #fde047',
+          boxShadow: '0 6px 15px rgba(0,0,0,0.1)', display: 'flex', justifyContent: 'space-between', alignItems: 'center'
+        }}>
+          <div>
+            <div style={{ fontSize: '1.1rem', fontWeight: 900, color: '#713f12' }}>DIGITAL CHAMPS • ANEKAL SCHOOL</div>
+            <div style={{ fontSize: '0.8rem', color: '#854d0e', fontWeight: 700 }}>10 Questions Per Level • Sequential Unlocking</div>
           </div>
+          <span style={{ fontSize: '1.8rem' }}>🏆</span>
         </div>
       </div>
 
-      {/* Bottom 10 Level Cards Carousel matching Image 2 */}
-      <div style={{ padding: '0 20px', marginBottom: '8px' }}>
-        <h3 style={{ fontSize: '1.2rem', fontFamily: 'Georgia, serif', fontWeight: 800, color: 'var(--text-primary)' }}>
+      {/* Locked Level Toast Notification */}
+      {lockedMsg && (
+        <div className="animate-slide-up" style={{ margin: '0 20px', padding: '12px 16px', background: '#FEE2E2', border: '2px solid #FCA5A5', color: '#991B1B', borderRadius: '16px', fontWeight: 700, fontSize: '0.9rem', textAlign: 'center' }}>
+          {lockedMsg}
+        </div>
+      )}
+
+      {/* Anekal School Learning Roadmap Header */}
+      <div style={{ padding: '0 20px', marginTop: '8px' }}>
+        <h3 style={{ fontSize: '1.3rem', fontFamily: 'Georgia, serif', fontWeight: 800, color: 'var(--text-primary)', margin: 0 }}>
           {language === 'EN' ? "Anekal School Learning Roadmap" : "ಆನೆಕಲ್ ಶಾಲಾ ಕಲಿಕಾ ಮಾರ್ಗಸೂಚಿ"}
         </h3>
+        <p style={{ margin: '4px 0 0 0', fontSize: '0.82rem', color: 'var(--text-secondary)' }}>
+          {language === 'EN' ? "Complete each task to unlock the next level!" : "ಮುಂದಿನ ಹಂತವನ್ನು ಅನ್‌ಲಾಕ್ ಮಾಡಲು ಪ್ರತಿಯೊಂದು ಕಾರ್ಯವನ್ನು ಪೂರ್ಣಗೊಳಿಸಿ!"}
+        </p>
       </div>
 
+      {/* 10 Level Cards Carousel */}
       <div className="anekal-card-carousel">
-        {ANEKAL_LEVELS.map((lvl) => {
-          const isSelected = selectedLevelId === lvl.id;
+        {ANEKAL_LEVELS.map((lvl, index) => {
+          const unlocked = isLevelUnlocked(index);
           const isCompleted = completedQuizzes.includes(lvl.id);
+          const isSelected = selectedLevelId === lvl.id;
 
           return (
             <div 
               key={lvl.level}
               className={`anekal-level-card ${isSelected ? 'selected' : ''}`}
+              style={{
+                opacity: unlocked ? 1 : 0.75,
+                background: unlocked ? (isSelected ? '#f8fafc' : '#ffffff') : '#f1f5f9',
+                borderColor: isSelected ? lvl.color : (unlocked ? '#e2e8f0' : '#cbd5e1')
+              }}
               onClick={() => {
                 setSelectedLevelId(lvl.id);
-                handleStartLevel(lvl);
+                handleStartLevel(lvl, index);
               }}
             >
               <div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-                  <span style={{ background: lvl.color, color: 'white', padding: '4px 10px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: 900 }}>
+                  <span style={{ background: unlocked ? lvl.color : '#64748b', color: 'white', padding: '4px 10px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: 900 }}>
                     {lvl.level}. {lvl.subject}
                   </span>
-                  {isCompleted && <span style={{ color: '#16a34a', fontWeight: 800, fontSize: '0.8rem' }}>✓ Done</span>}
+                  {isCompleted ? (
+                    <span style={{ color: '#16a34a', fontWeight: 800, fontSize: '0.8rem' }}>✓ Done</span>
+                  ) : (!unlocked && (
+                    <span style={{ color: '#64748b', fontWeight: 800, fontSize: '0.8rem' }}>🔒 Locked</span>
+                  ))}
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
-                  <span style={{ fontSize: '1.8rem' }}>{lvl.emoji}</span>
-                  <h4 style={{ margin: 0, fontSize: '1rem', fontWeight: 800, color: '#1e293b' }}>
+                  <span style={{ fontSize: '1.8rem', filter: unlocked ? 'none' : 'grayscale(100%)' }}>{lvl.emoji}</span>
+                  <h4 style={{ margin: 0, fontSize: '1rem', fontWeight: 800, color: unlocked ? '#1e293b' : '#64748b' }}>
                     {language === 'EN' ? lvl.title : lvl.title_kn}
                   </h4>
                 </div>
 
-                <div style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 700, marginBottom: '6px' }}>You will learn:</div>
-                <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.75rem', color: '#334155', lineHeight: '1.5' }}>
+                <div style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 700, marginBottom: '6px' }}>You will learn (10 Questions):</div>
+                <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.75rem', color: unlocked ? '#334155' : '#64748b', lineHeight: '1.5' }}>
                   {lvl.bullets.map((b, i) => (
                     <li key={i}>{b}</li>
                   ))}
@@ -637,20 +653,27 @@ export const PracticeTab = () => {
               </div>
 
               <div style={{ marginTop: '16px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', fontSize: '0.75rem', fontWeight: 800, color: '#d97706' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', fontSize: '0.75rem', fontWeight: 800, color: unlocked ? '#d97706' : '#64748b' }}>
                   <span>Reward:</span>
                   <span>⭐ +{lvl.reward} XP</span>
                 </div>
 
                 <button 
-                  onClick={() => handleStartLevel(lvl)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleStartLevel(lvl, index);
+                  }}
                   style={{
-                    width: '100%', padding: '10px', borderRadius: '14px', border: 'none',
-                    background: lvl.color, color: 'white', fontWeight: 800, fontSize: '0.85rem',
-                    cursor: 'pointer', boxShadow: `0 4px 10px ${lvl.color}40`
+                    width: '100%', padding: '12px', borderRadius: '14px', border: 'none',
+                    background: unlocked ? lvl.color : '#94a3b8', color: 'white', fontWeight: 800, fontSize: '0.85rem',
+                    cursor: unlocked ? 'pointer' : 'not-allowed', boxShadow: unlocked ? `0 4px 10px ${lvl.color}40` : 'none'
                   }}
                 >
-                  {isCompleted ? (language === 'EN' ? 'Replay Level' : 'ಮತ್ತೆ ಆಡಿ') : (language === 'EN' ? 'Start Level 🚀' : 'ಪ್ರಾರಂಭಿಸಿ 🚀')}
+                  {unlocked ? (
+                    isCompleted ? (language === 'EN' ? 'Replay Level 🚀' : 'ಮತ್ತೆ ಆಡಿ 🚀') : (language === 'EN' ? 'Start Level 🚀' : 'ಪ್ರಾರಂಭಿಸಿ 🚀')
+                  ) : (
+                    language === 'EN' ? `🔒 Locked (Complete Level ${index} first)` : `🔒 ಹಂತ ${index} ಪೂರ್ಣಗೊಳಿಸಿ`
+                  )}
                 </button>
               </div>
             </div>
