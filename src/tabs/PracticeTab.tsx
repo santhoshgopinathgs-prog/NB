@@ -472,16 +472,16 @@ export const PracticeTab = () => {
   }
 
   const ANEKAL_LEVELS = [
-    { id: `c${user?.class || 9}-d-1`, level: 1, title: 'Basics of Computer', title_kn: 'ಕಂಪ್ಯೂಟರ್ ಮೂಲಗಳು', subject: 'Digital Skills', emoji: '💻', color: '#10B981', reward: 50, bullets: ['Parts of Computer', 'Using Mouse', 'Basic Operations'], pos: { top: '78%', left: '15%' } },
-    { id: 'typing-game', level: 2, title: 'Typing Champ', title_kn: 'ಟೈಪಿಂಗ್ ಚಾಂಪ್', subject: 'Digital Skills', emoji: '⌨️', color: '#3B82F6', reward: 60, bullets: ['Keyboard Basics', 'Typing Practice', 'Speed & Accuracy'], pos: { top: '62%', left: '28%' } },
-    { id: `c${user?.class || 9}-m-1`, level: 3, title: 'Number Systems', title_kn: 'ಸಂಖ್ಯಾ ವ್ಯವಸ್ಥೆ', subject: 'Mathematics', emoji: '🧮', color: '#8B5CF6', reward: 70, bullets: ['Natural & Whole', 'Rational Numbers', 'Real Numbers'], pos: { top: '48%', left: '44%' } },
-    { id: `c${user?.class || 9}-s-1`, level: 4, title: 'Science Explorer', title_kn: 'ವಿಜ್ಞಾನ ಅನ್ವೇಷಕ', subject: 'Science', emoji: '🔬', color: '#F59E0B', reward: 80, bullets: ['Matter & Energy', 'Atoms & Molecules', 'Life Processes'], pos: { top: '35%', left: '60%' } },
-    { id: `c${user?.class || 9}-d-2`, level: 5, title: 'Online Safety', title_kn: 'ಆನ್‌ಲೈನ್ ಸುರಕ್ಷತೆ', subject: 'Digital Skills', emoji: '🛡️', color: '#EC4899', reward: 90, bullets: ['Strong Passwords', 'Avoid Scams', 'Be Safe Online'], pos: { top: '22%', left: '76%' } },
-    { id: `c${user?.class || 9}-e-1`, level: 6, title: 'English Master', title_kn: 'ಇಂಗ್ಲಿಷ್ ಮಾಸ್ಟರ್', subject: 'English', emoji: '📖', color: '#06B6D4', reward: 100, bullets: ['Grammar & Tenses', 'Vocabulary', 'Comprehension'], pos: { top: '32%', left: '88%' } },
-    { id: `c${user?.class || 9}-s-2`, level: 7, title: 'Digital Productivity', title_kn: 'ಡಿಜಿಟಲ್ ಉತ್ಪಾದಕತೆ', subject: 'Digital Skills', emoji: '📊', color: '#EF4444', reward: 110, bullets: ['Word Basics', 'Excel Basics', 'PowerPoint Basics'], pos: { top: '52%', left: '82%' } },
-    { id: `c${user?.class || 9}-m-2`, level: 8, title: 'Intro to Coding', title_kn: 'ಕೋಡಿಂಗ್ ಪರಿಚಯ', subject: 'Digital Skills', emoji: '👨‍💻', color: '#6366F1', reward: 120, bullets: ['What is Coding', 'Block Logic', 'Create Your Game'], pos: { top: '68%', left: '68%' } },
-    { id: `c${user?.class || 9}-e-2`, level: 9, title: 'Real Life Project', title_kn: 'ನೈಜ ಜೀವನದ ಯೋಜನೆ', subject: 'Mathematics', emoji: '🚀', color: '#F97316', reward: 130, bullets: ['Problem Solving', 'Team Work', 'Project Building'], pos: { top: '82%', left: '50%' } },
-    { id: 'math-game', level: 10, title: 'Digital Champ Graduation', title_kn: 'ಆನೆಕಲ್ ಪದವಿ', subject: 'English', emoji: '🎓', color: '#EAB308', reward: 200, bullets: ['Showcase Skills', 'Earn Certificate', 'Become Champion!'], pos: { top: '88%', left: '32%' } }
+    { id: `c${user?.class || 9}-d-1`, level: 1, title: 'Basics of Computer', title_kn: 'ಕಂಪ್ಯೂಟರ್ ಮೂಲಗಳು', subject: 'Digital Skills', emoji: '💻', color: '#10B981', reward: 50, bullets: ['Parts of Computer', 'Using Mouse', 'Basic Operations'], pos: { top: '72%', left: '7%' }, labelPos: 'below' },
+    { id: 'typing-game', level: 2, title: 'Typing Champ', title_kn: 'ಟೈಪಿಂಗ್ ಚಾಂಪ್', subject: 'Digital Skills', emoji: '⌨️', color: '#3B82F6', reward: 60, bullets: ['Keyboard Basics', 'Typing Practice', 'Speed & Accuracy'], pos: { top: '50%', left: '17%' }, labelPos: 'above' },
+    { id: `c${user?.class || 9}-m-1`, level: 3, title: 'Number Systems', title_kn: 'ಸಂಖ್ಯಾ ವ್ಯವಸ್ಥೆ', subject: 'Mathematics', emoji: '🧮', color: '#8B5CF6', reward: 70, bullets: ['Natural & Whole', 'Rational Numbers', 'Real Numbers'], pos: { top: '32%', left: '27%' }, labelPos: 'below' },
+    { id: `c${user?.class || 9}-s-1`, level: 4, title: 'Science Explorer', title_kn: 'ವಿಜ್ಞಾನ ಅನ್ವೇಷಕ', subject: 'Science', emoji: '🔬', color: '#F59E0B', reward: 80, bullets: ['Matter & Energy', 'Atoms & Molecules', 'Life Processes'], pos: { top: '48%', left: '37%' }, labelPos: 'above' },
+    { id: `c${user?.class || 9}-d-2`, level: 5, title: 'Online Safety', title_kn: 'ಆನ್‌ಲೈನ್ ಸುರಕ್ಷತೆ', subject: 'Digital Skills', emoji: '🛡️', color: '#EC4899', reward: 90, bullets: ['Strong Passwords', 'Avoid Scams', 'Be Safe Online'], pos: { top: '24%', left: '47%' }, labelPos: 'below' },
+    { id: `c${user?.class || 9}-e-1`, level: 6, title: 'English Master', title_kn: 'ಇಂಗ್ಲಿಷ್ ಮಾಸ್ಟರ್', subject: 'English', emoji: '📖', color: '#06B6D4', reward: 100, bullets: ['Grammar & Tenses', 'Vocabulary', 'Comprehension'], pos: { top: '42%', left: '57%' }, labelPos: 'above' },
+    { id: `c${user?.class || 9}-s-2`, level: 7, title: 'Digital Productivity', title_kn: 'ಡಿಜಿಟಲ್ ಉತ್ಪಾದಕತೆ', subject: 'Digital Skills', emoji: '📊', color: '#EF4444', reward: 110, bullets: ['Word Basics', 'Excel Basics', 'PowerPoint Basics'], pos: { top: '66%', left: '67%' }, labelPos: 'below' },
+    { id: `c${user?.class || 9}-m-2`, level: 8, title: 'Intro to Coding', title_kn: 'ಕೋಡಿಂಗ್ ಪರಿಚಯ', subject: 'Digital Skills', emoji: '👨‍💻', color: '#6366F1', reward: 120, bullets: ['What is Coding', 'Block Logic', 'Create Your Game'], pos: { top: '44%', left: '77%' }, labelPos: 'above' },
+    { id: `c${user?.class || 9}-e-2`, level: 9, title: 'Real Life Project', title_kn: 'ನೈಜ ಜೀವನದ ಯೋಜನೆ', subject: 'Mathematics', emoji: '🚀', color: '#F97316', reward: 130, bullets: ['Problem Solving', 'Team Work', 'Project Building'], pos: { top: '26%', left: '87%' }, labelPos: 'below' },
+    { id: 'math-game', level: 10, title: 'Graduation', title_kn: 'ಆನೆಕಲ್ ಪದವಿ', subject: 'English', emoji: '🎓', color: '#EAB308', reward: 200, bullets: ['Showcase Skills', 'Earn Certificate', 'Become Champion!'], pos: { top: '58%', left: '94%' }, labelPos: 'above' }
   ];
 
   const [selectedLevelId, setSelectedLevelId] = useState<string>(ANEKAL_LEVELS[0].id);
@@ -519,53 +519,61 @@ export const PracticeTab = () => {
       </div>
 
       {/* Gamified Map Area with Golden Ribbon & Background */}
-      <div style={{ padding: '0 20px' }}>
-        <div className="map-container">
-          
-          {/* Golden Banner Header */}
-          <div className="golden-ribbon-banner">
-            <div style={{ fontSize: '1rem', letterSpacing: '0.5px' }}>DIGITAL CHAMPS</div>
-            <div style={{ fontSize: '0.75rem', opacity: 0.9 }}>ANEKAL SCHOOL</div>
-            <div style={{ fontSize: '0.65rem', background: '#713f12', color: '#fef08a', padding: '1px 8px', borderRadius: '10px', marginTop: '2px' }}>
-              Learn • Practice • Grow
-            </div>
-          </div>
+      <div style={{ padding: '0 20px', marginBottom: '24px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px', padding: '0 4px' }}>
+          <span style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '4px' }}>
+            👈 👉 {language === 'EN' ? "Swipe horizontally to explore landscape map" : "ನಕ್ಷೆಯನ್ನು ಅನ್ವೇಷಿಸಲು ಅಡ್ಡಲಾಗಿ ಸ್ವೈಪ್ ಮಾಡಿ"}
+          </span>
+        </div>
 
-          <svg className="map-path-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
-            {/* Outline path */}
-            <polyline 
-              points={ANEKAL_LEVELS.map(l => `${parseFloat(l.pos.left)},${parseFloat(l.pos.top)}`).join(' ')} 
-              fill="none" stroke="#0f172a" strokeWidth="10" strokeDasharray="12 12" strokeLinecap="round" strokeLinejoin="round"
-              vectorEffect="non-scaling-stroke"
-            />
-            {/* Inner stone path */}
-            <polyline 
-              points={ANEKAL_LEVELS.map(l => `${parseFloat(l.pos.left)},${parseFloat(l.pos.top)}`).join(' ')} 
-              fill="none" stroke="#fcd34d" strokeWidth="5" strokeDasharray="12 12" strokeLinecap="round" strokeLinejoin="round"
-              vectorEffect="non-scaling-stroke"
-            />
-          </svg>
-
-          {/* 10 Map Nodes */}
-          {ANEKAL_LEVELS.map((lvl) => {
-            const isCompleted = completedQuizzes.includes(lvl.id);
-            const isSelected = selectedLevelId === lvl.id;
+        <div className="map-wrapper">
+          <div className="map-container">
             
-            return (
-              <div 
-                key={lvl.level}
-                className={`map-node ${isCompleted ? 'completed' : ''} ${isSelected ? 'active' : ''}`}
-                style={{ top: lvl.pos.top, left: lvl.pos.left }}
-                onClick={() => { setSelectedLevelId(lvl.id); handleStartLevel(lvl); }}
-              >
-                <div className="map-node-number">{lvl.level}</div>
-                <div>{lvl.emoji}</div>
-                <div className="map-node-label" style={{ borderColor: lvl.color }}>
-                  {language === 'EN' ? lvl.title : lvl.title_kn}
-                </div>
+            {/* Golden Banner Header */}
+            <div className="golden-ribbon-banner">
+              <div style={{ fontSize: '0.95rem', letterSpacing: '0.5px' }}>DIGITAL CHAMPS</div>
+              <div style={{ fontSize: '0.75rem', opacity: 0.9 }}>ANEKAL SCHOOL</div>
+              <div style={{ fontSize: '0.65rem', background: '#713f12', color: '#fef08a', padding: '1px 8px', borderRadius: '10px', marginTop: '2px' }}>
+                Learn • Practice • Grow
               </div>
-            );
-          })}
+            </div>
+
+            <svg className="map-path-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+              {/* Outer stone path shadow */}
+              <polyline 
+                points={ANEKAL_LEVELS.map(l => `${parseFloat(l.pos.left)},${parseFloat(l.pos.top)}`).join(' ')} 
+                fill="none" stroke="#0f172a" strokeWidth="12" strokeDasharray="10 10" strokeLinecap="round" strokeLinejoin="round"
+                vectorEffect="non-scaling-stroke"
+              />
+              {/* Inner golden path */}
+              <polyline 
+                points={ANEKAL_LEVELS.map(l => `${parseFloat(l.pos.left)},${parseFloat(l.pos.top)}`).join(' ')} 
+                fill="none" stroke="#fcd34d" strokeWidth="6" strokeDasharray="10 10" strokeLinecap="round" strokeLinejoin="round"
+                vectorEffect="non-scaling-stroke"
+              />
+            </svg>
+
+            {/* 10 Map Nodes */}
+            {ANEKAL_LEVELS.map((lvl) => {
+              const isCompleted = completedQuizzes.includes(lvl.id);
+              const isSelected = selectedLevelId === lvl.id;
+              
+              return (
+                <div 
+                  key={lvl.level}
+                  className={`map-node ${isCompleted ? 'completed' : ''} ${isSelected ? 'active' : ''}`}
+                  style={{ top: lvl.pos.top, left: lvl.pos.left }}
+                  onClick={() => { setSelectedLevelId(lvl.id); handleStartLevel(lvl); }}
+                >
+                  <div className="map-node-number">{lvl.level}</div>
+                  <div>{lvl.emoji}</div>
+                  <div className={`map-node-label label-${lvl.labelPos}`} style={{ borderColor: lvl.color }}>
+                    {language === 'EN' ? lvl.title : lvl.title_kn}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
 
