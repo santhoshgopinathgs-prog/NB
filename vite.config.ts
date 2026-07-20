@@ -18,14 +18,14 @@ export default defineConfig({
         display: 'standalone',
         icons: [
           {
-            src: 'vite.svg',
+            src: 'logo.jpg',
             sizes: '192x192',
-            type: 'image/svg+xml'
+            type: 'image/jpeg'
           },
           {
-            src: 'vite.svg',
+            src: 'logo.jpg',
             sizes: '512x512',
-            type: 'image/svg+xml'
+            type: 'image/jpeg'
           }
         ]
       },

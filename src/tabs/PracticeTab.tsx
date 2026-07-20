@@ -4,10 +4,27 @@ import { Gamepad2, PlayCircle, CheckCircle, RefreshCcw, Map as MapIcon, Graduati
 import { mockQuizzes, MOCK_MATH_QUESTIONS, MOCK_SCIENCE_QUESTIONS, MOCK_DIGITAL_QUESTIONS, MOCK_ENGLISH_QUESTIONS } from '../data/mockData';
 import '../map.css';
 
+const ANEKAL_LEVELS = [
+  { id: 'anekal-lvl-1', level: 1, title: 'Basics of Computer', title_kn: 'ಕಂಪ್ಯೂಟರ್ ಮೂಲಗಳು', subject: 'Digital Skills', emoji: '💻', color: '#10B981', reward: 50, bullets: ['Parts of Computer', 'Using Mouse', 'Basic Operations'] },
+  { id: 'anekal-lvl-2', level: 2, title: 'Typing Champ', title_kn: 'ಟೈಪಿಂಗ್ ಚಾಂಪ್', subject: 'Digital Skills', emoji: '⌨️', color: '#3B82F6', reward: 60, bullets: ['Keyboard Basics', 'Typing Practice', 'Speed & Accuracy'] },
+  { id: 'anekal-lvl-3', level: 3, title: 'Number Systems', title_kn: 'ಸಂಖ್ಯಾ ವ್ಯವಸ್ಥೆ', subject: 'Mathematics', emoji: '🧮', color: '#8B5CF6', reward: 70, bullets: ['Natural & Whole', 'Rational Numbers', 'Real Numbers'] },
+  { id: 'anekal-lvl-4', level: 4, title: 'Science Explorer', title_kn: 'ವಿಜ್ಞಾನ ಅನ್ವೇಷಕ', subject: 'Science', emoji: '🔬', color: '#F59E0B', reward: 80, bullets: ['Matter & Energy', 'Atoms & Molecules', 'Life Processes'] },
+  { id: 'anekal-lvl-5', level: 5, title: 'Online Safety', title_kn: 'ಆನ್‌ಲೈನ್ ಸುರಕ್ಷತೆ', subject: 'Digital Skills', emoji: '🛡️', color: '#EC4899', reward: 90, bullets: ['Strong Passwords', 'Avoid Scams', 'Be Safe Online'] },
+  { id: 'anekal-lvl-6', level: 6, title: 'English Master', title_kn: 'ಇಂಗ್ಲಿಷ್ ಮಾಸ್ಟರ್', subject: 'English', emoji: '📖', color: '#06B6D4', reward: 100, bullets: ['Grammar & Tenses', 'Vocabulary', 'Comprehension'] },
+  { id: 'anekal-lvl-7', level: 7, title: 'Digital Productivity', title_kn: 'ಡಿಜಿಟಲ್ ಉತ್ಪಾದಕತೆ', subject: 'Digital Skills', emoji: '📊', color: '#EF4444', reward: 110, bullets: ['Word Basics', 'Excel Basics', 'PowerPoint Basics'] },
+  { id: 'anekal-lvl-8', level: 8, title: 'Intro to Coding', title_kn: 'ಕೋಡಿಂಗ್ ಪರಿಚಯ', subject: 'Digital Skills', emoji: '👨‍💻', color: '#6366F1', reward: 120, bullets: ['What is Coding', 'Block Logic', 'Create Your Game'] },
+  { id: 'anekal-lvl-9', level: 9, title: 'Real Life Project', title_kn: 'ನೈಜ ಜೀವನದ ಯೋಜನೆ', subject: 'Mathematics', emoji: '🚀', color: '#F97316', reward: 130, bullets: ['Problem Solving', 'Team Work', 'Project Building'] },
+  { id: 'anekal-lvl-10', level: 10, title: 'Graduation', title_kn: 'ಆನೆಕಲ್ ಪದವಿ', subject: 'English', emoji: '🎓', color: '#EAB308', reward: 200, bullets: ['Showcase Skills', 'Earn Certificate', 'Become Champion!'] }
+];
+
 export const PracticeTab = () => {
-  const { t, language, user, completedQuizzes, markQuizComplete, userXP } = useAppContext();
-  const [activeQuiz, setActiveQuiz] = useState<string | null>(null);
+  const { t, language, user, completedQuizzes, markQuizComplete, userXP, markQuiz80Percent, markTypingPracticed } = useAppContext();
   
+  // Active Navigation & Quiz State
+  const [activeQuiz, setActiveQuiz] = useState<string | null>(null);
+  const [selectedLevelId, setSelectedLevelId] = useState<string>(ANEKAL_LEVELS[0].id);
+  const [lockedMsg, setLockedMsg] = useState<string | null>(null);
+
   // Interactive Quiz State
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
@@ -16,11 +33,15 @@ export const PracticeTab = () => {
   const [justEarnedCert, setJustEarnedCert] = useState<boolean>(false);
   const [streak, setStreak] = useState<number>(0);
   const [bonusXP, setBonusXP] = useState<number>(0);
-  
   const [correctAnswersCount, setCorrectAnswersCount] = useState<number>(0);
+  const [questionTimeLeft, setQuestionTimeLeft] = useState<number>(20);
+
+  // Typing Practice State
   const [isTypingActive, setIsTypingActive] = useState<boolean>(false);
   const [typingInput, setTypingInput] = useState<string>('');
-  const { markQuiz80Percent, markTypingPracticed } = useAppContext();
+  const [typingLevel, setTypingLevel] = useState<number>(0);
+  const [timeLeft, setTimeLeft] = useState<number>(60);
+  const [typingStatus, setTypingStatus] = useState<{ type: 'error' | 'success', msg: string } | null>(null);
 
   // Math Flashcards State
   const [isMathActive, setIsMathActive] = useState<boolean>(false);
@@ -48,16 +69,15 @@ export const PracticeTab = () => {
     if (isMathActive && mathTimeLeft > 0) {
       const timerId = setInterval(() => setMathTimeLeft(prev => prev - 1), 1000);
       return () => clearInterval(timerId);
-    } else if (isMathActive && mathTimeLeft === 0) {
-      if (mathScore > 0) {
-        // We'd usually add XP via context here, simulate it for now
-        // markQuizComplete(`math_game`, mathScore); // if we wanted to
-      }
     }
   }, [isMathActive, mathTimeLeft]);
 
-  // Question Timer & Roadmap State
-  const [questionTimeLeft, setQuestionTimeLeft] = useState<number>(20);
+  React.useEffect(() => {
+    if (isTypingActive && timeLeft > 0) {
+      const timerId = setInterval(() => setTimeLeft(prev => prev - 1), 1000);
+      return () => clearInterval(timerId);
+    }
+  }, [isTypingActive, timeLeft]);
 
   // Question Mapper for all 10 Anekal Roadmap Levels
   const getQuestionsForQuiz = React.useCallback((quizId: string) => {
@@ -170,6 +190,30 @@ export const PracticeTab = () => {
     setBonusXP(0);
   };
 
+  const isLevelUnlocked = (index: number) => {
+    if (index === 0) return true; // Level 1 is always unlocked!
+    const prevLevelId = ANEKAL_LEVELS[index - 1].id;
+    return completedQuizzes.includes(prevLevelId);
+  };
+
+  const handleStartLevel = (levelObj: typeof ANEKAL_LEVELS[0], index: number) => {
+    if (!isLevelUnlocked(index)) {
+      setLockedMsg(language === 'EN' ? `🔒 Please complete Level ${index} first to unlock Level ${index + 1}!` : `🔒 ಹಂತ ${index + 1} ಅನ್‌ಲಾಕ್ ಮಾಡಲು ದಯವಿಟ್ಟು ಮೊದಲು ಹಂತ ${index} ಪೂರ್ಣಗೊಳಿಸಿ!`);
+      setTimeout(() => setLockedMsg(null), 3500);
+      return;
+    }
+    setQuestionTimeLeft(20);
+    setCurrentQuestionIndex(0);
+    setSelectedOption(null);
+    setIsAnswerRevealed(false);
+    setQuizCompleted(false);
+    setJustEarnedCert(false);
+    setCorrectAnswersCount(0);
+    setStreak(0);
+    setBonusXP(0);
+    setActiveQuiz(levelObj.id);
+  };
+
   const typingLevelsEN = [
     "The quick brown fox jumps over the lazy dog",
     "Practice makes perfect when learning to type.",
@@ -185,17 +229,6 @@ export const PracticeTab = () => {
     "ತಂತ್ರಜ್ಞಾನವು ಜನರನ್ನು ಒಟ್ಟುಗೂಡಿಸಿದಾಗ ಉತ್ತಮವಾಗಿರುತ್ತದೆ.",
     "ಯಶಸ್ಸು ಅಂತಿಮವಲ್ಲ, ವೈಫಲ್ಯವು ಮಾರಕವಲ್ಲ: ಮುಂದುವರಿಯುವ ಧೈರ್ಯವೇ ಮುಖ್ಯ."
   ];
-
-  const [typingLevel, setTypingLevel] = useState<number>(0);
-  const [timeLeft, setTimeLeft] = useState<number>(60);
-  const [typingStatus, setTypingStatus] = useState<{ type: 'error' | 'success', msg: string } | null>(null);
-
-  React.useEffect(() => {
-    if (isTypingActive && timeLeft > 0) {
-      const timerId = setInterval(() => setTimeLeft(prev => prev - 1), 1000);
-      return () => clearInterval(timerId);
-    }
-  }, [isTypingActive, timeLeft]);
 
   if (isTypingActive) {
     const targetTexts = language === 'EN' ? typingLevelsEN : typingLevelsKN;
@@ -449,53 +482,41 @@ export const PracticeTab = () => {
               const isSelected = selectedOption === i;
               const isCorrectOption = i === currentQuestion.correctAnswer;
               
-              let bgColor = isSelected ? '#EFF6FF' : 'var(--bg-app)';
-              let borderColor = isSelected ? 'var(--accent-blue)' : 'var(--border-light)';
-              let textColor = isSelected ? 'var(--accent-blue)' : 'var(--text-primary)';
-              let transformStyle = isSelected ? 'scale(1.02)' : 'scale(1)';
-              
+              let style: React.CSSProperties = {
+                padding: '16px', borderRadius: '16px', border: '2px solid var(--border-light)',
+                background: 'var(--bg-surface)', textAlign: 'left', fontWeight: 600, fontSize: '1rem',
+                cursor: 'pointer', transition: 'all 0.2s', display: 'flex', justifyContent: 'space-between', alignItems: 'center'
+              };
+
               if (isAnswerRevealed) {
                 if (isCorrectOption) {
-                  bgColor = '#D1FAE5'; // Light green
-                  borderColor = 'var(--accent-green)';
-                  textColor = 'var(--accent-green)';
-                  transformStyle = 'scale(1.03)'; // pop effect
-                } else if (isSelected) {
-                  bgColor = '#FEE2E2'; // Light red
-                  borderColor = 'var(--accent-red)';
-                  textColor = 'var(--accent-red)';
-                  transformStyle = 'translateX(5px)'; // shake effect simulation
+                  style.background = '#D1FAE5';
+                  style.borderColor = 'var(--accent-green)';
+                  style.color = 'var(--accent-green)';
+                } else if (isSelected && !isCorrectOption) {
+                  style.background = '#FEE2E2';
+                  style.borderColor = 'var(--accent-red)';
+                  style.color = 'var(--accent-red)';
                 }
+              } else if (isSelected) {
+                style.borderColor = 'var(--accent-blue)';
+                style.background = '#EFF6FF';
               }
 
               return (
-                <button 
-                  key={i} 
+                <button
+                  key={i}
                   onClick={() => handleOptionClick(i)}
-                  style={{ 
-                    padding: '16px', 
-                    background: bgColor, 
-                    border: `2px solid ${borderColor}`, 
-                    borderRadius: '16px', textAlign: 'left', display: 'flex', alignItems: 'center', gap: '12px',
-                    fontWeight: isSelected || (isAnswerRevealed && isCorrectOption) ? 700 : 500,
-                    color: textColor,
-                    transition: 'all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)',
-                    transform: transformStyle,
-                    cursor: isAnswerRevealed ? 'default' : 'pointer'
-                  }}
+                  disabled={isAnswerRevealed}
+                  style={style}
                 >
-                  <div style={{ 
-                    width: '24px', height: '24px', borderRadius: '50%', 
-                    border: `2px solid ${isAnswerRevealed && (isCorrectOption || isSelected) ? borderColor : (isSelected ? 'var(--accent-blue)' : 'var(--text-tertiary)')}`,
-                    background: (isSelected && !isAnswerRevealed) || (isAnswerRevealed && isCorrectOption) || (isAnswerRevealed && isSelected) ? borderColor : 'transparent',
-                    transition: 'all 0.2s ease',
-                    flexShrink: 0
-                  }}></div>
-                  {opt}
+                  <span>{opt}</span>
+                  {isAnswerRevealed && isCorrectOption && <CheckCircle size={20} color="var(--accent-green)" />}
                 </button>
               );
             })}
           </div>
+
           {!isAnswerRevealed && (
             <button 
               onClick={handleConfirm}
@@ -515,46 +536,6 @@ export const PracticeTab = () => {
       </div>
     );
   }
-
-  const ANEKAL_LEVELS = [
-    { id: 'anekal-lvl-1', level: 1, title: 'Basics of Computer', title_kn: 'ಕಂಪ್ಯೂಟರ್ ಮೂಲಗಳು', subject: 'Digital Skills', emoji: '💻', color: '#10B981', reward: 50, bullets: ['Parts of Computer', 'Using Mouse', 'Basic Operations'] },
-    { id: 'anekal-lvl-2', level: 2, title: 'Typing Champ', title_kn: 'ಟೈಪಿಂಗ್ ಚಾಂಪ್', subject: 'Digital Skills', emoji: '⌨️', color: '#3B82F6', reward: 60, bullets: ['Keyboard Basics', 'Typing Practice', 'Speed & Accuracy'] },
-    { id: 'anekal-lvl-3', level: 3, title: 'Number Systems', title_kn: 'ಸಂಖ್ಯಾ ವ್ಯವಸ್ಥೆ', subject: 'Mathematics', emoji: '🧮', color: '#8B5CF6', reward: 70, bullets: ['Natural & Whole', 'Rational Numbers', 'Real Numbers'] },
-    { id: 'anekal-lvl-4', level: 4, title: 'Science Explorer', title_kn: 'ವಿಜ್ಞಾನ ಅನ್ವೇಷಕ', subject: 'Science', emoji: '🔬', color: '#F59E0B', reward: 80, bullets: ['Matter & Energy', 'Atoms & Molecules', 'Life Processes'] },
-    { id: 'anekal-lvl-5', level: 5, title: 'Online Safety', title_kn: 'ಆನ್‌ಲೈನ್ ಸುರಕ್ಷತೆ', subject: 'Digital Skills', emoji: '🛡️', color: '#EC4899', reward: 90, bullets: ['Strong Passwords', 'Avoid Scams', 'Be Safe Online'] },
-    { id: 'anekal-lvl-6', level: 6, title: 'English Master', title_kn: 'ಇಂಗ್ಲಿಷ್ ಮಾಸ್ಟರ್', subject: 'English', emoji: '📖', color: '#06B6D4', reward: 100, bullets: ['Grammar & Tenses', 'Vocabulary', 'Comprehension'] },
-    { id: 'anekal-lvl-7', level: 7, title: 'Digital Productivity', title_kn: 'ಡಿಜಿಟಲ್ ಉತ್ಪಾದಕತೆ', subject: 'Digital Skills', emoji: '📊', color: '#EF4444', reward: 110, bullets: ['Word Basics', 'Excel Basics', 'PowerPoint Basics'] },
-    { id: 'anekal-lvl-8', level: 8, title: 'Intro to Coding', title_kn: 'ಕೋಡಿಂಗ್ ಪರಿಚಯ', subject: 'Digital Skills', emoji: '👨‍💻', color: '#6366F1', reward: 120, bullets: ['What is Coding', 'Block Logic', 'Create Your Game'] },
-    { id: 'anekal-lvl-9', level: 9, title: 'Real Life Project', title_kn: 'ನೈಜ ಜೀವನದ ಯೋಜನೆ', subject: 'Mathematics', emoji: '🚀', color: '#F97316', reward: 130, bullets: ['Problem Solving', 'Team Work', 'Project Building'] },
-    { id: 'anekal-lvl-10', level: 10, title: 'Graduation', title_kn: 'ಆನೆಕಲ್ ಪದವಿ', subject: 'English', emoji: '🎓', color: '#EAB308', reward: 200, bullets: ['Showcase Skills', 'Earn Certificate', 'Become Champion!'] }
-  ];
-
-  const [selectedLevelId, setSelectedLevelId] = useState<string>(ANEKAL_LEVELS[0].id);
-  const [lockedMsg, setLockedMsg] = useState<string | null>(null);
-
-  const isLevelUnlocked = (index: number) => {
-    if (index === 0) return true; // Level 1 is always unlocked!
-    const prevLevelId = ANEKAL_LEVELS[index - 1].id;
-    return completedQuizzes.includes(prevLevelId);
-  };
-
-  const handleStartLevel = (levelObj: typeof ANEKAL_LEVELS[0], index: number) => {
-    if (!isLevelUnlocked(index)) {
-      setLockedMsg(language === 'EN' ? `🔒 Please complete Level ${index} first to unlock Level ${index + 1}!` : `🔒 ಹಂತ ${index + 1} ಅನ್‌ಲಾಕ್ ಮಾಡಲು ದಯವಿಟ್ಟು ಮೊದಲು ಹಂತ ${index} ಪೂರ್ಣಗೊಳಿಸಿ!`);
-      setTimeout(() => setLockedMsg(null), 3500);
-      return;
-    }
-    setQuestionTimeLeft(20);
-    setCurrentQuestionIndex(0);
-    setSelectedOption(null);
-    setIsAnswerRevealed(false);
-    setQuizCompleted(false);
-    setJustEarnedCert(false);
-    setCorrectAnswersCount(0);
-    setStreak(0);
-    setBonusXP(0);
-    setActiveQuiz(levelObj.id);
-  };
 
   return (
     <div className="animate-slide-up" style={{ padding: '0 0px 20px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
