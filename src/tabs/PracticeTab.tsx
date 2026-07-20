@@ -579,54 +579,54 @@ export const PracticeTab = () => {
       </div>
 
       {/* Header Banner */}
-      <div style={{ padding: '0 20px' }}>
+      <div style={{ width: '100%', marginBottom: '20px' }}>
         <div style={{
-          background: 'linear-gradient(135deg, #fef08a, #eab308)',
-          borderRadius: '24px', padding: '16px 20px', border: '3px solid #fde047',
-          boxShadow: '0 6px 15px rgba(0,0,0,0.1)', display: 'flex', justifyContent: 'space-between', alignItems: 'center'
+          background: 'linear-gradient(135deg, var(--accent-green), #1E5E3A)',
+          borderRadius: '24px', padding: '24px 28px', border: '1px solid var(--border-light)',
+          boxShadow: '0 8px 24px rgba(46, 139, 87, 0.25)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: 'white'
         }}>
           <div>
-            <div style={{ fontSize: '1.1rem', fontWeight: 900, color: '#713f12' }}>DIGITAL CHAMPS • ANEKAL SCHOOL</div>
-            <div style={{ fontSize: '0.8rem', color: '#854d0e', fontWeight: 700 }}>10 Questions Per Level • Sequential Unlocking</div>
+            <div style={{ fontSize: '1.25rem', fontWeight: 900, letterSpacing: '0.5px' }}>DIGITAL CHAMPS • ANEKAL SCHOOL</div>
+            <div style={{ fontSize: '0.9rem', opacity: 0.95, fontWeight: 600, marginTop: '4px' }}>10 Questions Per Level • Sequential Unlocking</div>
           </div>
-          <span style={{ fontSize: '1.8rem' }}>🏆</span>
+          <span style={{ fontSize: '2.5rem' }}>🏆</span>
         </div>
       </div>
 
       {/* Locked Level Toast Notification */}
       {lockedMsg && (
-        <div className="animate-slide-up" style={{ margin: '0 20px', padding: '12px 16px', background: '#FEE2E2', border: '2px solid #FCA5A5', color: '#991B1B', borderRadius: '16px', fontWeight: 700, fontSize: '0.9rem', textAlign: 'center' }}>
+        <div className="animate-slide-up" style={{ width: '100%', marginBottom: '20px', padding: '14px 18px', background: '#FEE2E2', border: '2px solid #FCA5A5', color: '#991B1B', borderRadius: '18px', fontWeight: 800, fontSize: '0.95rem', textAlign: 'center' }}>
           {lockedMsg}
         </div>
       )}
 
-      {/* Vertical Winding Roadmap Path with Anekal School Background Image */}
-      <div style={{ margin: '0 20px', borderRadius: '32px', overflow: 'hidden', border: '4px solid #1e293b', boxShadow: '0 12px 30px rgba(0,0,0,0.25)', position: 'relative' }}>
+      {/* Vertical Winding Roadmap Path with Clean Modern Canvas */}
+      <div style={{ width: '100%', borderRadius: '28px', overflow: 'hidden', border: '1px solid var(--border-light)', background: 'var(--bg-surface)', boxShadow: 'var(--shadow-sm)', position: 'relative' }}>
         
         {/* Background Image backdrop */}
         <div style={{
           position: 'absolute', inset: 0,
-          background: 'linear-gradient(to bottom, rgba(15, 23, 42, 0.35) 0%, rgba(15, 23, 42, 0.6) 100%), url("/anekal_map_bg.jpg") center top/cover no-repeat',
+          background: 'linear-gradient(to bottom, rgba(248, 250, 252, 0.7) 0%, rgba(248, 250, 252, 0.9) 100%), url("/anekal_map_bg.jpg") center top/cover no-repeat',
           zIndex: 0
         }} />
 
-        <div style={{ position: 'relative', zIndex: 1, padding: '24px 16px 40px 16px' }}>
+        <div style={{ position: 'relative', zIndex: 1, padding: '28px 20px 48px 20px' }}>
           
-          <div style={{ marginBottom: '20px', textAlign: 'center' }}>
-            <h3 style={{ fontSize: '1.4rem', fontFamily: 'Georgia, serif', fontWeight: 900, color: '#ffffff', margin: 0, textShadow: '0 2px 8px rgba(0,0,0,0.8)' }}>
+          <div style={{ marginBottom: '28px', textAlign: 'center' }}>
+            <h3 style={{ fontSize: '1.6rem', fontFamily: 'Georgia, serif', fontWeight: 900, color: 'var(--text-primary)', margin: 0 }}>
               {language === 'EN' ? "Anekal School Learning Roadmap" : "ಆನೆಕಲ್ ಶಾಲಾ ಕಲಿಕಾ ಮಾರ್ಗಸೂಚಿ"}
             </h3>
-            <p style={{ margin: '6px 0 0 0', fontSize: '0.85rem', color: '#f1f5f9', fontWeight: 700, textShadow: '0 1px 4px rgba(0,0,0,0.8)' }}>
+            <p style={{ margin: '8px 0 0 0', fontSize: '0.95rem', color: 'var(--text-secondary)', fontWeight: 600 }}>
               {language === 'EN' ? "Tap a node to start! Complete each task to unlock the next level." : "ಪ್ರಾರಂಭಿಸಲು ಹಂತವನ್ನು ಸ್ಪರ್ಶಿಸಿ! ಮುಂದಿನ ಹಂತವನ್ನು ಅನ್‌ಲಾಕ್ ಮಾಡಲು ಪೂರ್ಣಗೊಳಿಸಿ."}
             </p>
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative', gap: '32px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative', gap: '36px' }}>
             {/* Dotted Roadmap Path Line */}
             <div style={{
               position: 'absolute', top: '50px', bottom: '80px', width: '8px',
-              background: 'repeating-linear-gradient(to bottom, #fcd34d 0px, #fcd34d 12px, transparent 12px, transparent 20px)',
-              borderRadius: '4px', zIndex: 0, boxShadow: '0 0 10px rgba(0,0,0,0.5)'
+              background: 'repeating-linear-gradient(to bottom, var(--accent-green) 0px, var(--accent-green) 12px, transparent 12px, transparent 20px)',
+              borderRadius: '4px', zIndex: 0, opacity: 0.6
             }} />
 
             {ANEKAL_LEVELS.map((lvl, index) => {
@@ -639,18 +639,18 @@ export const PracticeTab = () => {
                   key={lvl.level}
                   style={{
                     transform: `translateX(${alignOffset})`,
-                    zIndex: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px'
+                    zIndex: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px'
                   }}
                 >
                   {/* 3D Roadmap Level Node Button */}
                   <div 
                     onClick={() => handleStartLevel(lvl, index)}
                     style={{
-                      position: 'relative', width: '80px', height: '80px', borderRadius: '50%',
-                      background: unlocked ? (isCompleted ? 'linear-gradient(135deg, #dcfce7, #86efac)' : 'linear-gradient(135deg, #ffffff, #f1f5f9)') : '#e2e8f0',
-                      border: `4px solid ${unlocked ? (isCompleted ? '#22c55e' : lvl.color) : '#94a3b8'}`,
-                      boxShadow: unlocked ? `0 8px 0 ${lvl.color}90, 0 12px 25px rgba(0,0,0,0.3)` : '0 4px 0 #cbd5e1',
-                      display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '34px',
+                      position: 'relative', width: '84px', height: '84px', borderRadius: '50%',
+                      background: unlocked ? (isCompleted ? 'linear-gradient(135deg, #2E8B57, #1E5E3A)' : 'linear-gradient(135deg, #FFFFFF, #F8FAFC)') : '#E2E8F0',
+                      border: `4px solid ${unlocked ? (isCompleted ? '#2E8B57' : lvl.color) : '#94A3B8'}`,
+                      boxShadow: unlocked ? `0 8px 0 ${lvl.color}70, 0 12px 24px rgba(31, 41, 55, 0.15)` : '0 4px 0 #CBD5E1',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '36px',
                       cursor: unlocked ? 'pointer' : 'not-allowed', opacity: unlocked ? 1 : 0.7,
                       transition: 'all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)'
                     }}
@@ -658,10 +658,10 @@ export const PracticeTab = () => {
                     {/* Level Number / Status Badge */}
                     <div style={{
                       position: 'absolute', top: '-6px', left: '-6px',
-                      background: unlocked ? (isCompleted ? '#16a34a' : '#3b82f6') : '#64748b',
-                      color: 'white', width: '28px', height: '28px', borderRadius: '50%',
+                      background: unlocked ? (isCompleted ? '#2E8B57' : '#4DA8FF') : '#64748B',
+                      color: 'white', width: '30px', height: '30px', borderRadius: '50%',
                       border: '2px solid white', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      fontSize: '0.85rem', fontWeight: 900, boxShadow: '0 2px 5px rgba(0,0,0,0.3)'
+                      fontSize: '0.9rem', fontWeight: 900, boxShadow: '0 2px 6px rgba(0,0,0,0.15)'
                     }}>
                       {isCompleted ? '✓' : (unlocked ? lvl.level : '🔒')}
                     </div>
@@ -675,23 +675,23 @@ export const PracticeTab = () => {
                   <div 
                     onClick={() => handleStartLevel(lvl, index)}
                     style={{
-                      background: 'rgba(255, 255, 255, 0.95)', backdropFilter: 'blur(8px)',
-                      padding: '12px 18px', borderRadius: '20px',
-                      border: `2px solid ${unlocked ? lvl.color : '#cbd5e1'}`,
-                      boxShadow: '0 8px 20px rgba(0,0,0,0.15)', display: 'flex', flexDirection: 'column',
-                      alignItems: 'center', gap: '4px', cursor: unlocked ? 'pointer' : 'not-allowed',
-                      maxWidth: '230px', textAlign: 'center', opacity: unlocked ? 1 : 0.8
+                      background: 'var(--bg-surface)',
+                      padding: '14px 20px', borderRadius: '22px',
+                      border: `2px solid ${unlocked ? lvl.color : '#CBD5E1'}`,
+                      boxShadow: 'var(--shadow-sm)', display: 'flex', flexDirection: 'column',
+                      alignItems: 'center', gap: '6px', cursor: unlocked ? 'pointer' : 'not-allowed',
+                      maxWidth: '240px', textAlign: 'center', opacity: unlocked ? 1 : 0.85
                     }}
                   >
-                    <span style={{ background: unlocked ? lvl.color : '#64748b', color: 'white', padding: '3px 10px', borderRadius: '12px', fontSize: '0.72rem', fontWeight: 900 }}>
+                    <span style={{ background: unlocked ? lvl.color : '#64748B', color: 'white', padding: '4px 12px', borderRadius: '14px', fontSize: '0.8rem', fontWeight: 800 }}>
                       {lvl.level}. {lvl.subject}
                     </span>
                     
-                    <div style={{ fontSize: '0.95rem', fontWeight: 800, color: unlocked ? '#1e293b' : '#64748b', marginTop: '2px' }}>
+                    <div style={{ fontSize: '1rem', fontWeight: 800, color: unlocked ? 'var(--text-primary)' : '#64748B', marginTop: '2px' }}>
                       {language === 'EN' ? lvl.title : lvl.title_kn}
                     </div>
                     
-                    <div style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 700 }}>
+                    <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', fontWeight: 700 }}>
                       10 Questions • ⭐ +{lvl.reward} XP
                     </div>
                     
@@ -701,10 +701,10 @@ export const PracticeTab = () => {
                         handleStartLevel(lvl, index);
                       }}
                       style={{
-                        marginTop: '6px', padding: '8px 16px', borderRadius: '14px', border: 'none',
-                        background: unlocked ? (isCompleted ? '#16a34a' : lvl.color) : '#94a3b8',
-                        color: 'white', fontWeight: 800, fontSize: '0.8rem', cursor: unlocked ? 'pointer' : 'not-allowed',
-                        boxShadow: unlocked ? `0 4px 10px ${lvl.color}40` : 'none'
+                        marginTop: '8px', padding: '10px 18px', borderRadius: '16px', border: 'none',
+                        background: unlocked ? (isCompleted ? '#2E8B57' : lvl.color) : '#94A3B8',
+                        color: 'white', fontWeight: 800, fontSize: '0.85rem', cursor: unlocked ? 'pointer' : 'not-allowed',
+                        boxShadow: unlocked ? `0 4px 12px ${lvl.color}40` : 'none'
                       }}
                     >
                       {unlocked ? (
