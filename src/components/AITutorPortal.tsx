@@ -111,8 +111,9 @@ export const AITutorPortal = ({ onClose, initialQuery }: { onClose: () => void, 
   };
 
   return createPortal(
-    <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'var(--bg-app)', zIndex: 9999, display: 'flex', flexDirection: 'column' }}>
-      <div style={{ padding: '20px', display: 'flex', alignItems: 'center', gap: '16px', background: 'white', boxShadow: '0 2px 10px rgba(0,0,0,0.05)', zIndex: 10 }}>
+    <div className="ai-tutor-overlay">
+      <div className="ai-tutor-container">
+        <div style={{ padding: '20px', display: 'flex', alignItems: 'center', gap: '16px', background: 'white', boxShadow: '0 2px 10px rgba(0,0,0,0.05)', zIndex: 10 }}>
         <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '8px', fontSize: '1.5rem' }}>
           ←
         </button>
@@ -174,6 +175,7 @@ export const AITutorPortal = ({ onClose, initialQuery }: { onClose: () => void, 
         <button disabled={isLoading || !input.trim()} onClick={handleSend} style={{ width: '50px', height: '50px', borderRadius: '50%', background: (isLoading || !input.trim()) ? 'var(--border-light)' : 'var(--accent-blue)', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', fontSize: '1.2rem', color: 'white', transition: 'background 0.2s' }}>
           ➤
         </button>
+      </div>
       </div>
     </div>,
     document.body

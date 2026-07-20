@@ -58,24 +58,20 @@ function AppContent() {
 
   return (
     <>
-      {activeTab !== 'achievements' && <Header setActiveTab={setActiveTab} />}
-      <main className="page-container" style={{ padding: activeTab === 'achievements' ? 0 : undefined }}>
-        {renderTab()}
-      </main>
       {activeTab !== 'achievements' && <BottomNav activeTab={activeTab} setActiveTab={setActiveTab} />}
+      <div className="app-content">
+        {activeTab !== 'achievements' && <Header setActiveTab={setActiveTab} />}
+        <main className="page-container" style={{ padding: activeTab === 'achievements' ? 0 : undefined }}>
+          {renderTab()}
+        </main>
+      </div>
       
       {/* Floating AI Buddy Button */}
       {isAuthenticated && (
         <button 
           onClick={() => setShowAITutor(true)}
-          className="animate-bounce"
+          className="animate-bounce floating-bot-btn"
           style={{ 
-            position: 'fixed', 
-            bottom: '80px', 
-            right: '20px', 
-            width: '60px', 
-            height: '60px', 
-            borderRadius: '50%', 
             background: 'var(--accent-blue)', 
             border: '3px solid white', 
             boxShadow: '0 4px 15px rgba(0,0,0,0.2)', 
