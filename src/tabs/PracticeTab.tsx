@@ -56,28 +56,40 @@ export const PracticeTab = () => {
     }
   }, [isMathActive, mathTimeLeft]);
 
-  // Timer & Gamified Map State
+  // Question Timer & Roadmap State
   const [questionTimeLeft, setQuestionTimeLeft] = useState<number>(20);
+
+  // Question Mapper for all 10 Anekal Roadmap Levels
+  const getQuestionsForQuiz = React.useCallback((quizId: string) => {
+    switch (quizId) {
+      case 'anekal-lvl-1': return MOCK_DIGITAL_QUESTIONS.slice(0, 10);
+      case 'anekal-lvl-2': return MOCK_DIGITAL_QUESTIONS.slice(10, 20);
+      case 'anekal-lvl-3': return MOCK_MATH_QUESTIONS.slice(0, 10);
+      case 'anekal-lvl-4': return MOCK_SCIENCE_QUESTIONS.slice(0, 10);
+      case 'anekal-lvl-5': return MOCK_DIGITAL_QUESTIONS.slice(20, 30);
+      case 'anekal-lvl-6': return MOCK_ENGLISH_QUESTIONS.slice(0, 10);
+      case 'anekal-lvl-7': return MOCK_DIGITAL_QUESTIONS.slice(5, 15);
+      case 'anekal-lvl-8': return MOCK_DIGITAL_QUESTIONS.slice(15, 25);
+      case 'anekal-lvl-9': return MOCK_MATH_QUESTIONS.slice(10, 20);
+      case 'anekal-lvl-10': return MOCK_ENGLISH_QUESTIONS.slice(5, 15);
+      default:
+        if (quizId.includes('-m-')) return MOCK_MATH_QUESTIONS.slice(0, 10);
+        if (quizId.includes('-s-')) return MOCK_SCIENCE_QUESTIONS.slice(0, 10);
+        if (quizId.includes('-e-')) return MOCK_ENGLISH_QUESTIONS.slice(0, 10);
+        return MOCK_DIGITAL_QUESTIONS.slice(0, 10);
+    }
+  }, []);
+
+  const activeQuestions = getQuestionsForQuiz(activeQuiz || 'anekal-lvl-1');
 
   const activeQuizData = mockQuizzes.find(q => q.id === activeQuiz) || {
     id: activeQuiz || 'quiz',
-    subject: 'Digital Skills',
+    subject: activeQuiz?.includes('m-') || activeQuiz === 'anekal-lvl-3' || activeQuiz === 'anekal-lvl-9' ? 'Mathematics' : 
+             activeQuiz?.includes('s-') || activeQuiz === 'anekal-lvl-4' ? 'Science' :
+             activeQuiz?.includes('e-') || activeQuiz === 'anekal-lvl-6' || activeQuiz === 'anekal-lvl-10' ? 'English' : 'Digital Skills',
     title: 'Anekal Practice Quiz',
     xp: 250
   };
-
-  let rawQuestions = MOCK_DIGITAL_QUESTIONS;
-  if (activeQuizData?.subject === 'Mathematics') rawQuestions = MOCK_MATH_QUESTIONS;
-  if (activeQuizData?.subject === 'Science') rawQuestions = MOCK_SCIENCE_QUESTIONS;
-  if (activeQuizData?.subject === 'English') rawQuestions = MOCK_ENGLISH_QUESTIONS;
-
-  let activeQuestions = rawQuestions.slice(0, 10);
-  if (activeQuizData?.id?.endsWith('-2') && rawQuestions.length >= 20) {
-    activeQuestions = rawQuestions.slice(10, 20);
-  }
-  if (!activeQuestions || activeQuestions.length === 0) {
-    activeQuestions = MOCK_DIGITAL_QUESTIONS.slice(0, 10);
-  }
 
   // Question Timer Countdown Effect
   React.useEffect(() => {
@@ -505,16 +517,16 @@ export const PracticeTab = () => {
   }
 
   const ANEKAL_LEVELS = [
-    { id: `c${user?.class || 9}-d-1`, level: 1, title: 'Basics of Computer', title_kn: 'ಕಂಪ್ಯೂಟರ್ ಮೂಲಗಳು', subject: 'Digital Skills', emoji: '💻', color: '#10B981', reward: 50, bullets: ['Parts of Computer', 'Using Mouse', 'Basic Operations'], pos: { top: '72%', left: '7%' }, labelPos: 'below' },
-    { id: 'typing-game', level: 2, title: 'Typing Champ', title_kn: 'ಟೈಪಿಂಗ್ ಚಾಂಪ್', subject: 'Digital Skills', emoji: '⌨️', color: '#3B82F6', reward: 60, bullets: ['Keyboard Basics', 'Typing Practice', 'Speed & Accuracy'], pos: { top: '50%', left: '17%' }, labelPos: 'above' },
-    { id: `c${user?.class || 9}-m-1`, level: 3, title: 'Number Systems', title_kn: 'ಸಂಖ್ಯಾ ವ್ಯವಸ್ಥೆ', subject: 'Mathematics', emoji: '🧮', color: '#8B5CF6', reward: 70, bullets: ['Natural & Whole', 'Rational Numbers', 'Real Numbers'], pos: { top: '32%', left: '27%' }, labelPos: 'below' },
-    { id: `c${user?.class || 9}-s-1`, level: 4, title: 'Science Explorer', title_kn: 'ವಿಜ್ಞಾನ ಅನ್ವೇಷಕ', subject: 'Science', emoji: '🔬', color: '#F59E0B', reward: 80, bullets: ['Matter & Energy', 'Atoms & Molecules', 'Life Processes'], pos: { top: '48%', left: '37%' }, labelPos: 'above' },
-    { id: `c${user?.class || 9}-d-2`, level: 5, title: 'Online Safety', title_kn: 'ಆನ್‌ಲೈನ್ ಸುರಕ್ಷತೆ', subject: 'Digital Skills', emoji: '🛡️', color: '#EC4899', reward: 90, bullets: ['Strong Passwords', 'Avoid Scams', 'Be Safe Online'], pos: { top: '24%', left: '47%' }, labelPos: 'below' },
-    { id: `c${user?.class || 9}-e-1`, level: 6, title: 'English Master', title_kn: 'ಇಂಗ್ಲಿಷ್ ಮಾಸ್ಟರ್', subject: 'English', emoji: '📖', color: '#06B6D4', reward: 100, bullets: ['Grammar & Tenses', 'Vocabulary', 'Comprehension'], pos: { top: '42%', left: '57%' }, labelPos: 'above' },
-    { id: `c${user?.class || 9}-s-2`, level: 7, title: 'Digital Productivity', title_kn: 'ಡಿಜಿಟಲ್ ಉತ್ಪಾದಕತೆ', subject: 'Digital Skills', emoji: '📊', color: '#EF4444', reward: 110, bullets: ['Word Basics', 'Excel Basics', 'PowerPoint Basics'], pos: { top: '66%', left: '67%' }, labelPos: 'below' },
-    { id: `c${user?.class || 9}-m-2`, level: 8, title: 'Intro to Coding', title_kn: 'ಕೋಡಿಂಗ್ ಪರಿಚಯ', subject: 'Digital Skills', emoji: '👨‍💻', color: '#6366F1', reward: 120, bullets: ['What is Coding', 'Block Logic', 'Create Your Game'], pos: { top: '44%', left: '77%' }, labelPos: 'above' },
-    { id: `c${user?.class || 9}-e-2`, level: 9, title: 'Real Life Project', title_kn: 'ನೈಜ ಜೀವನದ ಯೋಜನೆ', subject: 'Mathematics', emoji: '🚀', color: '#F97316', reward: 130, bullets: ['Problem Solving', 'Team Work', 'Project Building'], pos: { top: '26%', left: '87%' }, labelPos: 'below' },
-    { id: 'math-game', level: 10, title: 'Graduation', title_kn: 'ಆನೆಕಲ್ ಪದವಿ', subject: 'English', emoji: '🎓', color: '#EAB308', reward: 200, bullets: ['Showcase Skills', 'Earn Certificate', 'Become Champion!'], pos: { top: '58%', left: '94%' }, labelPos: 'above' }
+    { id: 'anekal-lvl-1', level: 1, title: 'Basics of Computer', title_kn: 'ಕಂಪ್ಯೂಟರ್ ಮೂಲಗಳು', subject: 'Digital Skills', emoji: '💻', color: '#10B981', reward: 50, bullets: ['Parts of Computer', 'Using Mouse', 'Basic Operations'] },
+    { id: 'anekal-lvl-2', level: 2, title: 'Typing Champ', title_kn: 'ಟೈಪಿಂಗ್ ಚಾಂಪ್', subject: 'Digital Skills', emoji: '⌨️', color: '#3B82F6', reward: 60, bullets: ['Keyboard Basics', 'Typing Practice', 'Speed & Accuracy'] },
+    { id: 'anekal-lvl-3', level: 3, title: 'Number Systems', title_kn: 'ಸಂಖ್ಯಾ ವ್ಯವಸ್ಥೆ', subject: 'Mathematics', emoji: '🧮', color: '#8B5CF6', reward: 70, bullets: ['Natural & Whole', 'Rational Numbers', 'Real Numbers'] },
+    { id: 'anekal-lvl-4', level: 4, title: 'Science Explorer', title_kn: 'ವಿಜ್ಞಾನ ಅನ್ವೇಷಕ', subject: 'Science', emoji: '🔬', color: '#F59E0B', reward: 80, bullets: ['Matter & Energy', 'Atoms & Molecules', 'Life Processes'] },
+    { id: 'anekal-lvl-5', level: 5, title: 'Online Safety', title_kn: 'ಆನ್‌ಲೈನ್ ಸುರಕ್ಷತೆ', subject: 'Digital Skills', emoji: '🛡️', color: '#EC4899', reward: 90, bullets: ['Strong Passwords', 'Avoid Scams', 'Be Safe Online'] },
+    { id: 'anekal-lvl-6', level: 6, title: 'English Master', title_kn: 'ಇಂಗ್ಲಿಷ್ ಮಾಸ್ಟರ್', subject: 'English', emoji: '📖', color: '#06B6D4', reward: 100, bullets: ['Grammar & Tenses', 'Vocabulary', 'Comprehension'] },
+    { id: 'anekal-lvl-7', level: 7, title: 'Digital Productivity', title_kn: 'ಡಿಜಿಟಲ್ ಉತ್ಪಾದಕತೆ', subject: 'Digital Skills', emoji: '📊', color: '#EF4444', reward: 110, bullets: ['Word Basics', 'Excel Basics', 'PowerPoint Basics'] },
+    { id: 'anekal-lvl-8', level: 8, title: 'Intro to Coding', title_kn: 'ಕೋಡಿಂಗ್ ಪರಿಚಯ', subject: 'Digital Skills', emoji: '👨‍💻', color: '#6366F1', reward: 120, bullets: ['What is Coding', 'Block Logic', 'Create Your Game'] },
+    { id: 'anekal-lvl-9', level: 9, title: 'Real Life Project', title_kn: 'ನೈಜ ಜೀವನದ ಯೋಜನೆ', subject: 'Mathematics', emoji: '🚀', color: '#F97316', reward: 130, bullets: ['Problem Solving', 'Team Work', 'Project Building'] },
+    { id: 'anekal-lvl-10', level: 10, title: 'Graduation', title_kn: 'ಆನೆಕಲ್ ಪದವಿ', subject: 'English', emoji: '🎓', color: '#EAB308', reward: 200, bullets: ['Showcase Skills', 'Earn Certificate', 'Become Champion!'] }
   ];
 
   const [selectedLevelId, setSelectedLevelId] = useState<string>(ANEKAL_LEVELS[0].id);
@@ -533,21 +545,15 @@ export const PracticeTab = () => {
       return;
     }
     setQuestionTimeLeft(20);
-    if (levelObj.id === 'typing-game') {
-      setIsTypingActive(true);
-    } else if (levelObj.id === 'math-game') {
-      setIsMathActive(true); setMathTimeLeft(30); setMathScore(0); generateMathProblem();
-    } else {
-      setCurrentQuestionIndex(0);
-      setSelectedOption(null);
-      setIsAnswerRevealed(false);
-      setQuizCompleted(false);
-      setJustEarnedCert(false);
-      setCorrectAnswersCount(0);
-      setStreak(0);
-      setBonusXP(0);
-      setActiveQuiz(levelObj.id);
-    }
+    setCurrentQuestionIndex(0);
+    setSelectedOption(null);
+    setIsAnswerRevealed(false);
+    setQuizCompleted(false);
+    setJustEarnedCert(false);
+    setCorrectAnswersCount(0);
+    setStreak(0);
+    setBonusXP(0);
+    setActiveQuiz(levelObj.id);
   };
 
   return (
