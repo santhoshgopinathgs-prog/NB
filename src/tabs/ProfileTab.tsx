@@ -44,13 +44,13 @@ export const ProfileTab = () => {
         </div>
         
         <div style={{ display: 'flex', gap: '20px', width: '100%', marginTop: '10px' }}>
-          <div style={{ flex: 1, textAlign: 'center', background: 'var(--bg-app)', padding: '12px', borderRadius: '16px' }}>
-            <div style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--accent-blue)' }}>{userXP}</div>
-            <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: 600 }}>{t('totalXp').replace(':', '')}</div>
+          <div style={{ flex: 1, textAlign: 'center', background: '#120F0D', border: '1px solid #332B24', padding: '14px', borderRadius: '16px' }}>
+            <div style={{ fontSize: '1.4rem', fontWeight: 900, color: '#FEF08A' }}>{userXP}</div>
+            <div style={{ fontSize: '0.75rem', color: '#A69685', fontWeight: 700 }}>{t('totalXp').replace(':', '')}</div>
           </div>
-          <div style={{ flex: 1, textAlign: 'center', background: 'var(--bg-app)', padding: '12px', borderRadius: '16px' }}>
-            <div style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--accent-green)' }}>{certificates.length}</div>
-            <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: 600 }}>{t('certificates')}</div>
+          <div style={{ flex: 1, textAlign: 'center', background: '#120F0D', border: '1px solid #332B24', padding: '14px', borderRadius: '16px' }}>
+            <div style={{ fontSize: '1.4rem', fontWeight: 900, color: '#FEF08A' }}>{certificates.length}</div>
+            <div style={{ fontSize: '0.75rem', color: '#A69685', fontWeight: 700 }}>{t('certificates')}</div>
           </div>
         </div>
       </div>
