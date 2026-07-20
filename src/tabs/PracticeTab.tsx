@@ -19,19 +19,6 @@ export const PracticeTab = () => {
   const [typingInput, setTypingInput] = useState<string>('');
   const { markQuiz80Percent, markTypingPracticed } = useAppContext();
 
-  // Gamified Map State
-  const [selectedMapNode, setSelectedMapNode] = useState<number>(0);
-  const carouselRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (carouselRef.current) {
-      const card = carouselRef.current.children[selectedMapNode] as HTMLElement;
-      if (card) {
-        card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-      }
-    }
-  }, [selectedMapNode]);
-
   // Filter quizzes to ONLY show the currently registered student's class
   const filteredQuizzes = mockQuizzes.filter(q => q.class === user?.class);
   
@@ -369,7 +356,6 @@ export const PracticeTab = () => {
           {filteredQuizzes.map((quiz, i) => {
             const pos = mapNodePositions[i];
             const isCompleted = completedQuizzes.includes(quiz.id);
-            const isActive = selectedMapNode === i;
             
             // Map subjects to emojis
             let emoji = '🎓';
@@ -380,12 +366,12 @@ export const PracticeTab = () => {
             return (
               <div 
                 key={quiz.id}
-                className={`map-node ${isCompleted ? 'completed' : ''} ${isActive ? 'active' : ''}`}
+                className={`map-node ${isCompleted ? 'completed' : ''}`}
                 style={{ top: pos.top, left: pos.left }}
-                onClick={() => setSelectedMapNode(i)}
+                onClick={() => setActiveQuiz(quiz.id)}
               >
                 <div className="map-node-number">{i + 1}</div>
-                <div style={{ filter: isCompleted ? 'none' : (isActive ? 'none' : 'grayscale(100%) opacity(70%)') }}>
+                <div style={{ filter: isCompleted ? 'none' : 'grayscale(100%) opacity(70%)' }}>
                   {emoji}
                 </div>
                 <div className="map-node-label">{language === 'EN' ? quiz.subject : quiz.subject_kn}</div>
@@ -395,34 +381,6 @@ export const PracticeTab = () => {
         </div>
       </div>
 
-      {/* Level Cards Carousel */}
-      <div className="level-carousel" ref={carouselRef} style={{ paddingLeft: '20px', paddingRight: '20px' }}>
-        {filteredQuizzes.map((quiz, i) => {
-          const isCompleted = completedQuizzes.includes(quiz.id);
-          const isActive = selectedMapNode === i;
-          const title = language === 'EN' ? quiz.title : quiz.title_kn;
-          const subject = language === 'EN' ? quiz.subject : quiz.subject_kn;
-          
-          return (
-            <div key={quiz.id} className={`level-card-item ${isActive ? 'active' : ''}`} onClick={() => setSelectedMapNode(i)}>
-              <div style={{ fontSize: '0.75rem', color: 'var(--accent-blue)', fontWeight: 800 }}>LEVEL {i + 1} • {subject.toUpperCase()}</div>
-              <h3 style={{ fontSize: '1.2rem', marginTop: '4px', marginBottom: '8px' }}>{title}</h3>
-              <ul style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', paddingLeft: '20px', marginBottom: '16px', flex: 1, listStyleType: 'disc' }}>
-                <li>{quiz.questions} {t('questions')}</li>
-                <li>{t('earnUpTo')} {quiz.xp} XP</li>
-                {isCompleted && <li style={{ color: 'var(--accent-green)', fontWeight: 600 }}>Completed</li>}
-              </ul>
-              <button 
-                onClick={(e) => { e.stopPropagation(); setActiveQuiz(quiz.id); }}
-                style={{ width: '100%', padding: '12px', borderRadius: '12px', background: isCompleted ? 'var(--bg-app)' : 'var(--accent-purple)', color: isCompleted ? 'var(--text-secondary)' : 'white', fontWeight: 700, border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
-              >
-                {isCompleted ? <RefreshCcw size={18} /> : <PlayCircle size={18} />}
-                {isCompleted ? t('reviewQuiz') : t('startQuiz')}
-              </button>
-            </div>
-          )
-        })}
-      </div>
 
       <div style={{ padding: '0 20px', marginTop: '10px' }}>
         <h3 style={{ fontSize: '1.2rem', marginBottom: '16px' }}>{language === 'EN' ? "Mini Games" : "ಮಿನಿ ಆಟಗಳು"}</h3>
