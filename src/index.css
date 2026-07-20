@@ -114,12 +114,14 @@ button {
   z-index: 10;
 }
 
-/* Bottom Nav (Mobile) / Side Nav (Desktop) */
+/* Bottom Nav */
 .bottom-nav {
   position: fixed;
   bottom: 0;
-  left: 0;
+  left: 50%;
+  transform: translateX(-50%);
   width: 100%;
+  max-width: 480px;
   padding: 10px 20px 20px 20px;
   background: linear-gradient(to top, #F9F6F0 80%, rgba(249, 246, 240, 0));
   z-index: 100;
@@ -149,59 +151,9 @@ button {
 
 /* --- RESPONSIVE DESKTOP STYLES --- */
 @media (min-width: 768px) {
-  #root {
-    flex-direction: row;
-  }
-  
-  .bottom-nav {
-    position: sticky;
-    top: 0;
-    left: 0;
-    width: 250px;
-    height: 100vh;
-    padding: 20px;
-    background: var(--bg-surface);
-    border-right: 1px solid var(--border-light);
-    z-index: 100;
-  }
-  
-  .nav-container {
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: stretch;
-    padding: 0;
-    box-shadow: none;
-    background: transparent;
-    height: 100%;
-    gap: 16px;
-    margin: 0;
-    max-width: 100%;
-  }
-  
-  .nav-item {
-    flex-direction: row;
-    gap: 16px;
-    padding: 16px 20px;
-    border-radius: 12px;
-    font-size: 1rem;
-    transition: background 0.2s;
-  }
-  
-  .nav-item:hover {
-    background: rgba(0,0,0,0.03);
-  }
-  
-  .nav-item.active {
-    background: rgba(203, 167, 90, 0.1);
-  }
-  
   .app-content {
     flex: 1;
     min-width: 0; /* allows children to shrink */
-  }
-  
-  .page-container {
-    padding: 20px 40px; /* Remove bottom padding on desktop */
   }
 }
 
