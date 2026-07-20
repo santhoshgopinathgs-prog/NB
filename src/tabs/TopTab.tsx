@@ -25,13 +25,13 @@ export const TopTab = () => {
       <div style={{ margin: '0 20px', display: 'flex', gap: '10px', background: 'var(--bg-surface)', padding: '6px', borderRadius: '24px', border: '1px solid var(--border-light)', boxShadow: 'var(--shadow-sm)' }}>
         <button 
           onClick={() => setFilter('regional')}
-          style={{ flex: 1, padding: '10px', borderRadius: '20px', background: filter === 'regional' ? 'var(--accent-purple)' : 'transparent', color: filter === 'regional' ? '#FFFFFF' : 'var(--text-secondary)', fontWeight: 800, boxShadow: filter === 'regional' ? '0 4px 14px rgba(99, 102, 241, 0.4)' : 'none' }}
+          style={{ flex: 1, padding: '10px', borderRadius: '20px', background: filter === 'regional' ? 'var(--accent-green)' : 'transparent', color: filter === 'regional' ? '#FFFFFF' : 'var(--text-secondary)', fontWeight: 800, boxShadow: filter === 'regional' ? '0 4px 14px rgba(46, 139, 87, 0.4)' : 'none' }}
         >
           Regional
         </button>
         <button 
           onClick={() => setFilter('overall')}
-          style={{ flex: 1, padding: '10px', borderRadius: '20px', background: filter === 'overall' ? 'var(--accent-purple)' : 'transparent', color: filter === 'overall' ? '#FFFFFF' : 'var(--text-secondary)', fontWeight: 800, boxShadow: filter === 'overall' ? '0 4px 14px rgba(99, 102, 241, 0.4)' : 'none' }}
+          style={{ flex: 1, padding: '10px', borderRadius: '20px', background: filter === 'overall' ? 'var(--accent-green)' : 'transparent', color: filter === 'overall' ? '#FFFFFF' : 'var(--text-secondary)', fontWeight: 800, boxShadow: filter === 'overall' ? '0 4px 14px rgba(46, 139, 87, 0.4)' : 'none' }}
         >
           Overall (KA)
         </button>
@@ -93,24 +93,24 @@ export const TopTab = () => {
             gap: '16px', 
             padding: '12px 16px', 
             borderRadius: '16px',
-            background: user.isMe ? 'rgba(99, 102, 241, 0.15)' : 'transparent',
-            borderLeft: user.isMe ? '4px solid var(--accent-purple)' : '4px solid transparent',
+            background: user.isMe ? 'rgba(46, 139, 87, 0.15)' : 'transparent',
+            borderLeft: user.isMe ? '4px solid var(--accent-green)' : '4px solid transparent',
             animationDelay: `${(user.rank) * 0.05}s`,
             animationFillMode: 'both'
           }}>
             <div style={{ width: '30px', fontWeight: 800, color: 'var(--text-tertiary)', fontSize: '0.9rem' }}>
               #{user.rank}
             </div>
-            <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: 'var(--bg-input)', border: '1px solid var(--border-light)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, color: 'var(--accent-purple)' }}>
+            <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: 'var(--bg-input)', border: '1px solid var(--border-light)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, color: 'var(--accent-green)' }}>
               {user.name.charAt(0)}
             </div>
             <div style={{ flex: 1 }}>
               <div style={{ fontWeight: 700, color: 'var(--text-primary)' }}>
-                {user.name} {user.isMe && <span style={{color: '#FFFFFF', fontSize: '0.75rem', background: 'var(--accent-purple)', padding: '2px 8px', borderRadius: '8px', marginLeft: '6px', fontWeight: 800}}>YOU</span>}
+                {user.name} {user.isMe && <span style={{color: '#FFFFFF', fontSize: '0.75rem', background: 'var(--accent-green)', padding: '2px 8px', borderRadius: '8px', marginLeft: '6px', fontWeight: 800}}>YOU</span>}
               </div>
               <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>{user.region}</div>
             </div>
-            <div style={{ fontWeight: 800, color: 'var(--accent-purple)', fontSize: '0.9rem' }}>{user.xp} XP</div>
+            <div style={{ fontWeight: 800, color: 'var(--accent-green)', fontSize: '0.9rem' }}>{user.xp} XP</div>
           </div>
         )) : (
           <div style={{ padding: '20px', textAlign: 'center', color: 'var(--text-tertiary)' }}>

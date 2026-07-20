@@ -1,49 +1,49 @@
 :root {
-  /* RankUp Light Mode Palette */
-  --bg-app: #F8FAFC;
-  --bg-surface: #FFFFFF;
+  /* Official Namma Buddy Color Palette */
+  --bg-app: #F8FAFC;       /* Background Off White (#F8FAFC) */
+  --bg-surface: #FFFFFF;   /* Pure White Card Surface (#FFFFFF) */
   --bg-input: #F1F5F9;
   --bg-nav: #FFFFFF;
   
-  --text-primary: #0F172A;
-  --text-secondary: #64748B;
-  --text-tertiary: #94A3B8;
+  --text-primary: #1F2937;   /* Text Dark Navy (#1F2937) */
+  --text-secondary: #6B7280; /* Muted Slate Gray (#6B7280) */
+  --text-tertiary: #9CA3AF;  /* Light Gray Labels (#9CA3AF) */
   
-  --accent-purple: #6366F1; /* RankUp Indigo/Violet Primary */
-  --accent-blue: #0284C7;   /* RankUp Electric Cyan */
-  --accent-green: #10B981;  /* RankUp Emerald Success */
-  --accent-orange: #F59E0B; /* RankUp Gold Rewards / XP */
+  --accent-green: #2E8B57;   /* Primary Emerald Green (#2E8B57) */
+  --accent-blue: #4DA8FF;    /* Secondary Sky Blue (#4DA8FF) */
+  --accent-orange: #FFC857;  /* Accent Warm Yellow (#FFC857) */
+  --accent-purple: #8B5CF6;
   --accent-red: #EF4444;
   
-  --border-light: #E2E8F0;
+  --border-light: #E5E7EB;   /* Subtle Light Gray Border (#E5E7EB) */
   
-  --shadow-sm: 0 4px 12px rgba(15, 23, 42, 0.05);
-  --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.08);
-  --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.12);
+  --shadow-sm: 0 2px 8px rgba(31, 41, 55, 0.04);
+  --shadow-md: 0 4px 16px rgba(31, 41, 55, 0.06);
+  --shadow-lg: 0 10px 25px rgba(31, 41, 55, 0.1);
   
   --font-main: 'Poppins', 'Inter', system-ui, -apple-system, sans-serif;
-  --transition-fast: 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-fast: 0.2s ease;
 }
 
-/* Automatic Device Dark Mode (RankUp Sleek Immersive Dark Theme) */
+/* Automatic Device Dark Mode (Namma Buddy Deep Emerald Theme) */
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg-app: #0B0F19; /* Midnight Deep Slate */
-    --bg-surface: #161F33; /* Glassmorphic Slate Card */
-    --bg-input: #1E293B;
-    --bg-nav: #161F33;
+    --bg-app: #0D1912;       /* Midnight Deep Emerald Dark Mode */
+    --bg-surface: #172A20;   /* Elevated Emerald Slate Card Surface */
+    --bg-input: #1F362A;
+    --bg-nav: #172A20;
     
     --text-primary: #F8FAFC; /* Pure Crisp White */
-    --text-secondary: #94A3B8; /* Muted Slate */
-    --text-tertiary: #64748B;
+    --text-secondary: #9CA3AF; /* Muted Gray */
+    --text-tertiary: #6B7280;
     
-    --accent-purple: #818CF8; /* Luminous Indigo / Violet */
-    --accent-blue: #38BDF8;   /* Luminous Cyan */
-    --accent-green: #34D399;  /* Vivid Emerald */
-    --accent-orange: #FBBF24; /* Luminous Gold Rewards */
+    --accent-green: #34D399; /* Vivid Emerald Green */
+    --accent-blue: #38BDF8;  /* Luminous Sky Blue */
+    --accent-orange: #FBBF24;/* Luminous Warm Yellow */
+    --accent-purple: #A78BFA;
     --accent-red: #F87171;
     
-    --border-light: #243049; /* Dark Slate Border */
+    --border-light: #244233; /* Dark Emerald Border */
     
     --shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.3);
     --shadow-md: 0 8px 28px rgba(0, 0, 0, 0.45);
@@ -53,19 +53,19 @@
 
 /* Explicit data-theme overrides */
 [data-theme="dark"] {
-  --bg-app: #0B0F19;
-  --bg-surface: #161F33;
-  --bg-input: #1E293B;
-  --bg-nav: #161F33;
+  --bg-app: #0D1912;
+  --bg-surface: #172A20;
+  --bg-input: #1F362A;
+  --bg-nav: #172A20;
   --text-primary: #F8FAFC;
-  --text-secondary: #94A3B8;
-  --text-tertiary: #64748B;
-  --accent-purple: #818CF8;
-  --accent-blue: #38BDF8;
+  --text-secondary: #9CA3AF;
+  --text-tertiary: #6B7280;
   --accent-green: #34D399;
+  --accent-blue: #38BDF8;
   --accent-orange: #FBBF24;
+  --accent-purple: #A78BFA;
   --accent-red: #F87171;
-  --border-light: #243049;
+  --border-light: #244233;
   --shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.3);
   --shadow-md: 0 8px 28px rgba(0, 0, 0, 0.45);
   --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.6);
@@ -76,18 +76,18 @@
   --bg-surface: #FFFFFF;
   --bg-input: #F1F5F9;
   --bg-nav: #FFFFFF;
-  --text-primary: #0F172A;
-  --text-secondary: #64748B;
-  --text-tertiary: #94A3B8;
-  --accent-purple: #6366F1;
-  --accent-blue: #0284C7;
-  --accent-green: #10B981;
-  --accent-orange: #F59E0B;
+  --text-primary: #1F2937;
+  --text-secondary: #6B7280;
+  --text-tertiary: #9CA3AF;
+  --accent-green: #2E8B57;
+  --accent-blue: #4DA8FF;
+  --accent-orange: #FFC857;
+  --accent-purple: #8B5CF6;
   --accent-red: #EF4444;
-  --border-light: #E2E8F0;
-  --shadow-sm: 0 4px 12px rgba(15, 23, 42, 0.05);
-  --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.08);
-  --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.12);
+  --border-light: #E5E7EB;
+  --shadow-sm: 0 2px 8px rgba(31, 41, 55, 0.04);
+  --shadow-md: 0 4px 16px rgba(31, 41, 55, 0.06);
+  --shadow-lg: 0 10px 25px rgba(31, 41, 55, 0.1);
 }
 
 * {
@@ -212,9 +212,9 @@ button {
 }
 
 .nav-item.active {
-  background: var(--accent-purple);
+  background: var(--accent-green);
   color: #FFFFFF;
-  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+  box-shadow: 0 4px 14px rgba(46, 139, 87, 0.4);
   transform: scale(1.06);
 }
 
@@ -261,7 +261,7 @@ button {
   margin-bottom: 24px;
 }
 .level-badge {
-  background: var(--accent-purple);
+  background: var(--accent-green);
   color: #FFFFFF;
   font-weight: 800;
   width: 42px;
@@ -282,6 +282,6 @@ button {
 }
 .progress-fill {
   height: 100%;
-  background: var(--accent-purple);
+  background: var(--accent-green);
   border-radius: 6px;
 }
