@@ -92,13 +92,9 @@ export const AITutorPortal = ({ onClose, initialQuery }: { onClose: () => void, 
         </button>
         <div style={{ flex: 1 }}>
           <h2 style={{ fontSize: '1.2rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            {user?.avatar ? (
-              <div style={{ width: '32px', height: '32px', borderRadius: '50%', overflow: 'hidden', border: '2px solid var(--accent-green)' }}>
-                <img src={user.avatar} alt="Buddy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-              </div>
-            ) : (
-              <MessageSquare size={20} color="var(--accent-orange)" />
-            )}
+            <div style={{ width: '32px', height: '32px', borderRadius: '50%', overflow: 'hidden', border: '2px solid var(--accent-green)' }}>
+              <img src="https://api.dicebear.com/9.x/avataaars/svg?seed=Buddy&top=turban&skinColor=ae5d29&clothing=shirtCrewNeck&clothingColor=ffffff&topColor=81ecec&mouth=smile" alt="Buddy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            </div>
             Namma Buddy
           </h2>
           <div style={{ fontSize: '0.8rem', color: 'var(--text-tertiary)' }}>Online • Kannada, English</div>
@@ -108,9 +104,9 @@ export const AITutorPortal = ({ onClose, initialQuery }: { onClose: () => void, 
       <div style={{ padding: '24px', flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '16px' }}>
         {messages.map((msg, i) => (
           <div key={i} style={{ alignSelf: msg.isBot ? 'flex-start' : 'flex-end', maxWidth: '85%', display: 'flex', gap: '8px', alignItems: 'flex-end' }}>
-            {msg.isBot && user?.avatar && (
+            {msg.isBot && (
               <div style={{ width: '28px', height: '28px', borderRadius: '50%', overflow: 'hidden', flexShrink: 0 }}>
-                <img src={user.avatar} alt="Buddy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                <img src="https://api.dicebear.com/9.x/avataaars/svg?seed=Buddy&top=turban&skinColor=ae5d29&clothing=shirtCrewNeck&clothingColor=ffffff&topColor=81ecec&mouth=smile" alt="Buddy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
             )}
             <div style={{ 

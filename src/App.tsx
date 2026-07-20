@@ -8,7 +8,6 @@ import { TopTab } from './tabs/TopTab';
 import { ProfileTab } from './tabs/ProfileTab';
 import { AchievementsTab } from './tabs/AchievementsTab';
 import { RegistrationScreen } from './components/RegistrationScreen';
-import { AvatarSelectionScreen } from './components/AvatarSelectionScreen';
 import { AITutorPortal } from './components/AITutorPortal';
 import { useAppContext } from './context/AppContext';
 
@@ -40,10 +39,6 @@ function AppContent() {
     return <RegistrationScreen />;
   }
 
-  if (isAuthenticated && user && !user.avatar) {
-    return <AvatarSelectionScreen />;
-  }
-
   const renderTab = () => {
     switch (activeTab) {
       case 'home': return <HomeTab navigateToChapter={navigateToChapter} />;
@@ -65,7 +60,7 @@ function AppContent() {
       {activeTab !== 'achievements' && <BottomNav activeTab={activeTab} setActiveTab={setActiveTab} />}
       
       {/* Floating AI Buddy Button */}
-      {user?.avatar && (
+      {isAuthenticated && (
         <button 
           onClick={() => setShowAITutor(true)}
           className="animate-bounce"
@@ -88,7 +83,7 @@ function AppContent() {
             padding: 0
           }}
         >
-          <img src={user.avatar} alt="AI Buddy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          <img src="https://api.dicebear.com/9.x/avataaars/svg?seed=Buddy&top=turban&skinColor=ae5d29&clothing=shirtCrewNeck&clothingColor=ffffff&topColor=81ecec&mouth=smile" alt="AI Buddy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
         </button>
       )}
 
