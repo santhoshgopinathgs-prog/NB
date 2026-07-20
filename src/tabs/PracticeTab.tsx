@@ -141,9 +141,9 @@ export const PracticeTab = () => {
   };
 
   const handleConfirm = () => {
-    if (selectedOption !== null && !isAnswerRevealed) {
+    if (selectedOption !== null && !isAnswerRevealed && activeQuestions[currentQuestionIndex]) {
       setIsAnswerRevealed(true);
-      if (selectedOption === activeQuestions[currentQuestionIndex].correctAnswer) {
+      if (selectedOption === activeQuestions[currentQuestionIndex]?.correctAnswer) {
         setCorrectAnswersCount(prev => prev + 1);
         setStreak(prev => {
           const newStreak = prev + 1;

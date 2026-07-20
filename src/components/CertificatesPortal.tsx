@@ -1,9 +1,10 @@
 import React from 'react';
 import { useAppContext } from '../context/AppContext';
 import { mockQuizzes } from '../data/mockData';
+import { downloadCertificate } from '../utils/generateCertificate';
 
 export const CertificatesPortal = ({ onClose }: { onClose: () => void }) => {
-  const { language, completedQuizzes } = useAppContext();
+  const { language, completedQuizzes, user } = useAppContext();
 
   return (
     <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'var(--bg-app)', zIndex: 1000, display: 'flex', flexDirection: 'column' }}>
@@ -48,8 +49,16 @@ export const CertificatesPortal = ({ onClose }: { onClose: () => void }) => {
                       <div style={{ fontSize: '0.8rem', color: 'var(--text-tertiary)', textTransform: 'uppercase', fontWeight: 700 }}>Subject</div>
                       <div style={{ fontWeight: 600 }}>{subject}</div>
                     </div>
-                    <button style={{ padding: '10px 20px', background: 'var(--bg-app)', borderRadius: '16px', fontWeight: 700, color: 'var(--accent-blue)', border: 'none', cursor: 'pointer' }}>
-                      Download
+                    <button 
+                      onClick={() => downloadCertificate(
+                        user?.name || 'Student',
+                        user?.school || 'Namma Buddy School',
+                        quizInfo.class,
+                        quizInfo.subject
+                      )}
+                      style={{ padding: '10px 20px', background: '#2E8B57', borderRadius: '16px', fontWeight: 800, color: '#FFFFFF', border: 'none', cursor: 'pointer', boxShadow: '0 4px 12px rgba(46, 139, 87, 0.25)' }}
+                    >
+                      {language === 'EN' ? 'Download' : 'ಡೌನ್‌ಲೋಡ್'}
                     </button>
                   </div>
                 </div>

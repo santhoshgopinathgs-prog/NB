@@ -28,7 +28,9 @@ export const LearnTab = ({ initialChapter, clearInitialChapter }: { initialChapt
   const classSyllabus = syllabusData.find(s => s.classLevel === user?.class);
   
   // Calculate quiz ID for completion logic
-  const chapterIdx = classSyllabus?.subjects.find(s => s.name === activeChapter?.subjectId)?.chapters.indexOf(activeChapter?.chapter || '') || 0;
+  const foundSubject = classSyllabus?.subjects.find(s => s.name === activeChapter?.subjectId);
+  const rawIdx = foundSubject?.chapters.indexOf(activeChapter?.chapter || '') ?? 0;
+  const chapterIdx = rawIdx >= 0 ? rawIdx : 0;
   const prefix = activeChapter?.subjectId === 'Digital Skills' ? 'd' : activeChapter?.subjectId?.charAt(0).toLowerCase();
   const mockQuizId = `c${user?.class}-${prefix}-${chapterIdx + 1}`;
 
