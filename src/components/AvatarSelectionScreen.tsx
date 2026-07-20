@@ -61,34 +61,34 @@ export const AvatarSelectionScreen = ({ onClose }: { onClose?: () => void }) => 
           {language === 'EN' ? 'How would you like to appear on Namma Buddy?' : 'ನಮ್ಮ ಬಡ್ಡಿಯಲ್ಲಿ ನೀವು ಹೇಗೆ ಕಾಣಿಸಿಕೊಳ್ಳಲು ಬಯಸುತ್ತೀರಿ?'}
         </p>
 
-        <div style={{ display: 'flex', gap: '20px', justifyContent: 'center', marginBottom: '32px' }}>
+        <div style={{ display: 'flex', gap: '24px', justifyContent: 'center', marginBottom: '32px' }}>
           {/* Boy Avatar */}
           <button 
             onClick={() => setSelectedAvatar(boyAvatar)}
             style={{ 
               position: 'relative',
-              background: selectedAvatar === boyAvatar ? 'rgba(203, 167, 90, 0.1)' : 'transparent',
-              border: `2px solid ${selectedAvatar === boyAvatar ? 'var(--accent-green)' : 'var(--border-light)'}`,
-              borderRadius: '24px',
-              padding: '8px',
+              background: 'transparent',
+              border: `4px solid ${selectedAvatar === boyAvatar ? 'var(--accent-blue)' : '#e2e8f0'}`,
+              borderRadius: '50%',
+              padding: '6px',
               cursor: 'pointer',
               transition: 'all 0.2s',
-              transform: selectedAvatar === boyAvatar ? 'scale(1.05)' : 'scale(1)',
+              transform: selectedAvatar === boyAvatar ? 'scale(1.08)' : 'scale(1)',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              gap: '12px'
+              boxShadow: selectedAvatar === boyAvatar ? '0 8px 20px rgba(59, 130, 246, 0.3)' : 'none'
             }}
           >
-            <div style={{ width: '120px', height: '160px', borderRadius: '16px', overflow: 'hidden' }}>
+            <div style={{ width: '130px', height: '130px', borderRadius: '50%', overflow: 'hidden', border: '3px solid #38bdf8' }}>
               <img src={boyAvatar} alt="Boy Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
-            <div style={{ fontWeight: 700, color: 'var(--text-primary)', fontSize: '1.1rem' }}>
+            <div style={{ fontWeight: 800, color: 'var(--text-primary)', fontSize: '1.1rem', marginTop: '12px' }}>
               {language === 'EN' ? 'Boy' : 'ಹುಡುಗ'}
             </div>
             {selectedAvatar === boyAvatar && (
-              <div style={{ position: 'absolute', top: -8, right: -8, background: 'var(--accent-green)', borderRadius: '50%', padding: '4px', display: 'flex' }}>
-                <Check size={16} color="white" />
+              <div style={{ position: 'absolute', top: 0, right: 0, background: 'var(--accent-blue)', borderRadius: '50%', padding: '6px', display: 'flex', border: '2px solid white' }}>
+                <Check size={18} color="white" />
               </div>
             )}
           </button>
@@ -98,28 +98,28 @@ export const AvatarSelectionScreen = ({ onClose }: { onClose?: () => void }) => 
             onClick={() => setSelectedAvatar(girlAvatar)}
             style={{ 
               position: 'relative',
-              background: selectedAvatar === girlAvatar ? 'rgba(203, 167, 90, 0.1)' : 'transparent',
-              border: `2px solid ${selectedAvatar === girlAvatar ? 'var(--accent-green)' : 'var(--border-light)'}`,
-              borderRadius: '24px',
-              padding: '8px',
+              background: 'transparent',
+              border: `4px solid ${selectedAvatar === girlAvatar ? '#ec4899' : '#e2e8f0'}`,
+              borderRadius: '50%',
+              padding: '6px',
               cursor: 'pointer',
               transition: 'all 0.2s',
-              transform: selectedAvatar === girlAvatar ? 'scale(1.05)' : 'scale(1)',
+              transform: selectedAvatar === girlAvatar ? 'scale(1.08)' : 'scale(1)',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              gap: '12px'
+              boxShadow: selectedAvatar === girlAvatar ? '0 8px 20px rgba(236, 72, 153, 0.3)' : 'none'
             }}
           >
-            <div style={{ width: '120px', height: '160px', borderRadius: '16px', overflow: 'hidden' }}>
+            <div style={{ width: '130px', height: '130px', borderRadius: '50%', overflow: 'hidden', border: '3px solid #f472b6' }}>
               <img src={girlAvatar} alt="Girl Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
-            <div style={{ fontWeight: 700, color: 'var(--text-primary)', fontSize: '1.1rem' }}>
+            <div style={{ fontWeight: 800, color: 'var(--text-primary)', fontSize: '1.1rem', marginTop: '12px' }}>
               {language === 'EN' ? 'Girl' : 'ಹುಡುಗಿ'}
             </div>
             {selectedAvatar === girlAvatar && (
-              <div style={{ position: 'absolute', top: -8, right: -8, background: 'var(--accent-green)', borderRadius: '50%', padding: '4px', display: 'flex' }}>
-                <Check size={16} color="white" />
+              <div style={{ position: 'absolute', top: 0, right: 0, background: '#ec4899', borderRadius: '50%', padding: '6px', display: 'flex', border: '2px solid white' }}>
+                <Check size={18} color="white" />
               </div>
             )}
           </button>
