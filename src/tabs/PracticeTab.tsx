@@ -594,111 +594,125 @@ export const PracticeTab = () => {
         </div>
       )}
 
-      {/* Vertical Winding Roadmap Path */}
-      <div style={{ padding: '0 20px', marginTop: '8px', marginBottom: '8px' }}>
-        <h3 style={{ fontSize: '1.3rem', fontFamily: 'Georgia, serif', fontWeight: 800, color: 'var(--text-primary)', margin: 0, textAlign: 'center' }}>
-          {language === 'EN' ? "Anekal School Learning Roadmap" : "ಆನೆಕಲ್ ಶಾಲಾ ಕಲಿಕಾ ಮಾರ್ಗಸೂಚಿ"}
-        </h3>
-        <p style={{ margin: '4px 0 0 0', fontSize: '0.82rem', color: 'var(--text-secondary)', textAlign: 'center' }}>
-          {language === 'EN' ? "Tap a node to start! Complete each task to unlock the next level." : "ಪ್ರಾರಂಭಿಸಲು ಹಂತವನ್ನು ಸ್ಪರ್ಶಿಸಿ! ಮುಂದಿನ ಹಂತವನ್ನು ಅನ್‌ಲಾಕ್ ಮಾಡಲು ಪೂರ್ಣಗೊಳಿಸಿ."}
-        </p>
-      </div>
-
-      <div style={{ padding: '10px 20px 40px 20px', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative', gap: '32px' }}>
-        {/* Dotted Roadmap Path Line */}
+      {/* Vertical Winding Roadmap Path with Anekal School Background Image */}
+      <div style={{ margin: '0 20px', borderRadius: '32px', overflow: 'hidden', border: '4px solid #1e293b', boxShadow: '0 12px 30px rgba(0,0,0,0.25)', position: 'relative' }}>
+        
+        {/* Background Image backdrop */}
         <div style={{
-          position: 'absolute', top: '50px', bottom: '80px', width: '6px',
-          background: 'repeating-linear-gradient(to bottom, #f59e0b 0px, #f59e0b 12px, transparent 12px, transparent 20px)',
-          borderRadius: '3px', zIndex: 0
+          position: 'absolute', inset: 0,
+          background: 'linear-gradient(to bottom, rgba(15, 23, 42, 0.45) 0%, rgba(15, 23, 42, 0.7) 100%), url("/anekal_map_bg.jpg") center/cover no-repeat',
+          zIndex: 0
         }} />
 
-        {ANEKAL_LEVELS.map((lvl, index) => {
-          const unlocked = isLevelUnlocked(index);
-          const isCompleted = completedQuizzes.includes(lvl.id);
-          const alignOffset = index % 4 === 0 ? '-35px' : (index % 4 === 1 ? '0px' : (index % 4 === 2 ? '35px' : '0px'));
+        <div style={{ position: 'relative', zIndex: 1, padding: '24px 16px 40px 16px' }}>
+          
+          <div style={{ marginBottom: '20px', textAlign: 'center' }}>
+            <h3 style={{ fontSize: '1.4rem', fontFamily: 'Georgia, serif', fontWeight: 900, color: '#ffffff', margin: 0, textShadow: '0 2px 8px rgba(0,0,0,0.8)' }}>
+              {language === 'EN' ? "Anekal School Learning Roadmap" : "ಆನೆಕಲ್ ಶಾಲಾ ಕಲಿಕಾ ಮಾರ್ಗಸೂಚಿ"}
+            </h3>
+            <p style={{ margin: '6px 0 0 0', fontSize: '0.85rem', color: '#f1f5f9', fontWeight: 700, textShadow: '0 1px 4px rgba(0,0,0,0.8)' }}>
+              {language === 'EN' ? "Tap a node to start! Complete each task to unlock the next level." : "ಪ್ರಾರಂಭಿಸಲು ಹಂತವನ್ನು ಸ್ಪರ್ಶಿಸಿ! ಮುಂದಿನ ಹಂತವನ್ನು ಅನ್‌ಲಾಕ್ ಮಾಡಲು ಪೂರ್ಣಗೊಳಿಸಿ."}
+            </p>
+          </div>
 
-          return (
-            <div 
-              key={lvl.level}
-              style={{
-                transform: `translateX(${alignOffset})`,
-                zIndex: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px'
-              }}
-            >
-              {/* 3D Roadmap Level Node Button */}
-              <div 
-                onClick={() => handleStartLevel(lvl, index)}
-                style={{
-                  position: 'relative', width: '80px', height: '80px', borderRadius: '50%',
-                  background: unlocked ? (isCompleted ? 'linear-gradient(135deg, #dcfce7, #86efac)' : 'linear-gradient(135deg, #ffffff, #f1f5f9)') : '#e2e8f0',
-                  border: `4px solid ${unlocked ? (isCompleted ? '#22c55e' : lvl.color) : '#94a3b8'}`,
-                  boxShadow: unlocked ? `0 8px 0 ${lvl.color}90, 0 12px 25px rgba(0,0,0,0.15)` : '0 4px 0 #cbd5e1',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '34px',
-                  cursor: unlocked ? 'pointer' : 'not-allowed', opacity: unlocked ? 1 : 0.65,
-                  transition: 'all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)'
-                }}
-              >
-                {/* Level Number / Status Badge */}
-                <div style={{
-                  position: 'absolute', top: '-6px', left: '-6px',
-                  background: unlocked ? (isCompleted ? '#16a34a' : '#3b82f6') : '#64748b',
-                  color: 'white', width: '28px', height: '28px', borderRadius: '50%',
-                  border: '2px solid white', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontSize: '0.85rem', fontWeight: 900, boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
-                }}>
-                  {isCompleted ? '✓' : (unlocked ? lvl.level : '🔒')}
-                </div>
-                
-                <div style={{ filter: unlocked ? 'none' : 'grayscale(100%)' }}>
-                  {lvl.emoji}
-                </div>
-              </div>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative', gap: '32px' }}>
+            {/* Dotted Roadmap Path Line */}
+            <div style={{
+              position: 'absolute', top: '50px', bottom: '80px', width: '8px',
+              background: 'repeating-linear-gradient(to bottom, #fcd34d 0px, #fcd34d 12px, transparent 12px, transparent 20px)',
+              borderRadius: '4px', zIndex: 0, boxShadow: '0 0 10px rgba(0,0,0,0.5)'
+            }} />
 
-              {/* Node Card Details & Start Button */}
-              <div 
-                onClick={() => handleStartLevel(lvl, index)}
-                style={{
-                  background: 'white', padding: '12px 18px', borderRadius: '20px',
-                  border: `2px solid ${unlocked ? lvl.color : '#cbd5e1'}`,
-                  boxShadow: '0 6px 18px rgba(0,0,0,0.06)', display: 'flex', flexDirection: 'column',
-                  alignItems: 'center', gap: '4px', cursor: unlocked ? 'pointer' : 'not-allowed',
-                  maxWidth: '230px', textAlign: 'center', opacity: unlocked ? 1 : 0.75
-                }}
-              >
-                <span style={{ background: unlocked ? lvl.color : '#64748b', color: 'white', padding: '3px 10px', borderRadius: '12px', fontSize: '0.72rem', fontWeight: 900 }}>
-                  {lvl.level}. {lvl.subject}
-                </span>
-                
-                <div style={{ fontSize: '0.95rem', fontWeight: 800, color: unlocked ? '#1e293b' : '#64748b', marginTop: '2px' }}>
-                  {language === 'EN' ? lvl.title : lvl.title_kn}
-                </div>
-                
-                <div style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 700 }}>
-                  10 Questions • ⭐ +{lvl.reward} XP
-                </div>
-                
-                <button 
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleStartLevel(lvl, index);
-                  }}
+            {ANEKAL_LEVELS.map((lvl, index) => {
+              const unlocked = isLevelUnlocked(index);
+              const isCompleted = completedQuizzes.includes(lvl.id);
+              const alignOffset = index % 4 === 0 ? '-35px' : (index % 4 === 1 ? '0px' : (index % 4 === 2 ? '35px' : '0px'));
+
+              return (
+                <div 
+                  key={lvl.level}
                   style={{
-                    marginTop: '6px', padding: '8px 16px', borderRadius: '14px', border: 'none',
-                    background: unlocked ? (isCompleted ? '#16a34a' : lvl.color) : '#94a3b8',
-                    color: 'white', fontWeight: 800, fontSize: '0.8rem', cursor: unlocked ? 'pointer' : 'not-allowed',
-                    boxShadow: unlocked ? `0 4px 10px ${lvl.color}40` : 'none'
+                    transform: `translateX(${alignOffset})`,
+                    zIndex: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px'
                   }}
                 >
-                  {unlocked ? (
-                    isCompleted ? (language === 'EN' ? 'Replay Level 🚀' : 'ಮತ್ತೆ ಆಡಿ 🚀') : (language === 'EN' ? 'Start Level 🚀' : 'ಪ್ರಾರಂಭಿಸಿ 🚀')
-                  ) : (
-                    language === 'EN' ? `🔒 Locked (Complete Level ${index} first)` : `🔒 ಹಂತ ${index} ಪೂರ್ಣಗೊಳಿಸಿ`
-                  )}
-                </button>
-              </div>
-            </div>
-          );
-        })}
+                  {/* 3D Roadmap Level Node Button */}
+                  <div 
+                    onClick={() => handleStartLevel(lvl, index)}
+                    style={{
+                      position: 'relative', width: '80px', height: '80px', borderRadius: '50%',
+                      background: unlocked ? (isCompleted ? 'linear-gradient(135deg, #dcfce7, #86efac)' : 'linear-gradient(135deg, #ffffff, #f1f5f9)') : '#e2e8f0',
+                      border: `4px solid ${unlocked ? (isCompleted ? '#22c55e' : lvl.color) : '#94a3b8'}`,
+                      boxShadow: unlocked ? `0 8px 0 ${lvl.color}90, 0 12px 25px rgba(0,0,0,0.3)` : '0 4px 0 #cbd5e1',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '34px',
+                      cursor: unlocked ? 'pointer' : 'not-allowed', opacity: unlocked ? 1 : 0.7,
+                      transition: 'all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)'
+                    }}
+                  >
+                    {/* Level Number / Status Badge */}
+                    <div style={{
+                      position: 'absolute', top: '-6px', left: '-6px',
+                      background: unlocked ? (isCompleted ? '#16a34a' : '#3b82f6') : '#64748b',
+                      color: 'white', width: '28px', height: '28px', borderRadius: '50%',
+                      border: '2px solid white', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      fontSize: '0.85rem', fontWeight: 900, boxShadow: '0 2px 5px rgba(0,0,0,0.3)'
+                    }}>
+                      {isCompleted ? '✓' : (unlocked ? lvl.level : '🔒')}
+                    </div>
+                    
+                    <div style={{ filter: unlocked ? 'none' : 'grayscale(100%)' }}>
+                      {lvl.emoji}
+                    </div>
+                  </div>
+
+                  {/* Node Card Details & Start Button */}
+                  <div 
+                    onClick={() => handleStartLevel(lvl, index)}
+                    style={{
+                      background: 'rgba(255, 255, 255, 0.95)', backdropFilter: 'blur(8px)',
+                      padding: '12px 18px', borderRadius: '20px',
+                      border: `2px solid ${unlocked ? lvl.color : '#cbd5e1'}`,
+                      boxShadow: '0 8px 20px rgba(0,0,0,0.15)', display: 'flex', flexDirection: 'column',
+                      alignItems: 'center', gap: '4px', cursor: unlocked ? 'pointer' : 'not-allowed',
+                      maxWidth: '230px', textAlign: 'center', opacity: unlocked ? 1 : 0.8
+                    }}
+                  >
+                    <span style={{ background: unlocked ? lvl.color : '#64748b', color: 'white', padding: '3px 10px', borderRadius: '12px', fontSize: '0.72rem', fontWeight: 900 }}>
+                      {lvl.level}. {lvl.subject}
+                    </span>
+                    
+                    <div style={{ fontSize: '0.95rem', fontWeight: 800, color: unlocked ? '#1e293b' : '#64748b', marginTop: '2px' }}>
+                      {language === 'EN' ? lvl.title : lvl.title_kn}
+                    </div>
+                    
+                    <div style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 700 }}>
+                      10 Questions • ⭐ +{lvl.reward} XP
+                    </div>
+                    
+                    <button 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleStartLevel(lvl, index);
+                      }}
+                      style={{
+                        marginTop: '6px', padding: '8px 16px', borderRadius: '14px', border: 'none',
+                        background: unlocked ? (isCompleted ? '#16a34a' : lvl.color) : '#94a3b8',
+                        color: 'white', fontWeight: 800, fontSize: '0.8rem', cursor: unlocked ? 'pointer' : 'not-allowed',
+                        boxShadow: unlocked ? `0 4px 10px ${lvl.color}40` : 'none'
+                      }}
+                    >
+                      {unlocked ? (
+                        isCompleted ? (language === 'EN' ? 'Replay Level 🚀' : 'ಮತ್ತೆ ಆಡಿ 🚀') : (language === 'EN' ? 'Start Level 🚀' : 'ಪ್ರಾರಂಭಿಸಿ 🚀')
+                      ) : (
+                        language === 'EN' ? `🔒 Locked (Complete Level ${index} first)` : `🔒 ಹಂತ ${index} ಪೂರ್ಣಗೊಳಿಸಿ`
+                      )}
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
     </div>
   );
