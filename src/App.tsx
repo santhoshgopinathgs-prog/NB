@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Header } from './components/Header';
 import { BottomNav } from './components/BottomNav';
+import { RightSidebar } from './components/RightSidebar';
 import { HomeTab } from './tabs/HomeTab';
 import { LearnTab } from './tabs/LearnTab';
 import { PracticeTab } from './tabs/PracticeTab';
@@ -58,10 +59,23 @@ function AppContent() {
 
   return (
     <div className="app-container">
-      {activeTab !== 'achievements' && <Header setActiveTab={setActiveTab} />}
-      <main className="page-container" style={{ padding: activeTab === 'achievements' ? 0 : undefined }}>
-        {renderTab()}
-      </main>
+      <div className="desktop-layout-wrapper">
+        <div className="main-content-area">
+          {activeTab !== 'achievements' && <Header setActiveTab={setActiveTab} />}
+          <main className="page-container" style={{ padding: activeTab === 'achievements' ? 0 : undefined }}>
+            {renderTab()}
+          </main>
+        </div>
+
+        {/* Right Sidebar for Desktop Web Users */}
+        {activeTab !== 'achievements' && (
+          <div className="right-sidebar-container">
+            <RightSidebar setActiveTab={setActiveTab} />
+          </div>
+        )}
+      </div>
+
+      {/* Bottom Navigation Fixed at Bottom across Mobile, Tablet, and Desktop */}
       {activeTab !== 'achievements' && <BottomNav activeTab={activeTab} setActiveTab={setActiveTab} />}
 
       {/* Floating AI Buddy Button */}
