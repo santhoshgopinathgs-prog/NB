@@ -57,7 +57,7 @@ export const Header: React.FC<HeaderProps> = ({ setActiveTab }) => {
         </div>
       </div>
       
-      <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+      <div className="header-actions">
         
         {isOffline && (
           <div style={{ background: 'var(--accent-red)', color: 'white', padding: '4px 10px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: 800 }}>
@@ -68,11 +68,12 @@ export const Header: React.FC<HeaderProps> = ({ setActiveTab }) => {
         {/* Language Toggle */}
         <button 
           onClick={toggleLanguage}
+          className="header-pill"
           style={{ 
             background: 'var(--bg-surface)', 
             border: '1px solid var(--border-light)',
             borderRadius: '24px',
-            padding: '4px',
+            padding: '3px',
             display: 'flex',
             alignItems: 'center',
             fontSize: '0.8rem',
@@ -80,24 +81,26 @@ export const Header: React.FC<HeaderProps> = ({ setActiveTab }) => {
             cursor: 'pointer'
           }}
         >
-          <span style={{ padding: '6px 12px', borderRadius: '20px', background: language === 'EN' ? 'var(--accent-green)' : 'transparent', color: language === 'EN' ? '#FFFFFF' : 'var(--text-secondary)' }}>EN</span>
-          <span style={{ padding: '6px 12px', borderRadius: '20px', background: language === 'KN' ? 'var(--accent-green)' : 'transparent', color: language === 'KN' ? '#FFFFFF' : 'var(--text-secondary)' }}>KN</span>
+          <span style={{ padding: '4px 8px', borderRadius: '18px', background: language === 'EN' ? 'var(--accent-green)' : 'transparent', color: language === 'EN' ? '#FFFFFF' : 'var(--text-secondary)' }}>EN</span>
+          <span style={{ padding: '4px 8px', borderRadius: '18px', background: language === 'KN' ? 'var(--accent-green)' : 'transparent', color: language === 'KN' ? '#FFFFFF' : 'var(--text-secondary)' }}>KN</span>
         </button>
 
         {/* Streak */}
         <button 
           onClick={() => setActiveTab('achievements')}
-          style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'rgba(255, 200, 87, 0.2)', border: '1px solid rgba(255, 200, 87, 0.4)', padding: '8px 14px', borderRadius: '24px', color: '#D97706', fontWeight: 800, fontSize: '0.95rem', cursor: 'pointer' }}
+          className="header-pill"
+          style={{ display: 'flex', alignItems: 'center', gap: '5px', background: 'rgba(255, 200, 87, 0.2)', border: '1px solid rgba(255, 200, 87, 0.4)', padding: '6px 10px', borderRadius: '24px', color: '#D97706', fontWeight: 800, fontSize: '0.85rem', cursor: 'pointer' }}
         >
-          <Flame size={20} fill="#D97706" color="#D97706" /> {user?.streak || 0}
+          <Flame size={18} fill="#D97706" color="#D97706" /> {user?.streak || 0}
         </button>
         
         {/* XP / Coins */}
         <button 
           onClick={() => setActiveTab('achievements')}
-          style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'rgba(255, 200, 87, 0.2)', border: '1px solid rgba(255, 200, 87, 0.4)', padding: '8px 14px', borderRadius: '24px', color: '#D97706', fontWeight: 800, fontSize: '0.95rem', cursor: 'pointer' }}
+          className="header-pill"
+          style={{ display: 'flex', alignItems: 'center', gap: '5px', background: 'rgba(255, 200, 87, 0.2)', border: '1px solid rgba(255, 200, 87, 0.4)', padding: '6px 10px', borderRadius: '24px', color: '#D97706', fontWeight: 800, fontSize: '0.85rem', cursor: 'pointer' }}
         >
-          <Coins size={20} fill="#FFC857" color="#FFC857" /> {userXP}
+          <Coins size={18} fill="#FFC857" color="#FFC857" /> {userXP}
         </button>
 
         {/* Bell & Notifications Dropdown */}

@@ -82,28 +82,7 @@ function AppContent() {
       {isAuthenticated && (
         <button 
           onClick={() => setShowAITutor(true)}
-          className="animate-bounce"
-          style={{ 
-            position: 'fixed', 
-            bottom: '24px', 
-            right: '28px', 
-            width: '76px', 
-            height: '76px', 
-            borderRadius: '50%', 
-            background: 'var(--accent-blue)', 
-            border: '4px solid white', 
-            boxShadow: '0 8px 24px rgba(0,0,0,0.25)', 
-            cursor: 'pointer', 
-            display: 'flex', 
-            alignItems: 'center', 
-            justifyContent: 'center', 
-            zIndex: 900,
-            overflow: 'hidden',
-            padding: 0,
-            transition: 'transform 0.2s ease, box-shadow 0.2s ease'
-          }}
-          onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
-          onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
+          className="floating-bot-btn animate-bounce"
         >
           <img src="/bot_icon.jpg" alt="AI Buddy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
         </button>
