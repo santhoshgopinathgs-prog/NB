@@ -102,15 +102,15 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     setDailyQuests(prev => ({ ...prev, typing: true }));
   };
 
-  const claimQuestXP = async (questId: 'lessons' | 'quiz80' | 'aiTutor' | 'typing', xpReward: number) => {
-    if (!user) return;
-    setDailyQuests(prev => {
-      const next = { ...prev, [`${questId}Claimed`]: true };
-      return next;
+  const claimQuestXP = (questId: 'lessons' | 'quiz80' | 'aiTutor' | 'typing', xpReward: number) => {
+    setDailyQuests(prev => ({ ...prev, [`${questId}Claimed`]: true }));
+    setUserXP(prevXp => {
+      const nextXp = prevXp + xpReward;
+      if (user) {
+        supabase.from('user_progress').update({ total_xp: nextXp }).eq('user_id', user.id);
+      }
+      return nextXp;
     });
-    const newXp = userXP + xpReward;
-    setUserXP(newXp);
-    await supabase.from('user_progress').update({ total_xp: newXp }).eq('user_id', user.id);
   };
 
   const fetchLeaderboard = async () => {

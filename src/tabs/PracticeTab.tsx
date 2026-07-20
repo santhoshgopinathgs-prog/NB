@@ -86,12 +86,12 @@ export const PracticeTab = () => {
   };
 
   if (isTypingActive) {
-    const targetText = language === 'EN' ? "The quick brown fox jumps over the lazy dog." : "ಕನ್ನಡ ಭಾಷೆ ಸುಂದರವಾಗಿದೆ ಮತ್ತು ಕಲಿಯಲು ಸುಲಭವಾಗಿದೆ.";
+    const targetText = language === 'EN' ? "The quick brown fox jumps over the lazy dog" : "ಕನ್ನಡ ಭಾಷೆ ಸುಂದರವಾಗಿದೆ ಮತ್ತು ಕಲಿಯಲು ಸುಲಭವಾಗಿದೆ";
     
     const handleTypingChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       const val = e.target.value;
       setTypingInput(val);
-      if (val === targetText) {
+      if (val.trim().toLowerCase() === targetText.toLowerCase()) {
         markTypingPracticed();
         setTimeout(() => {
           setIsTypingActive(false);
