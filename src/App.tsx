@@ -8,6 +8,7 @@ import { TopTab } from './tabs/TopTab';
 import { ProfileTab } from './tabs/ProfileTab';
 import { AchievementsTab } from './tabs/AchievementsTab';
 import { RegistrationScreen } from './components/RegistrationScreen';
+import { AvatarSelectionScreen } from './components/AvatarSelectionScreen';
 import { useAppContext } from './context/AppContext';
 
 function AppContent() {
@@ -18,7 +19,7 @@ function AppContent() {
     setTargetChapter({ subjectId, subjectDisplay, chapter });
     setActiveTab('learn');
   };
-  const { isAuthenticated, isLoading } = useAppContext();
+  const { isAuthenticated, isLoading, user } = useAppContext();
 
   React.useEffect(() => {
     // Always reset to home tab when auth state changes (login or logout)
@@ -35,6 +36,10 @@ function AppContent() {
 
   if (!isAuthenticated) {
     return <RegistrationScreen />;
+  }
+
+  if (isAuthenticated && user && !user.avatar) {
+    return <AvatarSelectionScreen />;
   }
 
   const renderTab = () => {

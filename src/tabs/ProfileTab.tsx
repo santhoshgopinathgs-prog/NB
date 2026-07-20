@@ -15,8 +15,12 @@ export const ProfileTab = () => {
       </div>
 
       <div className="card" style={{ padding: '24px', margin: '0 20px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
-        <div style={{ width: '80px', height: '80px', borderRadius: '50%', background: 'var(--accent-blue)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <User size={40} color="white" />
+        <div style={{ width: '80px', height: '80px', borderRadius: '50%', background: 'var(--accent-blue)', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+          {user?.avatar ? (
+            <img src={user.avatar} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          ) : (
+            <User size={40} color="white" />
+          )}
         </div>
         <div style={{ textAlign: 'center' }}>
           <h3 style={{ fontSize: '1.4rem' }}>{user?.name}</h3>

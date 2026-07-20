@@ -18,7 +18,7 @@ interface AppContextType {
   language: Language;
   toggleLanguage: () => void;
   t: (key: keyof typeof translations.EN) => string;
-  user: { id: string; name: string; email: string; school: string; class: number; streak: number; lastActive: string } | null;
+  user: { id: string; name: string; email: string; school: string; class: number; streak: number; lastActive: string; avatar?: string } | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   logout: () => void;
@@ -28,6 +28,7 @@ interface AppContextType {
   certificates: Certificate[];
   leaderboard: LeaderboardUser[];
   fetchLeaderboard: () => Promise<void>;
+  updateUserAvatar: (avatarUrl: string) => Promise<void>;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -36,7 +37,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [language, setLanguage] = useState<Language>('EN');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [user, setUser] = useState<{ id: string; name: string; email: string; school: string; class: number; streak: number; lastActive: string } | null>(null);
+  const [user, setUser] = useState<{ id: string; name: string; email: string; school: string; class: number; streak: number; lastActive: string; avatar?: string } | null>(null);
   const [completedQuizzes, setCompletedQuizzes] = useState<string[]>([]);
   const [userXP, setUserXP] = useState<number>(0);
   const [certificates, setCertificates] = useState<Certificate[]>([]);
@@ -73,8 +74,9 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Fetch all user data when auth state changes
-  const fetchUserData = async (userId: string) => {
+  const fetchUserData = async (authUser: any) => {
     try {
+      const userId = authUser.id;
       // 1. Fetch Profile
       const { data: profile } = await supabase.from('profiles').select('*').eq('id', userId).single();
       
@@ -95,7 +97,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
           school: profile.school,
           class: profile.class_level,
           streak: progress.streak,
-          lastActive: progress.last_active
+          lastActive: progress.last_active,
+          avatar: authUser.user_metadata?.avatar
         });
         setUserXP(progress.total_xp);
       }
@@ -121,7 +124,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     // Check active session
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session?.user) {
-        fetchUserData(session.user.id);
+        fetchUserData(session.user);
       } else {
         setIsLoading(false);
       }
@@ -130,7 +133,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       if (session?.user) {
-        fetchUserData(session.user.id);
+        fetchUserData(session.user);
       } else {
         setIsAuthenticated(false);
         setUser(null);
@@ -188,6 +191,20 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     setLanguage(prev => (prev === 'EN' ? 'KN' : 'EN'));
   };
 
+  const updateUserAvatar = async (avatarUrl: string) => {
+    try {
+      const { data, error } = await supabase.auth.updateUser({
+        data: { avatar: avatarUrl }
+      });
+      if (error) throw error;
+      if (user) {
+        setUser({ ...user, avatar: avatarUrl });
+      }
+    } catch (err) {
+      console.error('Error updating avatar:', err);
+    }
+  };
+
   const logout = async () => {
     await supabase.auth.signOut();
   };
@@ -197,7 +214,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AppContext.Provider value={{ language, toggleLanguage, t, user, isAuthenticated, isLoading, logout, completedQuizzes, markQuizComplete, userXP, certificates, leaderboard, fetchLeaderboard }}>
+    <AppContext.Provider value={{ language, toggleLanguage, t, user, isAuthenticated, isLoading, logout, completedQuizzes, markQuizComplete, userXP, certificates, leaderboard, fetchLeaderboard, updateUserAvatar }}>
       {children}
     </AppContext.Provider>
   );

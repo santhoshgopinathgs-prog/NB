@@ -40,9 +40,14 @@ export const Header: React.FC<HeaderProps> = ({ setActiveTab }) => {
           width: '40px', height: '40px', borderRadius: '50%', 
           background: 'var(--accent-blue)', display: 'flex', 
           alignItems: 'center', justifyContent: 'center',
-          color: 'white', fontWeight: 700, fontSize: '1.2rem'
+          color: 'white', fontWeight: 700, fontSize: '1.2rem',
+          overflow: 'hidden'
         }}>
-          {user?.name.charAt(0).toUpperCase()}
+          {user?.avatar ? (
+            <img src={user.avatar} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          ) : (
+            user?.name.charAt(0).toUpperCase()
+          )}
         </div>
         <div>
           <div style={{ fontSize: '0.7rem', color: 'var(--text-tertiary)', fontWeight: 500 }}>{getSalutation()},</div>
