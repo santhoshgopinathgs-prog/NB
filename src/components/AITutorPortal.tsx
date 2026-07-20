@@ -62,7 +62,12 @@ export const AITutorPortal = ({ onClose, initialQuery }: { onClose: () => void, 
 
     try {
       const genAI = new GoogleGenerativeAI(apiKey);
-      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+      const model = genAI.getGenerativeModel({ 
+        model: "gemini-1.5-flash",
+        systemInstruction: language === 'EN' 
+          ? "You are a helpful, encouraging AI tutor for high school students in Karnataka, India. Explain concepts simply and clearly. If asked about the syllabus, refer to standard high school topics." 
+          : "ನೀವು ಕರ್ನಾಟಕದ ಪ್ರೌಢಶಾಲಾ ವಿದ್ಯಾರ್ಥಿಗಳಿಗೆ ಸಹಾಯಕವಾದ, ಪ್ರೋತ್ಸಾಹದಾಯಕ AI ಶಿಕ್ಷಕರಾಗಿದ್ದೀರಿ. ಪರಿಕಲ್ಪನೆಗಳನ್ನು ಸರಳವಾಗಿ ಮತ್ತು ಸ್ಪಷ್ಟವಾಗಿ ವಿವರಿಸಿ. ಕನ್ನಡದಲ್ಲಿಯೇ ಉತ್ತರಿಸಿ."
+      });
       
       const history = messages.slice(1).map(m => ({
         role: m.isBot ? "model" : "user",
@@ -70,10 +75,7 @@ export const AITutorPortal = ({ onClose, initialQuery }: { onClose: () => void, 
       }));
 
       const chat = model.startChat({
-        history,
-        systemInstruction: language === 'EN' 
-          ? "You are a helpful, encouraging AI tutor for high school students in Karnataka, India. Explain concepts simply and clearly. If asked about the syllabus, refer to standard high school topics." 
-          : "ನೀವು ಕರ್ನಾಟಕದ ಪ್ರೌಢಶಾಲಾ ವಿದ್ಯಾರ್ಥಿಗಳಿಗೆ ಸಹಾಯಕವಾದ, ಪ್ರೋತ್ಸಾಹದಾಯಕ AI ಶಿಕ್ಷಕರಾಗಿದ್ದೀರಿ. ಪರಿಕಲ್ಪನೆಗಳನ್ನು ಸರಳವಾಗಿ ಮತ್ತು ಸ್ಪಷ್ಟವಾಗಿ ವಿವರಿಸಿ. ಕನ್ನಡದಲ್ಲಿಯೇ ಉತ್ತರಿಸಿ."
+        history
       });
 
       const result = await chat.sendMessage(userMsg);
