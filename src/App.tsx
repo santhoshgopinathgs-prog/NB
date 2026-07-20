@@ -46,13 +46,13 @@ function AppContent() {
 
   const renderTab = () => {
     switch (activeTab) {
-      case 'home': return <HomeTab navigateToChapter={navigateToChapter} />;
+      case 'home': return <HomeTab navigateToChapter={navigateToChapter} setActiveTab={setActiveTab} />;
       case 'learn': return <LearnTab initialChapter={targetChapter} clearInitialChapter={() => setTargetChapter(null)} />;
       case 'practice': return <PracticeTab />;
       case 'top': return <TopTab />;
       case 'profile': return <ProfileTab />;
       case 'achievements': return <AchievementsTab setActiveTab={setActiveTab} />;
-      default: return <HomeTab navigateToChapter={navigateToChapter} />;
+      default: return <HomeTab navigateToChapter={navigateToChapter} setActiveTab={setActiveTab} />;
     }
   };
 

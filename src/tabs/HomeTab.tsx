@@ -6,7 +6,7 @@ import { CertificatesPortal } from '../components/CertificatesPortal';
 import { AITutorPortal } from '../components/AITutorPortal';
 import { syllabusData } from '../data/mockData';
 
-export const HomeTab = ({ navigateToChapter }: { navigateToChapter?: (subjectId: string, subjectDisplay: string, chapter: string) => void }) => {
+export const HomeTab = ({ navigateToChapter, setActiveTab }: { navigateToChapter?: (subjectId: string, subjectDisplay: string, chapter: string) => void, setActiveTab?: (tab: string) => void }) => {
   const { language, userXP, user, completedQuizzes, dailyQuests, claimQuestXP, incrementLessonsCompleted, markQuiz80Percent, markAITutorUsed, markTypingPracticed } = useAppContext();
   
   const [activePortal, setActivePortal] = useState<'leaderboard' | 'certificates' | 'ai' | null>(null);
@@ -198,19 +198,19 @@ export const HomeTab = ({ navigateToChapter }: { navigateToChapter?: (subjectId:
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
           <QuestCard 
             icon="📚" title={language === 'EN' ? "Complete 2 Lessons" : "2 ಪಾಠಗಳನ್ನು ಪೂರ್ಣಗೊಳಿಸಿ"} xp="+50 XP" done={dailyQuests.lessons >= 2} progress={dailyQuests.lessons / 2} 
-            onClick={() => { if (dailyQuests.lessons < 2) { incrementLessonsCompleted(); incrementLessonsCompleted(); } }}
+            onClick={() => setActiveTab && setActiveTab('learn')}
           />
           <QuestCard 
             icon="🎯" title={language === 'EN' ? "Score 80%+ in a Quiz" : "ರಸಪ್ರಶ್ನೆಯಲ್ಲಿ 80%+ ಸ್ಕೋರ್ ಮಾಡಿ"} xp="+75 XP" done={dailyQuests.quiz80} progress={dailyQuests.quiz80 ? 1 : 0} 
-            onClick={() => { if (!dailyQuests.quiz80) markQuiz80Percent(); }}
+            onClick={() => setActiveTab && setActiveTab('practice')}
           />
           <QuestCard 
             icon="🤖" title={language === 'EN' ? "Use AI Tutor" : "AI ಟ್ಯೂಟರ್ ಬಳಸಿ"} xp="+25 XP" done={dailyQuests.aiTutor} progress={dailyQuests.aiTutor ? 1 : 0} 
-            onClick={() => { if (!dailyQuests.aiTutor) markAITutorUsed(); }}
+            onClick={() => setActivePortal('ai')}
           />
           <QuestCard 
-            icon="⌨️" title={language === 'EN' ? "Practice Typing 5 min" : "5 ನಿಮಿಷ ಟೈಪಿಂಗ್ ಅಭ್ಯಾಸ ಮಾಡಿ"} xp="+30 XP" done={dailyQuests.typing} progress={dailyQuests.typing ? 1 : 0} 
-            onClick={() => { if (!dailyQuests.typing) markTypingPracticed(); }}
+            icon="⌨️" title={language === 'EN' ? "Practice Typing" : "ಟೈಪಿಂಗ್ ಅಭ್ಯಾಸ ಮಾಡಿ"} xp="+30 XP" done={dailyQuests.typing} progress={dailyQuests.typing ? 1 : 0} 
+            onClick={() => setActiveTab && setActiveTab('practice')}
           />
         </div>
       </div>
