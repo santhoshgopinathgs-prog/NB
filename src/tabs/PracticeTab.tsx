@@ -560,165 +560,119 @@ export const PracticeTab = () => {
     <div className="animate-slide-up" style={{ padding: '0 0px 20px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
       
       {/* Top Game Status Bar */}
-      <div className="game-top-bar" style={{ margin: '0 20px 0px 20px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <div style={{ width: '38px', height: '38px', borderRadius: '50%', overflow: 'hidden', border: '2px solid #38bdf8' }}>
-            <img src={user?.avatar || '/buddy_boy.jpg'} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+      <div className="game-top-bar">
+        {/* User Info Left */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ position: 'relative' }}>
+            <img src={user?.avatar || '/avatar_boy.jpg'} alt="Avatar" style={{ width: '42px', height: '42px', borderRadius: '50%', objectFit: 'cover', border: '2.5px solid #38bdf8' }} />
           </div>
           <div>
-            <div style={{ fontSize: '0.85rem', fontWeight: 800 }}>{user?.name || 'Anekal Learner'}</div>
-            <div style={{ fontSize: '0.7rem', color: '#94a3b8' }}>Class {user?.class || 9} • Level {completedQuizzes.length + 1}</div>
+            <div style={{ fontSize: '0.82rem', fontWeight: 900, color: '#FFFFFF', whiteSpace: 'nowrap' }}>
+              {user?.name || 'Anekal Learner'}
+            </div>
+            <div style={{ fontSize: '0.68rem', color: '#38bdf8', fontWeight: 800 }}>
+              Level {completedQuizzes.length + 1}
+            </div>
           </div>
         </div>
 
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <div className="game-stat-item" style={{ color: '#facc15' }}>⚡ 120/120</div>
-          <div className="game-stat-item" style={{ color: '#f59e0b' }}>⭐ 250</div>
-          <div className="game-stat-item" style={{ color: '#fbbf24' }}>🪙 1250</div>
+        {/* Energy, Stars, Coins Middle */}
+        <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+          <div className="game-stat-item" style={{ color: '#FACC15' }}>
+            ⚡ 120/120 <span className="game-add-btn">+</span>
+          </div>
+          <div className="game-stat-item" style={{ color: '#F59E0B' }}>
+            ⭐ 250 <span className="game-add-btn">+</span>
+          </div>
+          <div className="game-stat-item" style={{ color: '#FBBF24' }}>
+            🪙 1250 <span className="game-add-btn">+</span>
+          </div>
+        </div>
+
+        {/* Quick Action Icons Right */}
+        <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer' }}>
+            <span style={{ fontSize: '1.2rem' }}>🏆</span>
+            <span style={{ fontSize: '0.58rem', fontWeight: 800, color: '#CBD5E1' }}>Badges</span>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer' }}>
+            <span style={{ fontSize: '1.2rem' }}>🎒</span>
+            <span style={{ fontSize: '0.58rem', fontWeight: 800, color: '#CBD5E1' }}>Bag</span>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer' }}>
+            <span style={{ fontSize: '1.2rem' }}>⚙️</span>
+          </div>
         </div>
       </div>
 
-      {/* Header Banner */}
-      <div style={{ width: '100%', marginBottom: '20px' }}>
-        <div style={{
-          background: 'linear-gradient(135deg, var(--accent-green), #1E5E3A)',
-          borderRadius: '24px', padding: '24px 28px', border: '1px solid var(--border-light)',
-          boxShadow: '0 8px 24px rgba(46, 139, 87, 0.25)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: 'white'
-        }}>
-          <div>
-            <div style={{ fontSize: '1.25rem', fontWeight: 900, letterSpacing: '0.5px' }}>DIGITAL CHAMPS • ANEKAL SCHOOL</div>
-            <div style={{ fontSize: '0.9rem', opacity: 0.95, fontWeight: 600, marginTop: '4px' }}>10 Questions Per Level • Sequential Unlocking</div>
-          </div>
-          <span style={{ fontSize: '2.5rem' }}>🏆</span>
-        </div>
+      {/* Golden Banner Ribbon */}
+      <div className="golden-ribbon-banner">
+        <div className="golden-ribbon-title">DIGITAL CHAMPS ANEKAL SCHOOL</div>
+        <div className="golden-ribbon-subtitle">Learn • Practice • Grow</div>
       </div>
 
       {/* Locked Level Toast Notification */}
       {lockedMsg && (
-        <div className="animate-slide-up" style={{ width: '100%', marginBottom: '20px', padding: '14px 18px', background: '#FEE2E2', border: '2px solid #FCA5A5', color: '#991B1B', borderRadius: '18px', fontWeight: 800, fontSize: '0.95rem', textAlign: 'center' }}>
+        <div className="animate-slide-up" style={{ width: '100%', marginBottom: '16px', padding: '12px 16px', background: '#FEE2E2', border: '2px solid #FCA5A5', color: '#991B1B', borderRadius: '18px', fontWeight: 800, fontSize: '0.9rem', textAlign: 'center', zIndex: 30 }}>
           {lockedMsg}
         </div>
       )}
 
-      {/* Vertical Winding Roadmap Path with Clean Modern Canvas */}
-      <div style={{ width: '100%', borderRadius: '28px', overflow: 'hidden', border: '1px solid var(--border-light)', background: 'var(--bg-surface)', boxShadow: 'var(--shadow-sm)', position: 'relative' }}>
+      {/* Full-Screen Portrait Gamified Roadmap Canvas */}
+      <div className="portrait-roadmap-canvas">
         
-        {/* Background Image backdrop */}
-        <div style={{
-          position: 'absolute', inset: 0,
-          background: 'linear-gradient(to bottom, rgba(248, 250, 252, 0.7) 0%, rgba(248, 250, 252, 0.9) 100%), url("/anekal_map_bg.jpg") center top/cover no-repeat',
-          zIndex: 0
-        }} />
+        {/* Campus Background Image Backdrop */}
+        <div className="portrait-roadmap-bg" />
+        <div className="portrait-roadmap-overlay" />
 
-        <div style={{ position: 'relative', zIndex: 1, padding: '28px 20px 48px 20px' }}>
+        {/* 10 Milestone Platforms Connected via Winding Stone Path */}
+        {ANEKAL_LEVELS.map((lvl, index) => {
+          const unlocked = isLevelUnlocked(index);
+          const isCompleted = completedQuizzes.includes(lvl.id);
           
-          <div style={{ marginBottom: '28px', textAlign: 'center' }}>
-            <h3 style={{ fontSize: '1.6rem', fontFamily: 'Georgia, serif', fontWeight: 900, color: 'var(--text-primary)', margin: 0 }}>
-              {language === 'EN' ? "Anekal School Learning Roadmap" : "ಆನೆಕಲ್ ಶಾಲಾ ಕಲಿಕಾ ಮಾರ್ಗಸೂಚಿ"}
-            </h3>
-            <p style={{ margin: '8px 0 0 0', fontSize: '0.95rem', color: 'var(--text-secondary)', fontWeight: 600 }}>
-              {language === 'EN' ? "Tap a node to start! Complete each task to unlock the next level." : "ಪ್ರಾರಂಭಿಸಲು ಹಂತವನ್ನು ಸ್ಪರ್ಶಿಸಿ! ಮುಂದಿನ ಹಂತವನ್ನು ಅನ್‌ಲಾಕ್ ಮಾಡಲು ಪೂರ್ಣಗೊಳಿಸಿ."}
-            </p>
-          </div>
+          // Curved winding path positions (left %, top %) matching the exact screenshot layout
+          const nodePositions = [
+            { left: '28%', top: '15%' }, // 1. Basics of Computer
+            { left: '50%', top: '23%' }, // 2. Typing Champ
+            { left: '72%', top: '31%' }, // 3. Internet Navigator
+            { left: '28%', top: '40%' }, // 4. Digital Productivity
+            { left: '50%', top: '48%' }, // 5. Online Safety
+            { left: '72%', top: '56%' }, // 6. Mobile Literacy
+            { left: '28%', top: '65%' }, // 7. Digital Creativity
+            { left: '50%', top: '74%' }, // 8. Intro to Coding
+            { left: '72%', top: '83%' }, // 9. Real Life Project
+            { left: '50%', top: '92%' }  // 10. Graduation
+          ];
 
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative', gap: '36px' }}>
-            {/* Dotted Roadmap Path Line */}
-            <div style={{
-              position: 'absolute', top: '50px', bottom: '80px', width: '8px',
-              background: 'repeating-linear-gradient(to bottom, var(--accent-green) 0px, var(--accent-green) 12px, transparent 12px, transparent 20px)',
-              borderRadius: '4px', zIndex: 0, opacity: 0.6
-            }} />
+          const pos = nodePositions[index];
 
-            {ANEKAL_LEVELS.map((lvl, index) => {
-              const unlocked = isLevelUnlocked(index);
-              const isCompleted = completedQuizzes.includes(lvl.id);
-              const alignOffset = index % 4 === 0 ? '-35px' : (index % 4 === 1 ? '0px' : (index % 4 === 2 ? '35px' : '0px'));
+          return (
+            <div 
+              key={lvl.level}
+              className={`milestone-node-platform ${isCompleted ? 'completed' : (unlocked ? 'active' : 'locked')}`}
+              style={{ left: pos.left, top: pos.top }}
+              onClick={() => handleStartLevel(lvl, index)}
+            >
+              {/* Node Number Badge */}
+              <div className="node-number-badge">
+                {isCompleted ? '✓' : (unlocked ? lvl.level : '🔒')}
+              </div>
 
-              return (
-                <div 
-                  key={lvl.level}
-                  style={{
-                    transform: `translateX(${alignOffset})`,
-                    zIndex: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px'
-                  }}
-                >
-                  {/* 3D Roadmap Level Node Button */}
-                  <div 
-                    onClick={() => handleStartLevel(lvl, index)}
-                    style={{
-                      position: 'relative', width: '84px', height: '84px', borderRadius: '50%',
-                      background: unlocked ? (isCompleted ? 'linear-gradient(135deg, #2E8B57, #1E5E3A)' : 'linear-gradient(135deg, #FFFFFF, #F8FAFC)') : '#E2E8F0',
-                      border: `4px solid ${unlocked ? (isCompleted ? '#2E8B57' : lvl.color) : '#94A3B8'}`,
-                      boxShadow: unlocked ? `0 8px 0 ${lvl.color}70, 0 12px 24px rgba(31, 41, 55, 0.15)` : '0 4px 0 #CBD5E1',
-                      display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '36px',
-                      cursor: unlocked ? 'pointer' : 'not-allowed', opacity: unlocked ? 1 : 0.7,
-                      transition: 'all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)'
-                    }}
-                  >
-                    {/* Level Number / Status Badge */}
-                    <div style={{
-                      position: 'absolute', top: '-6px', left: '-6px',
-                      background: unlocked ? (isCompleted ? '#2E8B57' : '#4DA8FF') : '#64748B',
-                      color: 'white', width: '30px', height: '30px', borderRadius: '50%',
-                      border: '2px solid white', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      fontSize: '0.9rem', fontWeight: 900, boxShadow: '0 2px 6px rgba(0,0,0,0.15)'
-                    }}>
-                      {isCompleted ? '✓' : (unlocked ? lvl.level : '🔒')}
-                    </div>
-                    
-                    <div style={{ filter: unlocked ? 'none' : 'grayscale(100%)' }}>
-                      {lvl.emoji}
-                    </div>
-                  </div>
+              {/* 3D Stone Ring Node Icon */}
+              <div className="node-stone-ring">
+                {lvl.emoji}
+              </div>
 
-                  {/* Node Card Details & Start Button */}
-                  <div 
-                    onClick={() => handleStartLevel(lvl, index)}
-                    style={{
-                      background: 'var(--bg-surface)',
-                      padding: '14px 20px', borderRadius: '22px',
-                      border: `2px solid ${unlocked ? lvl.color : '#CBD5E1'}`,
-                      boxShadow: 'var(--shadow-sm)', display: 'flex', flexDirection: 'column',
-                      alignItems: 'center', gap: '6px', cursor: unlocked ? 'pointer' : 'not-allowed',
-                      maxWidth: '240px', textAlign: 'center', opacity: unlocked ? 1 : 0.85
-                    }}
-                  >
-                    <span style={{ background: unlocked ? lvl.color : '#64748B', color: 'white', padding: '4px 12px', borderRadius: '14px', fontSize: '0.8rem', fontWeight: 800 }}>
-                      {lvl.level}. {lvl.subject}
-                    </span>
-                    
-                    <div style={{ fontSize: '1rem', fontWeight: 800, color: unlocked ? 'var(--text-primary)' : '#64748B', marginTop: '2px' }}>
-                      {language === 'EN' ? lvl.title : lvl.title_kn}
-                    </div>
-                    
-                    <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', fontWeight: 700 }}>
-                      10 Questions • ⭐ +{lvl.reward} XP
-                    </div>
-                    
-                    <button 
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleStartLevel(lvl, index);
-                      }}
-                      style={{
-                        marginTop: '8px', padding: '10px 18px', borderRadius: '16px', border: 'none',
-                        background: unlocked ? (isCompleted ? '#2E8B57' : lvl.color) : '#94A3B8',
-                        color: 'white', fontWeight: 800, fontSize: '0.85rem', cursor: unlocked ? 'pointer' : 'not-allowed',
-                        boxShadow: unlocked ? `0 4px 12px ${lvl.color}40` : 'none'
-                      }}
-                    >
-                      {unlocked ? (
-                        isCompleted ? (language === 'EN' ? 'Replay Level 🚀' : 'ಮತ್ತೆ ಆಡಿ 🚀') : (language === 'EN' ? 'Start Level 🚀' : 'ಪ್ರಾರಂಭಿಸಿ 🚀')
-                      ) : (
-                        language === 'EN' ? `🔒 Locked (Complete Level ${index} first)` : `🔒 ಹಂತ ${index} ಪೂರ್ಣಗೊಳಿಸಿ`
-                      )}
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
+              {/* 3D Label Pill Button */}
+              <div 
+                className="node-label-pill"
+                style={{ background: unlocked ? (isCompleted ? '#22C55E' : lvl.color) : '#64748B' }}
+              >
+                {language === 'EN' ? lvl.title : lvl.title_kn}
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

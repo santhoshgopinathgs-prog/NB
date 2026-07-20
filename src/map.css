@@ -4,194 +4,217 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: linear-gradient(to bottom, #0f172a, #1e293b);
-  padding: 10px 16px;
-  border-radius: 20px;
+  background: linear-gradient(180deg, #0d1b2a 0%, #1b263b 100%);
+  padding: 8px 14px;
+  border-radius: 24px;
   color: white;
-  margin: 0 20px 16px 20px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  margin: 0 0 16px 0;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  width: 100%;
 }
 
 .game-stat-item {
   display: flex;
   align-items: center;
-  gap: 6px;
-  background: rgba(255,255,255,0.1);
-  padding: 6px 12px;
-  border-radius: 16px;
-  font-weight: 800;
-  font-size: 0.85rem;
-  border: 1px solid rgba(255,255,255,0.15);
+  gap: 5px;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 6px 10px;
+  border-radius: 18px;
+  font-weight: 900;
+  font-size: 0.82rem;
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+  white-space: nowrap;
+}
+
+.game-add-btn {
+  background: #22c55e;
+  color: white;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 900;
+  margin-left: 2px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .golden-ribbon-banner {
-  position: absolute;
-  top: 16px;
-  left: 16px;
-  background: linear-gradient(135deg, #fef08a, #eab308);
-  border: 3px solid #fde047;
-  padding: 8px 20px;
-  border-radius: 24px;
-  color: #713f12;
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+  border: 3px solid #fef08a;
+  padding: 10px 24px;
+  border-radius: 28px;
+  color: #451a03;
   font-weight: 900;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.25);
-  z-index: 20;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3), inset 0 2px 4px rgba(255, 255, 255, 0.6);
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-.map-wrapper {
+  text-align: center;
   position: relative;
-  width: 100%;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  border-radius: 28px;
-  border: 4px solid #1e293b;
-  box-shadow: 0 12px 30px rgba(0,0,0,0.25);
-  background: #0f172a;
-}
-.map-wrapper::-webkit-scrollbar {
-  height: 8px;
-}
-.map-wrapper::-webkit-scrollbar-thumb {
-  background: #f59e0b;
-  border-radius: 4px;
-}
-
-.map-container {
-  position: relative;
-  min-width: 900px; /* Full spacious landscape aspect ratio */
-  height: 480px;
-  background: 
-    linear-gradient(to bottom, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.35) 100%),
-    url('/anekal_map_bg.jpg') center/cover no-repeat;
-  border-radius: 24px;
-  overflow: hidden;
-}
-
-.map-path-svg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-
-.map-node {
-  position: absolute;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #ffffff, #e2e8f0);
-  border: 4px solid #1e293b;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 26px;
-  box-shadow: 0 6px 0 #0f172a, 0 10px 20px rgba(0,0,0,0.4);
-  transform: translate(-50%, -50%);
-  cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  width: fit-content;
+  margin: 0 auto 24px auto;
   z-index: 10;
 }
-.map-node:hover {
-  transform: translate(-50%, -58%) scale(1.1);
-  box-shadow: 0 10px 0 #0f172a, 0 14px 25px rgba(0,0,0,0.4);
-}
-.map-node:active {
-  transform: translate(-50%, -45%) scale(0.95);
-  box-shadow: 0 3px 0 #0f172a;
-}
-.map-node.active {
-  border-color: #f59e0b;
-  background: linear-gradient(135deg, #fef3c7, #fde047);
-  box-shadow: 0 8px 0 #b45309, 0 12px 20px rgba(0,0,0,0.4), 0 0 0 6px rgba(245, 158, 11, 0.4);
-  z-index: 15;
-}
-.map-node.completed {
-  border-color: #22c55e;
-  background: linear-gradient(135deg, #dcfce7, #86efac);
-  box-shadow: 0 8px 0 #15803d, 0 12px 20px rgba(0,0,0,0.4);
+
+.golden-ribbon-title {
+  font-size: 1.3rem;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+  line-height: 1.2;
 }
 
-.map-node-label {
-  position: absolute;
-  background: #0f172a;
-  color: #ffffff;
-  padding: 4px 10px;
-  border-radius: 12px;
-  font-size: 0.72rem;
+.golden-ribbon-subtitle {
+  background: rgba(69, 26, 3, 0.85);
+  color: #fef08a;
+  padding: 4px 14px;
+  border-radius: 16px;
+  font-size: 0.75rem;
   font-weight: 800;
-  white-space: nowrap;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
-  border: 2px solid #38bdf8;
-  text-align: center;
+  margin-top: 6px;
+  letter-spacing: 1px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Portrait Full-Screen Roadmap Canvas */
+.portrait-roadmap-canvas {
+  position: relative;
+  width: 100%;
+  max-width: 540px;
+  min-height: 1450px;
+  margin: 0 auto;
+  border-radius: 32px;
+  overflow: hidden;
+  border: 4px solid #1b263b;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+  background: #152238;
+}
+
+.portrait-roadmap-bg {
+  position: absolute;
+  inset: 0;
+  background: url('/anekal_campus_roadmap.jpg') center top/cover no-repeat;
+  z-index: 0;
+}
+
+.portrait-roadmap-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.25) 100%);
+  z-index: 1;
   pointer-events: none;
 }
-.map-node-label.label-below {
-  top: calc(100% + 6px);
+
+/* 3D Milestone Platforms */
+.milestone-node-platform {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  cursor: pointer;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
-.map-node-label.label-above {
-  bottom: calc(100% + 6px);
+.milestone-node-platform:hover {
+  transform: translate(-50%, -58%) scale(1.08);
 }
 
-.map-node-number {
-  position: absolute;
-  top: -8px;
-  left: -8px;
-  background: #3b82f6;
-  color: white;
-  width: 28px;
-  height: 28px;
+/* 3D Stone Ring Container */
+.node-stone-ring {
+  position: relative;
+  width: 82px;
+  height: 82px;
   border-radius: 50%;
-  border: 2px solid #ffffff;
+  background: linear-gradient(135deg, #ffffff, #e2e8f0);
+  border: 5px solid #1e293b;
+  box-shadow: 0 8px 0 #0f172a, 0 12px 24px rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.85rem;
+  font-size: 36px;
+  transition: all 0.3s ease;
+}
+
+/* Node Number Badge */
+.node-number-badge {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #3b82f6;
+  color: white;
+  border: 3px solid white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
   font-weight: 900;
-  box-shadow: 0 3px 0 #1d4ed8;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  z-index: 10;
 }
 
-/* 10 Level Cards Grid Carousel at bottom matching Image 2 */
-.anekal-card-carousel {
-  display: flex;
-  gap: 16px;
-  overflow-x: auto;
-  padding: 8px 20px 24px 20px;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
+/* 3D Label Pill Button */
+.node-label-pill {
+  margin-top: 10px;
+  padding: 6px 14px;
+  border-radius: 16px;
+  color: white;
+  font-weight: 900;
+  font-size: 0.75rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  text-align: center;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.4), 0 8px 16px rgba(0, 0, 0, 0.3);
+  border: 2px solid white;
+  white-space: nowrap;
+  max-width: 170px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.anekal-card-carousel::-webkit-scrollbar {
-  height: 8px;
+
+/* Node States: Active, Completed, Locked */
+.milestone-node-platform.active .node-stone-ring {
+  border-color: #f59e0b;
+  background: linear-gradient(135deg, #fef3c7, #fde047);
+  box-shadow: 0 8px 0 #b45309, 0 12px 28px rgba(245, 158, 11, 0.6);
+  animation: pulseNode 2s infinite ease-in-out;
 }
-.anekal-card-carousel::-webkit-scrollbar-thumb {
+.milestone-node-platform.active .node-number-badge {
+  background: #f59e0b;
+}
+
+.milestone-node-platform.completed .node-stone-ring {
+  border-color: #22c55e;
+  background: linear-gradient(135deg, #dcfce7, #86efac);
+  box-shadow: 0 8px 0 #15803d, 0 12px 24px rgba(34, 197, 94, 0.4);
+}
+.milestone-node-platform.completed .node-number-badge {
+  background: #22c55e;
+}
+
+.milestone-node-platform.locked .node-stone-ring {
+  border-color: #64748b;
   background: #cbd5e1;
-  border-radius: 4px;
+  box-shadow: 0 6px 0 #475569;
+  filter: grayscale(85%);
+  opacity: 0.85;
+}
+.milestone-node-platform.locked .node-number-badge {
+  background: #64748b;
 }
 
-.anekal-level-card {
-  flex: 0 0 240px;
-  scroll-snap-align: start;
-  background: #ffffff;
-  border-radius: 24px;
-  padding: 16px;
-  border: 3px solid #e2e8f0;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.06);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  transition: all 0.2s;
-  cursor: pointer;
-}
-.anekal-level-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 25px rgba(0,0,0,0.12);
-}
-.anekal-level-card.selected {
-  border-color: #3b82f6;
-  box-shadow: 0 10px 25px rgba(59, 130, 246, 0.25);
-  background: #f8fafc;
+@keyframes pulseNode {
+  0% { transform: scale(1); box-shadow: 0 8px 0 #b45309, 0 12px 28px rgba(245, 158, 11, 0.6); }
+  50% { transform: scale(1.06); box-shadow: 0 12px 0 #b45309, 0 16px 36px rgba(245, 158, 11, 0.8); }
+  100% { transform: scale(1); box-shadow: 0 8px 0 #b45309, 0 12px 28px rgba(245, 158, 11, 0.6); }
 }
