@@ -1,26 +1,93 @@
 :root {
-  /* Namma Buddy Design System Palette */
-  --bg-app: #F8FAFC; /* Background Off White */
-  --bg-surface: #FFFFFF; /* Pure White Surface */
+  /* RankUp Light Mode Palette */
+  --bg-app: #F8FAFC;
+  --bg-surface: #FFFFFF;
+  --bg-input: #F1F5F9;
+  --bg-nav: #FFFFFF;
   
-  --text-primary: #1F2937; /* Dark Navy for Crisp Readability */
-  --text-secondary: #6B7280; /* Muted Slate Gray for Subtitles */
-  --text-tertiary: #9CA3AF; /* Light Slate Gray for Labels & Icons */
+  --text-primary: #0F172A;
+  --text-secondary: #64748B;
+  --text-tertiary: #94A3B8;
   
-  --accent-green: #2E8B57; /* Primary Emerald Green */
-  --accent-blue: #4DA8FF; /* Secondary Sky Blue */
-  --accent-orange: #FFC857; /* Accent Warm Yellow / Gold */
-  --accent-purple: #8B5CF6; 
-  --accent-red: #EF4444; 
+  --accent-purple: #6366F1; /* RankUp Indigo/Violet Primary */
+  --accent-blue: #0284C7;   /* RankUp Electric Cyan */
+  --accent-green: #10B981;  /* RankUp Emerald Success */
+  --accent-orange: #F59E0B; /* RankUp Gold Rewards / XP */
+  --accent-red: #EF4444;
   
-  --border-light: #E5E7EB; /* Subtle Light Gray Border */
+  --border-light: #E2E8F0;
   
-  --shadow-sm: 0 2px 8px rgba(31, 41, 55, 0.04);
-  --shadow-md: 0 4px 16px rgba(31, 41, 55, 0.06);
-  --shadow-lg: 0 10px 25px rgba(31, 41, 55, 0.1);
+  --shadow-sm: 0 4px 12px rgba(15, 23, 42, 0.05);
+  --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.08);
+  --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.12);
   
   --font-main: 'Poppins', 'Inter', system-ui, -apple-system, sans-serif;
-  --transition-fast: 0.2s ease;
+  --transition-fast: 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Automatic Device Dark Mode (RankUp Sleek Immersive Dark Theme) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-app: #0B0F19; /* Midnight Deep Slate */
+    --bg-surface: #161F33; /* Glassmorphic Slate Card */
+    --bg-input: #1E293B;
+    --bg-nav: #161F33;
+    
+    --text-primary: #F8FAFC; /* Pure Crisp White */
+    --text-secondary: #94A3B8; /* Muted Slate */
+    --text-tertiary: #64748B;
+    
+    --accent-purple: #818CF8; /* Luminous Indigo / Violet */
+    --accent-blue: #38BDF8;   /* Luminous Cyan */
+    --accent-green: #34D399;  /* Vivid Emerald */
+    --accent-orange: #FBBF24; /* Luminous Gold Rewards */
+    --accent-red: #F87171;
+    
+    --border-light: #243049; /* Dark Slate Border */
+    
+    --shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 8px 28px rgba(0, 0, 0, 0.45);
+    --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.6);
+  }
+}
+
+/* Explicit data-theme overrides */
+[data-theme="dark"] {
+  --bg-app: #0B0F19;
+  --bg-surface: #161F33;
+  --bg-input: #1E293B;
+  --bg-nav: #161F33;
+  --text-primary: #F8FAFC;
+  --text-secondary: #94A3B8;
+  --text-tertiary: #64748B;
+  --accent-purple: #818CF8;
+  --accent-blue: #38BDF8;
+  --accent-green: #34D399;
+  --accent-orange: #FBBF24;
+  --accent-red: #F87171;
+  --border-light: #243049;
+  --shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 8px 28px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.6);
+}
+
+[data-theme="light"] {
+  --bg-app: #F8FAFC;
+  --bg-surface: #FFFFFF;
+  --bg-input: #F1F5F9;
+  --bg-nav: #FFFFFF;
+  --text-primary: #0F172A;
+  --text-secondary: #64748B;
+  --text-tertiary: #94A3B8;
+  --accent-purple: #6366F1;
+  --accent-blue: #0284C7;
+  --accent-green: #10B981;
+  --accent-orange: #F59E0B;
+  --accent-red: #EF4444;
+  --border-light: #E2E8F0;
+  --shadow-sm: 0 4px 12px rgba(15, 23, 42, 0.05);
+  --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.08);
+  --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.12);
 }
 
 * {
@@ -31,10 +98,11 @@
 
 body {
   font-family: var(--font-main);
-  background-color: #E2E8F0;
+  background-color: var(--bg-app);
   color: var(--text-primary);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* App Layout */
@@ -45,7 +113,7 @@ body {
   background: var(--bg-app);
   position: relative;
   overflow-x: hidden;
-  box-shadow: 0 0 30px rgba(31, 41, 55, 0.12);
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.25);
   display: flex;
   flex-direction: column;
 }
@@ -62,6 +130,7 @@ body {
   border-radius: 20px;
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--border-light);
+  transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 /* Buttons */
@@ -114,7 +183,7 @@ button {
   width: 100%;
   max-width: 480px;
   padding: 10px 20px 20px 20px;
-  background: linear-gradient(to top, #F8FAFC 85%, rgba(248, 250, 252, 0));
+  background: linear-gradient(to top, var(--bg-app) 85%, transparent);
   z-index: 100;
 }
 
@@ -123,10 +192,11 @@ button {
   justify-content: space-around;
   align-items: center;
   padding: 10px 16px;
-  background: #FFFFFF;
+  background: var(--bg-nav);
   border: 1px solid var(--border-light);
   border-radius: 32px;
-  box-shadow: 0 8px 24px rgba(31, 41, 55, 0.08);
+  box-shadow: var(--shadow-md);
+  transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 .nav-item {
@@ -142,9 +212,9 @@ button {
 }
 
 .nav-item.active {
-  background: #2E8B57;
+  background: var(--accent-purple);
   color: #FFFFFF;
-  box-shadow: 0 4px 14px rgba(46, 139, 87, 0.35);
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
   transform: scale(1.06);
 }
 
@@ -156,13 +226,14 @@ button {
 .search-bar {
   display: flex;
   align-items: center;
-  background: #FFFFFF;
+  background: var(--bg-surface);
   border: 1px solid var(--border-light);
   border-radius: 25px;
   padding: 14px 20px;
   box-shadow: var(--shadow-sm);
   margin-bottom: 20px;
   gap: 12px;
+  transition: background 0.3s ease, border-color 0.3s ease;
 }
 .search-bar input {
   border: none;
@@ -184,13 +255,13 @@ button {
   gap: 16px;
   padding: 14px 18px;
   border-radius: 20px;
-  background: #FFFFFF;
+  background: var(--bg-surface);
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--border-light);
   margin-bottom: 24px;
 }
 .level-badge {
-  background: #2E8B57;
+  background: var(--accent-purple);
   color: #FFFFFF;
   font-weight: 800;
   width: 42px;
@@ -204,13 +275,13 @@ button {
 /* Progress bar generic */
 .progress-track {
   height: 8px;
-  background: #E5E7EB;
+  background: var(--border-light);
   border-radius: 6px;
   overflow: hidden;
   width: 100%;
 }
 .progress-fill {
   height: 100%;
-  background: #2E8B57;
+  background: var(--accent-purple);
   border-radius: 6px;
 }

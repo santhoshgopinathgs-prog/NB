@@ -69,8 +69,8 @@ export const Header: React.FC<HeaderProps> = ({ setActiveTab }) => {
         <button 
           onClick={toggleLanguage}
           style={{ 
-            background: '#FFFFFF', 
-            border: '1px solid #E5E7EB',
+            background: 'var(--bg-surface)', 
+            border: '1px solid var(--border-light)',
             borderRadius: '20px',
             padding: '3px',
             display: 'flex',
@@ -80,24 +80,24 @@ export const Header: React.FC<HeaderProps> = ({ setActiveTab }) => {
             cursor: 'pointer'
           }}
         >
-          <span style={{ padding: '4px 8px', borderRadius: '16px', background: language === 'EN' ? '#2E8B57' : 'transparent', color: language === 'EN' ? '#FFFFFF' : '#6B7280' }}>EN</span>
-          <span style={{ padding: '4px 8px', borderRadius: '16px', background: language === 'KN' ? '#2E8B57' : 'transparent', color: language === 'KN' ? '#FFFFFF' : '#6B7280' }}>KN</span>
+          <span style={{ padding: '4px 8px', borderRadius: '16px', background: language === 'EN' ? 'var(--accent-purple)' : 'transparent', color: language === 'EN' ? '#FFFFFF' : 'var(--text-secondary)' }}>EN</span>
+          <span style={{ padding: '4px 8px', borderRadius: '16px', background: language === 'KN' ? 'var(--accent-purple)' : 'transparent', color: language === 'KN' ? '#FFFFFF' : 'var(--text-secondary)' }}>KN</span>
         </button>
 
         {/* Streak */}
         <button 
           onClick={() => setActiveTab('achievements')}
-          style={{ display: 'flex', alignItems: 'center', gap: '4px', background: '#FEF3C7', border: '1px solid #FDE68A', padding: '6px 12px', borderRadius: '20px', color: '#D97706', fontWeight: 800, fontSize: '0.8rem', cursor: 'pointer' }}
+          style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'rgba(245, 158, 11, 0.15)', border: '1px solid rgba(245, 158, 11, 0.3)', padding: '6px 12px', borderRadius: '20px', color: 'var(--accent-orange)', fontWeight: 800, fontSize: '0.8rem', cursor: 'pointer' }}
         >
-          <Flame size={15} fill="#D97706" color="#D97706" /> {user?.streak || 0}
+          <Flame size={15} fill="var(--accent-orange)" color="var(--accent-orange)" /> {user?.streak || 0}
         </button>
         
         {/* XP / Coins */}
         <button 
           onClick={() => setActiveTab('achievements')}
-          style={{ display: 'flex', alignItems: 'center', gap: '4px', background: '#FEF3C7', border: '1px solid #FDE68A', padding: '6px 12px', borderRadius: '20px', color: '#D97706', fontWeight: 800, fontSize: '0.8rem', cursor: 'pointer' }}
+          style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'rgba(245, 158, 11, 0.15)', border: '1px solid rgba(245, 158, 11, 0.3)', padding: '6px 12px', borderRadius: '20px', color: 'var(--accent-orange)', fontWeight: 800, fontSize: '0.8rem', cursor: 'pointer' }}
         >
-          <Coins size={15} fill="#F59E0B" color="#F59E0B" /> {userXP}
+          <Coins size={15} fill="var(--accent-orange)" color="var(--accent-orange)" /> {userXP}
         </button>
 
         {/* Bell & Notifications Dropdown */}
