@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { MessageSquare, Loader2 } from 'lucide-react';
+import { MessageSquare, Loader2, User } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
 export const AITutorPortal = ({ onClose, initialQuery }: { onClose: () => void, initialQuery?: string }) => {
-  const { language } = useAppContext();
+  const { language, user } = useAppContext();
   
   // Use environment variable for the API key (configured in Vercel/Netlify for production)
   const apiKey = import.meta.env.VITE_GEMINI_API_KEY || '';
@@ -92,8 +92,14 @@ export const AITutorPortal = ({ onClose, initialQuery }: { onClose: () => void, 
         </button>
         <div style={{ flex: 1 }}>
           <h2 style={{ fontSize: '1.2rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <MessageSquare size={20} color="var(--accent-orange)" />
-            AI Tutor
+            {user?.avatar ? (
+              <div style={{ width: '32px', height: '32px', borderRadius: '50%', overflow: 'hidden', border: '2px solid var(--accent-green)' }}>
+                <img src={user.avatar} alt="Buddy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              </div>
+            ) : (
+              <MessageSquare size={20} color="var(--accent-orange)" />
+            )}
+            Namma Buddy
           </h2>
           <div style={{ fontSize: '0.8rem', color: 'var(--text-tertiary)' }}>Online • Kannada, English</div>
         </div>
@@ -101,7 +107,12 @@ export const AITutorPortal = ({ onClose, initialQuery }: { onClose: () => void, 
 
       <div style={{ padding: '24px', flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '16px' }}>
         {messages.map((msg, i) => (
-          <div key={i} style={{ alignSelf: msg.isBot ? 'flex-start' : 'flex-end', maxWidth: '85%' }}>
+          <div key={i} style={{ alignSelf: msg.isBot ? 'flex-start' : 'flex-end', maxWidth: '85%', display: 'flex', gap: '8px', alignItems: 'flex-end' }}>
+            {msg.isBot && user?.avatar && (
+              <div style={{ width: '28px', height: '28px', borderRadius: '50%', overflow: 'hidden', flexShrink: 0 }}>
+                <img src={user.avatar} alt="Buddy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              </div>
+            )}
             <div style={{ 
               background: msg.isBot ? 'white' : 'var(--accent-blue)', 
               color: msg.isBot ? 'var(--text-primary)' : 'white', 
@@ -113,6 +124,11 @@ export const AITutorPortal = ({ onClose, initialQuery }: { onClose: () => void, 
             }}>
               {msg.text}
             </div>
+            {!msg.isBot && (
+              <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: 'var(--accent-blue)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <User size={16} color="white" />
+              </div>
+            )}
           </div>
         ))}
         {isLoading && (

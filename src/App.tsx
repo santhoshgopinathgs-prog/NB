@@ -9,10 +9,12 @@ import { ProfileTab } from './tabs/ProfileTab';
 import { AchievementsTab } from './tabs/AchievementsTab';
 import { RegistrationScreen } from './components/RegistrationScreen';
 import { AvatarSelectionScreen } from './components/AvatarSelectionScreen';
+import { AITutorPortal } from './components/AITutorPortal';
 import { useAppContext } from './context/AppContext';
 
 function AppContent() {
   const [activeTab, setActiveTab] = useState('home');
+  const [showAITutor, setShowAITutor] = useState(false);
   const [targetChapter, setTargetChapter] = useState<{ subjectId: string, subjectDisplay: string, chapter: string } | null>(null);
 
   const navigateToChapter = (subjectId: string, subjectDisplay: string, chapter: string) => {
@@ -61,6 +63,36 @@ function AppContent() {
         {renderTab()}
       </main>
       {activeTab !== 'achievements' && <BottomNav activeTab={activeTab} setActiveTab={setActiveTab} />}
+      
+      {/* Floating AI Buddy Button */}
+      {user?.avatar && (
+        <button 
+          onClick={() => setShowAITutor(true)}
+          className="animate-bounce"
+          style={{ 
+            position: 'fixed', 
+            bottom: '80px', 
+            right: '20px', 
+            width: '60px', 
+            height: '60px', 
+            borderRadius: '50%', 
+            background: 'var(--accent-blue)', 
+            border: '3px solid white', 
+            boxShadow: '0 4px 15px rgba(0,0,0,0.2)', 
+            cursor: 'pointer', 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center', 
+            zIndex: 900,
+            overflow: 'hidden',
+            padding: 0
+          }}
+        >
+          <img src={user.avatar} alt="AI Buddy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+        </button>
+      )}
+
+      {showAITutor && <AITutorPortal onClose={() => setShowAITutor(false)} />}
     </>
   );
 }

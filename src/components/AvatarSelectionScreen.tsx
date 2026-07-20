@@ -7,9 +7,9 @@ export const AvatarSelectionScreen = () => {
   const [selectedAvatar, setSelectedAvatar] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
 
-  // High quality avatars using Dicebear Micah style with our cream background
-  const boyAvatar = 'https://api.dicebear.com/9.x/micah/svg?seed=Felix&backgroundColor=EBE3D5';
-  const girlAvatar = 'https://api.dicebear.com/9.x/micah/svg?seed=Aneka&backgroundColor=EBE3D5';
+  // High quality AI Buddy avatars
+  const boyAvatar = '/buddy_boy.jpg';
+  const girlAvatar = '/buddy_girl.jpg';
 
   const handleConfirm = async () => {
     if (!selectedAvatar) return;
@@ -31,7 +31,7 @@ export const AvatarSelectionScreen = () => {
       <div className="card animate-slide-up" style={{ 
         background: 'var(--bg-surface)', 
         padding: '32px 24px',
-        maxWidth: '400px',
+        maxWidth: '500px',
         width: '100%',
         margin: '0 auto',
         textAlign: 'center',
@@ -39,10 +39,10 @@ export const AvatarSelectionScreen = () => {
       }}>
         
         <h2 style={{ fontSize: '1.8rem', fontFamily: 'Georgia, "Times New Roman", Times, serif', color: 'var(--text-primary)', marginBottom: '8px' }}>
-          {language === 'EN' ? 'Choose Your Avatar' : 'ನಿಮ್ಮ ಅವತಾರವನ್ನು ಆರಿಸಿ'}
+          {language === 'EN' ? 'Choose Your Buddy' : 'ನಿಮ್ಮ ಬಡ್ಡಿಯನ್ನು ಆರಿಸಿ'}
         </h2>
         <p style={{ color: 'var(--text-tertiary)', fontSize: '0.9rem', marginBottom: '32px' }}>
-          {language === 'EN' ? 'How would you like to appear on Namma Buddy?' : 'ನಮ್ಮ ಬಡ್ಡಿಯಲ್ಲಿ ನೀವು ಹೇಗೆ ಕಾಣಿಸಿಕೊಳ್ಳಲು ಬಯಸುತ್ತೀರಿ?'}
+          {language === 'EN' ? 'Who would you like your personal AI tutor to be?' : 'ನಿಮ್ಮ ವೈಯಕ್ತಿಕ AI ಶಿಕ್ಷಕರು ಯಾರು ಆಗಿರಬೇಕು?'}
         </p>
 
         <div style={{ display: 'flex', gap: '20px', justifyContent: 'center', marginBottom: '32px' }}>
@@ -54,13 +54,22 @@ export const AvatarSelectionScreen = () => {
               background: selectedAvatar === boyAvatar ? 'rgba(203, 167, 90, 0.1)' : 'transparent',
               border: `2px solid ${selectedAvatar === boyAvatar ? 'var(--accent-green)' : 'var(--border-light)'}`,
               borderRadius: '24px',
-              padding: '16px',
+              padding: '8px',
               cursor: 'pointer',
               transition: 'all 0.2s',
-              transform: selectedAvatar === boyAvatar ? 'scale(1.05)' : 'scale(1)'
+              transform: selectedAvatar === boyAvatar ? 'scale(1.05)' : 'scale(1)',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '12px'
             }}
           >
-            <img src={boyAvatar} alt="Boy Avatar" style={{ width: '100px', height: '100px', borderRadius: '50%' }} />
+            <div style={{ width: '120px', height: '160px', borderRadius: '16px', overflow: 'hidden' }}>
+              <img src={boyAvatar} alt="Boy Buddy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            </div>
+            <div style={{ fontWeight: 700, color: 'var(--text-primary)', fontSize: '1.1rem' }}>
+              {language === 'EN' ? 'Boy Buddy' : 'ಹುಡುಗ ಬಡ್ಡಿ'}
+            </div>
             {selectedAvatar === boyAvatar && (
               <div style={{ position: 'absolute', top: -8, right: -8, background: 'var(--accent-green)', borderRadius: '50%', padding: '4px', display: 'flex' }}>
                 <Check size={16} color="white" />
@@ -76,13 +85,22 @@ export const AvatarSelectionScreen = () => {
               background: selectedAvatar === girlAvatar ? 'rgba(203, 167, 90, 0.1)' : 'transparent',
               border: `2px solid ${selectedAvatar === girlAvatar ? 'var(--accent-green)' : 'var(--border-light)'}`,
               borderRadius: '24px',
-              padding: '16px',
+              padding: '8px',
               cursor: 'pointer',
               transition: 'all 0.2s',
-              transform: selectedAvatar === girlAvatar ? 'scale(1.05)' : 'scale(1)'
+              transform: selectedAvatar === girlAvatar ? 'scale(1.05)' : 'scale(1)',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '12px'
             }}
           >
-            <img src={girlAvatar} alt="Girl Avatar" style={{ width: '100px', height: '100px', borderRadius: '50%' }} />
+            <div style={{ width: '120px', height: '160px', borderRadius: '16px', overflow: 'hidden' }}>
+              <img src={girlAvatar} alt="Girl Buddy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            </div>
+            <div style={{ fontWeight: 700, color: 'var(--text-primary)', fontSize: '1.1rem' }}>
+              {language === 'EN' ? 'Girl Buddy' : 'ಹುಡುಗಿ ಬಡ್ಡಿ'}
+            </div>
             {selectedAvatar === girlAvatar && (
               <div style={{ position: 'absolute', top: -8, right: -8, background: 'var(--accent-green)', borderRadius: '50%', padding: '4px', display: 'flex' }}>
                 <Check size={16} color="white" />
