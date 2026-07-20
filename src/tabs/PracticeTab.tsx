@@ -471,125 +471,165 @@ export const PracticeTab = () => {
     );
   }
 
-  const mapNodePositions = [
-    { top: '80%', left: '15%' },
-    { top: '65%', left: '45%' },
-    { top: '75%', left: '75%' },
-    { top: '50%', left: '85%' },
-    { top: '35%', left: '55%' },
-    { top: '45%', left: '25%' },
-    { top: '20%', left: '15%' },
-    { top: '10%', left: '45%' },
-    { top: '25%', left: '75%' },
-    { top: '10%', left: '90%' },
+  const ANEKAL_LEVELS = [
+    { id: `c${user?.class || 9}-d-1`, level: 1, title: 'Basics of Computer', title_kn: 'ಕಂಪ್ಯೂಟರ್ ಮೂಲಗಳು', subject: 'Digital Skills', emoji: '💻', color: '#10B981', reward: 50, bullets: ['Parts of Computer', 'Using Mouse', 'Basic Operations'], pos: { top: '78%', left: '15%' } },
+    { id: 'typing-game', level: 2, title: 'Typing Champ', title_kn: 'ಟೈಪಿಂಗ್ ಚಾಂಪ್', subject: 'Digital Skills', emoji: '⌨️', color: '#3B82F6', reward: 60, bullets: ['Keyboard Basics', 'Typing Practice', 'Speed & Accuracy'], pos: { top: '62%', left: '28%' } },
+    { id: `c${user?.class || 9}-m-1`, level: 3, title: 'Number Systems', title_kn: 'ಸಂಖ್ಯಾ ವ್ಯವಸ್ಥೆ', subject: 'Mathematics', emoji: '🧮', color: '#8B5CF6', reward: 70, bullets: ['Natural & Whole', 'Rational Numbers', 'Real Numbers'], pos: { top: '48%', left: '44%' } },
+    { id: `c${user?.class || 9}-s-1`, level: 4, title: 'Science Explorer', title_kn: 'ವಿಜ್ಞಾನ ಅನ್ವೇಷಕ', subject: 'Science', emoji: '🔬', color: '#F59E0B', reward: 80, bullets: ['Matter & Energy', 'Atoms & Molecules', 'Life Processes'], pos: { top: '35%', left: '60%' } },
+    { id: `c${user?.class || 9}-d-2`, level: 5, title: 'Online Safety', title_kn: 'ಆನ್‌ಲೈನ್ ಸುರಕ್ಷತೆ', subject: 'Digital Skills', emoji: '🛡️', color: '#EC4899', reward: 90, bullets: ['Strong Passwords', 'Avoid Scams', 'Be Safe Online'], pos: { top: '22%', left: '76%' } },
+    { id: `c${user?.class || 9}-e-1`, level: 6, title: 'English Master', title_kn: 'ಇಂಗ್ಲಿಷ್ ಮಾಸ್ಟರ್', subject: 'English', emoji: '📖', color: '#06B6D4', reward: 100, bullets: ['Grammar & Tenses', 'Vocabulary', 'Comprehension'], pos: { top: '32%', left: '88%' } },
+    { id: `c${user?.class || 9}-s-2`, level: 7, title: 'Digital Productivity', title_kn: 'ಡಿಜಿಟಲ್ ಉತ್ಪಾದಕತೆ', subject: 'Digital Skills', emoji: '📊', color: '#EF4444', reward: 110, bullets: ['Word Basics', 'Excel Basics', 'PowerPoint Basics'], pos: { top: '52%', left: '82%' } },
+    { id: `c${user?.class || 9}-m-2`, level: 8, title: 'Intro to Coding', title_kn: 'ಕೋಡಿಂಗ್ ಪರಿಚಯ', subject: 'Digital Skills', emoji: '👨‍💻', color: '#6366F1', reward: 120, bullets: ['What is Coding', 'Block Logic', 'Create Your Game'], pos: { top: '68%', left: '68%' } },
+    { id: `c${user?.class || 9}-e-2`, level: 9, title: 'Real Life Project', title_kn: 'ನೈಜ ಜೀವನದ ಯೋಜನೆ', subject: 'Mathematics', emoji: '🚀', color: '#F97316', reward: 130, bullets: ['Problem Solving', 'Team Work', 'Project Building'], pos: { top: '82%', left: '50%' } },
+    { id: 'math-game', level: 10, title: 'Digital Champ Graduation', title_kn: 'ಆನೆಕಲ್ ಪದವಿ', subject: 'English', emoji: '🎓', color: '#EAB308', reward: 200, bullets: ['Showcase Skills', 'Earn Certificate', 'Become Champion!'], pos: { top: '88%', left: '32%' } }
   ];
+
+  const [selectedLevelId, setSelectedLevelId] = useState<string>(ANEKAL_LEVELS[0].id);
+
+  const handleStartLevel = (levelObj: typeof ANEKAL_LEVELS[0]) => {
+    if (levelObj.id === 'typing-game') {
+      setIsTypingActive(true);
+    } else if (levelObj.id === 'math-game') {
+      setIsMathActive(true); setMathTimeLeft(30); setMathScore(0); generateMathProblem();
+    } else {
+      setActiveQuiz(levelObj.id);
+    }
+  };
 
   return (
     <div className="animate-slide-up" style={{ padding: '0 0px 20px', display: 'flex', flexDirection: 'column', gap: '0px' }}>
-      <div style={{ padding: '0 20px', display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
-        <MapIcon color="var(--accent-purple)" />
-        <h2 style={{ fontSize: '1.5rem' }}>{language === 'EN' ? "Learning Map" : "ಕಲಿಕೆಯ ನಕ್ಷೆ"}</h2>
-        <span style={{ marginLeft: 'auto', background: 'var(--bg-app)', padding: '4px 12px', borderRadius: '12px', fontSize: '0.8rem', fontWeight: 700, color: 'var(--accent-blue)' }}>
-          {t('classText')} {user?.class}
-        </span>
+      
+      {/* Top Status Bar matching Image 2 */}
+      <div className="game-top-bar">
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{ width: '38px', height: '38px', borderRadius: '50%', overflow: 'hidden', border: '2px solid #38bdf8' }}>
+            <img src={user?.avatar || '/buddy_boy.jpg'} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          </div>
+          <div>
+            <div style={{ fontSize: '0.85rem', fontWeight: 800 }}>{user?.name || 'Anekal Learner'}</div>
+            <div style={{ fontSize: '0.7rem', color: '#94a3b8' }}>Class {user?.class || 9} • Level 1</div>
+          </div>
+        </div>
+
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <div className="game-stat-item" style={{ color: '#facc15' }}>⚡ 120/120</div>
+          <div className="game-stat-item" style={{ color: '#f59e0b' }}>⭐ 250</div>
+          <div className="game-stat-item" style={{ color: '#fbbf24' }}>🪙 1250</div>
+        </div>
       </div>
 
-      {/* Gamified Map Area */}
+      {/* Gamified Map Area with Golden Ribbon & Background */}
       <div style={{ padding: '0 20px' }}>
         <div className="map-container">
+          
+          {/* Golden Banner Header */}
+          <div className="golden-ribbon-banner">
+            <div style={{ fontSize: '1rem', letterSpacing: '0.5px' }}>DIGITAL CHAMPS</div>
+            <div style={{ fontSize: '0.75rem', opacity: 0.9 }}>ANEKAL SCHOOL</div>
+            <div style={{ fontSize: '0.65rem', background: '#713f12', color: '#fef08a', padding: '1px 8px', borderRadius: '10px', marginTop: '2px' }}>
+              Learn • Practice • Grow
+            </div>
+          </div>
+
           <svg className="map-path-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
-            {/* Outline path for game look */}
+            {/* Outline path */}
             <polyline 
-              points={filteredQuizzes.map((_, i) => `${parseFloat(mapNodePositions[i].left)},${parseFloat(mapNodePositions[i].top)}`).join(' ')} 
-              fill="none" stroke="#334155" strokeWidth="8" strokeDasharray="12 12" strokeLinecap="round" strokeLinejoin="round"
+              points={ANEKAL_LEVELS.map(l => `${parseFloat(l.pos.left)},${parseFloat(l.pos.top)}`).join(' ')} 
+              fill="none" stroke="#0f172a" strokeWidth="10" strokeDasharray="12 12" strokeLinecap="round" strokeLinejoin="round"
               vectorEffect="non-scaling-stroke"
             />
-            {/* Inner path */}
+            {/* Inner stone path */}
             <polyline 
-              points={filteredQuizzes.map((_, i) => `${parseFloat(mapNodePositions[i].left)},${parseFloat(mapNodePositions[i].top)}`).join(' ')} 
-              fill="none" stroke="#ffffff" strokeWidth="4" strokeDasharray="12 12" strokeLinecap="round" strokeLinejoin="round"
+              points={ANEKAL_LEVELS.map(l => `${parseFloat(l.pos.left)},${parseFloat(l.pos.top)}`).join(' ')} 
+              fill="none" stroke="#fcd34d" strokeWidth="5" strokeDasharray="12 12" strokeLinecap="round" strokeLinejoin="round"
               vectorEffect="non-scaling-stroke"
             />
           </svg>
-          {filteredQuizzes.map((quiz, i) => {
-            const pos = mapNodePositions[i];
-            const isCompleted = completedQuizzes.includes(quiz.id);
-            
-            // Map subjects to emojis
-            let emoji = '🎓';
-            if (quiz.subject === 'Mathematics') emoji = '🧮';
-            if (quiz.subject === 'Science') emoji = '🔬';
-            if (quiz.subject === 'Digital Skills') emoji = '💻';
-            if (quiz.subject === 'English') emoji = '📖';
+
+          {/* 10 Map Nodes */}
+          {ANEKAL_LEVELS.map((lvl) => {
+            const isCompleted = completedQuizzes.includes(lvl.id);
+            const isSelected = selectedLevelId === lvl.id;
             
             return (
               <div 
-                key={quiz.id}
-                className={`map-node ${isCompleted ? 'completed' : ''}`}
-                style={{ top: pos.top, left: pos.left }}
-                onClick={() => setActiveQuiz(quiz.id)}
+                key={lvl.level}
+                className={`map-node ${isCompleted ? 'completed' : ''} ${isSelected ? 'active' : ''}`}
+                style={{ top: lvl.pos.top, left: lvl.pos.left }}
+                onClick={() => { setSelectedLevelId(lvl.id); handleStartLevel(lvl); }}
               >
-                <div className="map-node-number">{i + 1}</div>
-                <div style={{ filter: isCompleted ? 'none' : 'grayscale(100%) opacity(70%)' }}>
-                  {emoji}
+                <div className="map-node-number">{lvl.level}</div>
+                <div>{lvl.emoji}</div>
+                <div className="map-node-label" style={{ borderColor: lvl.color }}>
+                  {language === 'EN' ? lvl.title : lvl.title_kn}
                 </div>
-                <div className="map-node-label">{language === 'EN' ? quiz.subject : quiz.subject_kn}</div>
               </div>
-            )
+            );
           })}
         </div>
       </div>
 
+      {/* Bottom 10 Level Cards Carousel matching Image 2 */}
+      <div style={{ padding: '0 20px', marginBottom: '8px' }}>
+        <h3 style={{ fontSize: '1.2rem', fontFamily: 'Georgia, serif', fontWeight: 800, color: 'var(--text-primary)' }}>
+          {language === 'EN' ? "Anekal School Learning Roadmap" : "ಆನೆಕಲ್ ಶಾಲಾ ಕಲಿಕಾ ಮಾರ್ಗಸೂಚಿ"}
+        </h3>
+      </div>
 
-      <div style={{ padding: '0 20px', marginTop: '10px' }}>
-        <h3 style={{ fontSize: '1.2rem', marginBottom: '16px' }}>{language === 'EN' ? "Mini Games" : "ಮಿನಿ ಆಟಗಳು"}</h3>
-        
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          {/* Typing Practice */}
-          <div className="card" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            <div>
-              <h3 style={{ fontSize: '1.1rem', marginBottom: '4px' }}>{language === 'EN' ? "Typing Practice" : "ಟೈಪಿಂಗ್ ಅಭ್ಯಾಸ"}</h3>
-              <div style={{ fontSize: '0.85rem', color: 'var(--text-tertiary)' }}>
-                {language === 'EN' ? "Practice typing skills" : "ಟೈಪಿಂಗ್ ಕೌಶಲ್ಯಗಳನ್ನು ಅಭ್ಯಾಸ ಮಾಡಿ"}
+      <div className="anekal-card-carousel">
+        {ANEKAL_LEVELS.map((lvl) => {
+          const isSelected = selectedLevelId === lvl.id;
+          const isCompleted = completedQuizzes.includes(lvl.id);
+
+          return (
+            <div 
+              key={lvl.level}
+              className={`anekal-level-card ${isSelected ? 'selected' : ''}`}
+              onClick={() => setSelectedLevelId(lvl.id)}
+            >
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                  <span style={{ background: lvl.color, color: 'white', padding: '4px 10px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: 900 }}>
+                    {lvl.level}. {lvl.subject}
+                  </span>
+                  {isCompleted && <span style={{ color: '#16a34a', fontWeight: 800, fontSize: '0.8rem' }}>✓ Done</span>}
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+                  <span style={{ fontSize: '1.8rem' }}>{lvl.emoji}</span>
+                  <h4 style={{ margin: 0, fontSize: '1rem', fontWeight: 800, color: '#1e293b' }}>
+                    {language === 'EN' ? lvl.title : lvl.title_kn}
+                  </h4>
+                </div>
+
+                <div style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 700, marginBottom: '6px' }}>You will learn:</div>
+                <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.75rem', color: '#334155', lineHeight: '1.5' }}>
+                  {lvl.bullets.map((b, i) => (
+                    <li key={i}>{b}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div style={{ marginTop: '16px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', fontSize: '0.75rem', fontWeight: 800, color: '#d97706' }}>
+                  <span>Reward:</span>
+                  <span>⭐ +{lvl.reward} XP</span>
+                </div>
+
+                <button 
+                  onClick={() => handleStartLevel(lvl)}
+                  style={{
+                    width: '100%', padding: '10px', borderRadius: '14px', border: 'none',
+                    background: lvl.color, color: 'white', fontWeight: 800, fontSize: '0.85rem',
+                    cursor: 'pointer', boxShadow: `0 4px 10px ${lvl.color}40`
+                  }}
+                >
+                  {isCompleted ? (language === 'EN' ? 'Replay Level' : 'ಮತ್ತೆ ಆಡಿ') : (language === 'EN' ? 'Start Level 🚀' : 'ಪ್ರಾರಂಭಿಸಿ 🚀')}
+                </button>
               </div>
             </div>
-            <button 
-              onClick={() => setIsTypingActive(true)}
-              style={{
-                width: '100%', padding: '12px', borderRadius: '12px', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
-                background: 'var(--bg-surface)',
-                color: 'var(--accent-purple)',
-                border: '2px solid #F3E8FF'
-              }}
-            >
-              <Gamepad2 size={18} />
-              {language === 'EN' ? "Start Typing" : "ಟೈಪಿಂಗ್ ಪ್ರಾರಂಭಿಸಿ"}
-            </button>
-          </div>
-
-          {/* Math Flashcards */}
-          <div className="card" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '12px', background: 'linear-gradient(to right, white, #fef3c7)' }}>
-            <div>
-              <h3 style={{ fontSize: '1.1rem', marginBottom: '4px', color: '#b45309' }}>{language === 'EN' ? "Math Flashcards" : "ಗಣಿತ ಫ್ಲಾಶ್‌ಕಾರ್ಡ್‌ಗಳು"}</h3>
-              <div style={{ fontSize: '0.85rem', color: 'var(--text-tertiary)' }}>
-                {language === 'EN' ? "Rapid-fire math challenge!" : "ಕ್ಷಿಪ್ರ ಗಣಿತ ಸವಾಲು!"}
-              </div>
-            </div>
-            <button 
-              onClick={() => { setIsMathActive(true); setMathTimeLeft(30); setMathScore(0); generateMathProblem(); }}
-              style={{
-                width: '100%', padding: '12px', borderRadius: '12px', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
-                background: '#f59e0b',
-                color: 'white',
-                border: 'none',
-                boxShadow: '0 4px 10px rgba(245, 158, 11, 0.2)'
-              }}
-            >
-              <Gamepad2 size={18} />
-              {language === 'EN' ? "Play Now" : "ಈಗ ಆಡಿ"}
-            </button>
-          </div>
-        </div>
+          );
+        })}
       </div>
     </div>
   );
