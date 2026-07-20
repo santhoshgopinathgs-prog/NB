@@ -14,12 +14,49 @@ export const PracticeTab = () => {
   const [isAnswerRevealed, setIsAnswerRevealed] = useState<boolean>(false);
   const [quizCompleted, setQuizCompleted] = useState<boolean>(false);
   const [justEarnedCert, setJustEarnedCert] = useState<boolean>(false);
+  const [streak, setStreak] = useState<number>(0);
+  const [bonusXP, setBonusXP] = useState<number>(0);
+  
   const [correctAnswersCount, setCorrectAnswersCount] = useState<number>(0);
   const [isTypingActive, setIsTypingActive] = useState<boolean>(false);
   const [typingInput, setTypingInput] = useState<string>('');
   const { markQuiz80Percent, markTypingPracticed } = useAppContext();
 
-  // Filter quizzes to ONLY show the currently registered student's class
+  // Math Flashcards State
+  const [isMathActive, setIsMathActive] = useState<boolean>(false);
+  const [mathScore, setMathScore] = useState<number>(0);
+  const [mathTimeLeft, setMathTimeLeft] = useState<number>(30);
+  const [mathProblem, setMathProblem] = useState<{q: string, a: number}>({q: '2 + 2', a: 4});
+  const [mathInput, setMathInput] = useState<string>('');
+
+  const generateMathProblem = () => {
+    const ops = ['+', '-', '*'];
+    const op = ops[Math.floor(Math.random() * ops.length)];
+    let n1 = Math.floor(Math.random() * 12) + 1;
+    let n2 = Math.floor(Math.random() * 12) + 1;
+    
+    if (op === '-') {
+      if (n2 > n1) [n1, n2] = [n2, n1];
+    }
+    
+    const ans = op === '+' ? n1 + n2 : (op === '-' ? n1 - n2 : n1 * n2);
+    setMathProblem({ q: `${n1} ${op} ${n2}`, a: ans });
+    setMathInput('');
+  };
+
+  React.useEffect(() => {
+    if (isMathActive && mathTimeLeft > 0) {
+      const timerId = setInterval(() => setMathTimeLeft(prev => prev - 1), 1000);
+      return () => clearInterval(timerId);
+    } else if (isMathActive && mathTimeLeft === 0) {
+      if (mathScore > 0) {
+        // We'd usually add XP via context here, simulate it for now
+        // markQuizComplete(`math_game`, mathScore); // if we wanted to
+      }
+    }
+  }, [isMathActive, mathTimeLeft]);
+
+  // Gamified Map State
   const filteredQuizzes = mockQuizzes.filter(q => q.class === user?.class);
   
   const activeQuizData = mockQuizzes.find(q => q.id === activeQuiz);
@@ -38,9 +75,9 @@ export const PracticeTab = () => {
       setCurrentQuestionIndex(prev => prev + 1);
       setSelectedOption(null);
       setIsAnswerRevealed(false);
-    } else {
-      const xpGained = activeQuizData ? activeQuizData.xp : 0;
-      markQuizComplete(activeQuiz!, xpGained).then(earnedCert => {
+      const baseXP = activeQuizData ? activeQuizData.xp : 0;
+      const finalXP = baseXP + bonusXP;
+      markQuizComplete(activeQuiz!, finalXP).then(earnedCert => {
         setJustEarnedCert(earnedCert);
         setQuizCompleted(true);
         if (correctAnswersCount / activeQuestions.length >= 0.8) {
@@ -72,6 +109,15 @@ export const PracticeTab = () => {
       setIsAnswerRevealed(true);
       if (selectedOption === activeQuestions[currentQuestionIndex].correctAnswer) {
         setCorrectAnswersCount(prev => prev + 1);
+        setStreak(prev => {
+          const newStreak = prev + 1;
+          if (newStreak >= 3) {
+            setBonusXP(bx => bx + 5); // +5 bonus XP for streak
+          }
+          return newStreak;
+        });
+      } else {
+        setStreak(0);
       }
     }
   };
@@ -84,6 +130,8 @@ export const PracticeTab = () => {
     setQuizCompleted(false);
     setJustEarnedCert(false);
     setCorrectAnswersCount(0);
+    setStreak(0);
+    setBonusXP(0);
   };
 
   const typingLevelsEN = [
@@ -180,6 +228,71 @@ export const PracticeTab = () => {
     );
   }
 
+  if (isMathActive) {
+    const handleMathSubmit = () => {
+      if (parseInt(mathInput) === mathProblem.a) {
+        setMathScore(prev => prev + 10);
+        generateMathProblem();
+      } else {
+        setMathInput('');
+      }
+    };
+
+    return (
+      <div className="animate-slide-up" style={{ padding: '0 20px 20px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        <button onClick={() => { setIsMathActive(false); setMathScore(0); setMathTimeLeft(30); }} style={{ alignSelf: 'flex-start', color: 'var(--accent-orange)', fontWeight: 600 }}>← {t('backToPracticeList')}</button>
+        <div className="card" style={{ padding: '24px', background: 'linear-gradient(135deg, #fffbeb, #fef3c7)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+            <h3 style={{ fontSize: '1.2rem', margin: 0, color: '#92400e' }}>{language === 'EN' ? "Math Flashcards" : "ಗಣಿತ ಫ್ಲಾಶ್‌ಕಾರ್ಡ್‌ಗಳು"}</h3>
+            <div style={{ background: mathTimeLeft <= 10 ? '#FEE2E2' : 'white', color: mathTimeLeft <= 10 ? 'var(--accent-red)' : '#92400e', padding: '6px 16px', borderRadius: '20px', fontWeight: 800, fontSize: '1rem', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
+              ⏱ {mathTimeLeft}s
+            </div>
+          </div>
+          
+          <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+            <div style={{ fontSize: '1.1rem', fontWeight: 700, color: '#d97706' }}>Score: {mathScore}</div>
+          </div>
+
+          <div style={{ background: 'white', padding: '30px', borderRadius: '24px', marginBottom: '24px', fontSize: '3.5rem', fontWeight: 900, color: 'var(--text-primary)', textAlign: 'center', boxShadow: 'inset 0 4px 10px rgba(0,0,0,0.05)' }}>
+            {mathProblem.q} = ?
+          </div>
+          
+          <div style={{ display: 'flex', gap: '12px' }}>
+            <input
+              type="number"
+              value={mathInput}
+              onChange={(e) => setMathInput(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && mathTimeLeft > 0 && handleMathSubmit()}
+              placeholder="Answer..."
+              disabled={mathTimeLeft === 0}
+              autoFocus
+              style={{ flex: 1, padding: '16px', borderRadius: '16px', border: '2px solid #fcd34d', fontSize: '1.5rem', fontFamily: 'inherit', textAlign: 'center', fontWeight: 700 }}
+            />
+            <button 
+              onClick={handleMathSubmit}
+              disabled={mathTimeLeft === 0}
+              style={{ padding: '16px 24px', borderRadius: '16px', background: '#f59e0b', color: 'white', fontWeight: 800, border: 'none', fontSize: '1.2rem', boxShadow: '0 4px 10px rgba(245, 158, 11, 0.3)' }}
+            >
+              Go
+            </button>
+          </div>
+
+          {mathTimeLeft === 0 && (
+            <div style={{ marginTop: '24px', textAlign: 'center' }}>
+              <div style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--accent-orange)', marginBottom: '16px' }}>Time's Up! You scored {mathScore} XP</div>
+              <button 
+                onClick={() => { setMathTimeLeft(30); setMathScore(0); generateMathProblem(); }}
+                style={{ width: '100%', padding: '16px', borderRadius: '16px', background: '#f59e0b', color: 'white', fontWeight: 700, border: 'none' }}
+              >
+                {language === 'EN' ? "Play Again" : "ಮತ್ತೆ ಆಡಿ"}
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
   if (activeQuiz) {
     if (quizCompleted) {
       return (
@@ -197,8 +310,9 @@ export const PracticeTab = () => {
           <p style={{ textAlign: 'center', color: 'var(--text-secondary)', marginBottom: '10px' }}>
             You completed this practice test with a score of <strong>{correctAnswersCount}/{activeQuestions.length}</strong> and earned <strong>+{activeQuizData?.xp} XP</strong>.
           </p>
-          <div style={{ background: 'var(--bg-app)', padding: '12px 24px', borderRadius: '20px', fontWeight: 700, color: 'var(--accent-blue)', marginBottom: '20px' }}>
-            Total XP: {userXP}
+          <div style={{ background: 'var(--bg-app)', padding: '12px 24px', borderRadius: '20px', fontWeight: 700, color: 'var(--accent-blue)', marginBottom: '20px', textAlign: 'center' }}>
+            <div>Total XP: {userXP}</div>
+            {bonusXP > 0 && <div style={{ color: 'var(--accent-orange)', fontSize: '0.9rem', marginTop: '4px' }}>🔥 +{bonusXP} Streak Bonus!</div>}
           </div>
           
           <button onClick={handleBackToPractice} style={{ width: '100%', padding: '16px', background: 'var(--accent-blue)', color: 'white', fontWeight: 700, borderRadius: '20px', fontSize: '1rem' }}>
@@ -232,14 +346,18 @@ export const PracticeTab = () => {
         <div className="card" style={{ padding: '24px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <span style={{ fontSize: '0.85rem', color: 'var(--text-tertiary)', fontWeight: 600 }}>
+              <div style={{ fontSize: '0.85rem', color: 'var(--text-tertiary)', fontWeight: 600 }}>
                 {t('question')} {currentQuestionIndex + 1} {t('of')} {activeQuestions.length}
-              </span>
-              <span style={{ background: diffBg, color: diffColor, padding: '2px 8px', borderRadius: '8px', fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase' }}>
-                {difficulty}
-              </span>
+              </div>
+              {streak >= 3 && (
+                <div className="animate-slide-up" style={{ fontSize: '0.85rem', color: 'var(--accent-orange)', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  🔥 {streak} Streak! (+XP)
+                </div>
+              )}
             </div>
-            <span style={{ color: 'var(--accent-orange)', fontWeight: 700, background: '#FEF3C7', padding: '4px 8px', borderRadius: '12px', fontSize: '0.75rem' }}>+5 XP</span>
+            <span style={{ background: diffBg, color: diffColor, padding: '2px 8px', borderRadius: '8px', fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase' }}>
+              {difficulty}
+            </span>
           </div>
           <h3 style={{ marginBottom: '24px', fontSize: '1.2rem', lineHeight: 1.4 }}>
             {questionText}
@@ -247,22 +365,24 @@ export const PracticeTab = () => {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {options.map((opt, i) => {
               const isSelected = selectedOption === i;
-              const isCorrect = i === currentQuestion.correctAnswer;
+              const isCorrectOption = i === currentQuestion.correctAnswer;
               
-              // Determine styles based on reveal state
               let bgColor = isSelected ? '#EFF6FF' : 'var(--bg-app)';
               let borderColor = isSelected ? 'var(--accent-blue)' : 'var(--border-light)';
               let textColor = isSelected ? 'var(--accent-blue)' : 'var(--text-primary)';
+              let transformStyle = isSelected ? 'scale(1.02)' : 'scale(1)';
               
               if (isAnswerRevealed) {
-                if (isCorrect) {
+                if (isCorrectOption) {
                   bgColor = '#D1FAE5'; // Light green
                   borderColor = 'var(--accent-green)';
                   textColor = 'var(--accent-green)';
-                } else if (isSelected && !isCorrect) {
+                  transformStyle = 'scale(1.03)'; // pop effect
+                } else if (isSelected) {
                   bgColor = '#FEE2E2'; // Light red
                   borderColor = 'var(--accent-red)';
                   textColor = 'var(--accent-red)';
+                  transformStyle = 'translateX(5px)'; // shake effect simulation
                 }
               }
 
@@ -275,16 +395,17 @@ export const PracticeTab = () => {
                     background: bgColor, 
                     border: `2px solid ${borderColor}`, 
                     borderRadius: '16px', textAlign: 'left', display: 'flex', alignItems: 'center', gap: '12px',
-                    fontWeight: isSelected || (isAnswerRevealed && isCorrect) ? 700 : 500,
+                    fontWeight: isSelected || (isAnswerRevealed && isCorrectOption) ? 700 : 500,
                     color: textColor,
-                    transition: 'all 0.2s ease',
+                    transition: 'all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                    transform: transformStyle,
                     cursor: isAnswerRevealed ? 'default' : 'pointer'
                   }}
                 >
                   <div style={{ 
                     width: '24px', height: '24px', borderRadius: '50%', 
-                    border: `2px solid ${isAnswerRevealed && (isCorrect || isSelected) ? borderColor : (isSelected ? 'var(--accent-blue)' : 'var(--text-tertiary)')}`,
-                    background: (isSelected && !isAnswerRevealed) || (isAnswerRevealed && isCorrect) || (isAnswerRevealed && isSelected) ? borderColor : 'transparent',
+                    border: `2px solid ${isAnswerRevealed && (isCorrectOption || isSelected) ? borderColor : (isSelected ? 'var(--accent-blue)' : 'var(--text-tertiary)')}`,
+                    background: (isSelected && !isAnswerRevealed) || (isAnswerRevealed && isCorrectOption) || (isAnswerRevealed && isSelected) ? borderColor : 'transparent',
                     transition: 'all 0.2s ease',
                     flexShrink: 0
                   }}></div>
@@ -384,25 +505,52 @@ export const PracticeTab = () => {
 
       <div style={{ padding: '0 20px', marginTop: '10px' }}>
         <h3 style={{ fontSize: '1.2rem', marginBottom: '16px' }}>{language === 'EN' ? "Mini Games" : "ಮಿನಿ ಆಟಗಳು"}</h3>
-        <div className="card" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-          <div>
-            <h3 style={{ fontSize: '1.1rem', marginBottom: '4px' }}>{language === 'EN' ? "Typing Practice" : "ಟೈಪಿಂಗ್ ಅಭ್ಯಾಸ"}</h3>
-            <div style={{ fontSize: '0.85rem', color: 'var(--text-tertiary)' }}>
-              {language === 'EN' ? "Practice typing skills" : "ಟೈಪಿಂಗ್ ಕೌಶಲ್ಯಗಳನ್ನು ಅಭ್ಯಾಸ ಮಾಡಿ"}
+        
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          {/* Typing Practice */}
+          <div className="card" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <div>
+              <h3 style={{ fontSize: '1.1rem', marginBottom: '4px' }}>{language === 'EN' ? "Typing Practice" : "ಟೈಪಿಂಗ್ ಅಭ್ಯಾಸ"}</h3>
+              <div style={{ fontSize: '0.85rem', color: 'var(--text-tertiary)' }}>
+                {language === 'EN' ? "Practice typing skills" : "ಟೈಪಿಂಗ್ ಕೌಶಲ್ಯಗಳನ್ನು ಅಭ್ಯಾಸ ಮಾಡಿ"}
+              </div>
             </div>
+            <button 
+              onClick={() => setIsTypingActive(true)}
+              style={{
+                width: '100%', padding: '12px', borderRadius: '12px', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                background: 'var(--bg-surface)',
+                color: 'var(--accent-purple)',
+                border: '2px solid #F3E8FF'
+              }}
+            >
+              <Gamepad2 size={18} />
+              {language === 'EN' ? "Start Typing" : "ಟೈಪಿಂಗ್ ಪ್ರಾರಂಭಿಸಿ"}
+            </button>
           </div>
-          <button 
-            onClick={() => setIsTypingActive(true)}
-            style={{
-              width: '100%', padding: '12px', borderRadius: '12px', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
-              background: 'var(--bg-surface)',
-              color: 'var(--accent-purple)',
-              border: '2px solid #F3E8FF'
-            }}
-          >
-            <Gamepad2 size={18} />
-            {language === 'EN' ? "Start Typing" : "ಟೈಪಿಂಗ್ ಪ್ರಾರಂಭಿಸಿ"}
-          </button>
+
+          {/* Math Flashcards */}
+          <div className="card" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '12px', background: 'linear-gradient(to right, white, #fef3c7)' }}>
+            <div>
+              <h3 style={{ fontSize: '1.1rem', marginBottom: '4px', color: '#b45309' }}>{language === 'EN' ? "Math Flashcards" : "ಗಣಿತ ಫ್ಲಾಶ್‌ಕಾರ್ಡ್‌ಗಳು"}</h3>
+              <div style={{ fontSize: '0.85rem', color: 'var(--text-tertiary)' }}>
+                {language === 'EN' ? "Rapid-fire math challenge!" : "ಕ್ಷಿಪ್ರ ಗಣಿತ ಸವಾಲು!"}
+              </div>
+            </div>
+            <button 
+              onClick={() => { setIsMathActive(true); setMathTimeLeft(30); setMathScore(0); generateMathProblem(); }}
+              style={{
+                width: '100%', padding: '12px', borderRadius: '12px', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                background: '#f59e0b',
+                color: 'white',
+                border: 'none',
+                boxShadow: '0 4px 10px rgba(245, 158, 11, 0.2)'
+              }}
+            >
+              <Gamepad2 size={18} />
+              {language === 'EN' ? "Play Now" : "ಈಗ ಆಡಿ"}
+            </button>
+          </div>
         </div>
       </div>
     </div>

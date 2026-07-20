@@ -37,30 +37,82 @@ export const TopTab = () => {
         </button>
       </div>
 
-      <div className="card" style={{ padding: '8px', margin: '0 20px' }}>
-        {displayLeaderboard.length > 0 ? displayLeaderboard.map((user) => (
-          <div key={user.rank} style={{ 
+      <div style={{ padding: '0 20px', display: 'flex', alignItems: 'flex-end', justifyContent: 'center', gap: '8px', height: '180px', marginTop: '20px' }}>
+        {/* Second Place */}
+        {displayLeaderboard[1] && (
+          <div className="animate-slide-up" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', animationDelay: '0.2s', width: '30%' }}>
+            <div style={{ position: 'relative', marginBottom: '8px' }}>
+              <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'linear-gradient(135deg, #e2e8f0, #94a3b8)', border: '3px solid #cbd5e1', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem', fontWeight: 800, color: 'white', boxShadow: '0 4px 10px rgba(0,0,0,0.1)' }}>
+                {displayLeaderboard[1].name.charAt(0)}
+              </div>
+              <div style={{ position: 'absolute', bottom: -5, right: -5, background: '#94a3b8', borderRadius: '50%', width: '20px', height: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.7rem', fontWeight: 900, color: 'white', border: '2px solid white' }}>2</div>
+            </div>
+            <div style={{ fontWeight: 700, fontSize: '0.8rem', textAlign: 'center', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%' }}>{displayLeaderboard[1].name}</div>
+            <div style={{ fontSize: '0.75rem', color: 'var(--accent-blue)', fontWeight: 800 }}>{displayLeaderboard[1].xp} XP</div>
+            <div style={{ width: '100%', height: '60px', background: 'linear-gradient(to bottom, #e2e8f0, #cbd5e1)', borderRadius: '12px 12px 0 0', marginTop: '8px', borderTop: '4px solid #f8fafc', boxShadow: 'inset 0 10px 10px rgba(255,255,255,0.5)' }}></div>
+          </div>
+        )}
+
+        {/* First Place */}
+        {displayLeaderboard[0] && (
+          <div className="animate-slide-up" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', animationDelay: '0.4s', width: '35%', zIndex: 10 }}>
+            <div style={{ position: 'relative', marginBottom: '12px' }}>
+              <div style={{ position: 'absolute', top: -20, left: '50%', transform: 'translateX(-50%)' }}>👑</div>
+              <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: 'linear-gradient(135deg, #fef08a, #eab308)', border: '4px solid #fde047', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem', fontWeight: 800, color: '#854d0e', boxShadow: '0 6px 15px rgba(234, 179, 8, 0.4)' }}>
+                {displayLeaderboard[0].name.charAt(0)}
+              </div>
+              <div style={{ position: 'absolute', bottom: -5, right: -5, background: '#eab308', borderRadius: '50%', width: '24px', height: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem', fontWeight: 900, color: 'white', border: '2px solid white' }}>1</div>
+            </div>
+            <div style={{ fontWeight: 800, fontSize: '0.9rem', textAlign: 'center', color: 'var(--accent-orange)' }}>{displayLeaderboard[0].name}</div>
+            <div style={{ fontSize: '0.8rem', color: 'var(--accent-blue)', fontWeight: 900 }}>{displayLeaderboard[0].xp} XP</div>
+            <div style={{ width: '100%', height: '90px', background: 'linear-gradient(to bottom, #fef08a, #eab308)', borderRadius: '12px 12px 0 0', marginTop: '8px', borderTop: '4px solid #fef9c3', boxShadow: 'inset 0 10px 10px rgba(255,255,255,0.5), 0 0 20px rgba(234,179,8,0.3)' }}></div>
+          </div>
+        )}
+
+        {/* Third Place */}
+        {displayLeaderboard[2] && (
+          <div className="animate-slide-up" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', animationDelay: '0s', width: '30%' }}>
+            <div style={{ position: 'relative', marginBottom: '8px' }}>
+              <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'linear-gradient(135deg, #ffedd5, #fdba74)', border: '3px solid #fed7aa', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem', fontWeight: 800, color: '#9a3412', boxShadow: '0 4px 10px rgba(0,0,0,0.1)' }}>
+                {displayLeaderboard[2].name.charAt(0)}
+              </div>
+              <div style={{ position: 'absolute', bottom: -5, right: -5, background: '#fdba74', borderRadius: '50%', width: '20px', height: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.7rem', fontWeight: 900, color: 'white', border: '2px solid white' }}>3</div>
+            </div>
+            <div style={{ fontWeight: 700, fontSize: '0.8rem', textAlign: 'center', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%' }}>{displayLeaderboard[2].name}</div>
+            <div style={{ fontSize: '0.75rem', color: 'var(--accent-blue)', fontWeight: 800 }}>{displayLeaderboard[2].xp} XP</div>
+            <div style={{ width: '100%', height: '40px', background: 'linear-gradient(to bottom, #ffedd5, #fdba74)', borderRadius: '12px 12px 0 0', marginTop: '8px', borderTop: '4px solid #fff7ed', boxShadow: 'inset 0 10px 10px rgba(255,255,255,0.5)' }}></div>
+          </div>
+        )}
+      </div>
+
+      <div className="card" style={{ padding: '8px', margin: '0 20px 20px 20px', background: 'var(--bg-surface)' }}>
+        {displayLeaderboard.length > 3 ? displayLeaderboard.slice(3).map((user) => (
+          <div key={user.rank} className="animate-slide-up" style={{ 
             display: 'flex', 
             alignItems: 'center', 
             gap: '16px', 
             padding: '12px 16px', 
             borderRadius: '16px',
-            background: user.isMe ? 'var(--bg-app)' : 'transparent',
-            borderLeft: user.isMe ? '4px solid var(--accent-blue)' : '4px solid transparent'
+            background: user.isMe ? '#EFF6FF' : 'transparent',
+            borderLeft: user.isMe ? '4px solid var(--accent-blue)' : '4px solid transparent',
+            animationDelay: `${(user.rank) * 0.05}s`,
+            animationFillMode: 'both'
           }}>
-            <div style={{ width: '30px', fontWeight: 700, color: user.rank <= 3 ? 'var(--accent-orange)' : 'var(--text-tertiary)' }}>
+            <div style={{ width: '30px', fontWeight: 800, color: 'var(--text-tertiary)', fontSize: '0.9rem' }}>
               #{user.rank}
             </div>
-            {user.rank <= 3 ? <Medal size={20} color="var(--accent-orange)" /> : <div style={{ width: '20px' }}></div>}
+            <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: 'var(--bg-app)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, color: 'var(--accent-purple)' }}>
+              {user.name.charAt(0)}
+            </div>
             <div style={{ flex: 1 }}>
-              <div style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{user.name} {user.isMe && <span style={{color: 'var(--accent-blue)', fontSize: '0.8rem'}}>(You)</span>}</div>
+              <div style={{ fontWeight: 700, color: 'var(--text-primary)' }}>{user.name} {user.isMe && <span style={{color: 'var(--accent-blue)', fontSize: '0.75rem', background: '#DBEAFE', padding: '2px 6px', borderRadius: '8px', marginLeft: '6px'}}>YOU</span>}</div>
               <div style={{ fontSize: '0.75rem', color: 'var(--text-tertiary)' }}>{user.region}</div>
             </div>
-            <div style={{ fontWeight: 700, color: 'var(--accent-blue)' }}>{user.xp} XP</div>
+            <div style={{ fontWeight: 800, color: 'var(--accent-blue)' }}>{user.xp} XP</div>
           </div>
         )) : (
           <div style={{ padding: '20px', textAlign: 'center', color: 'var(--text-tertiary)' }}>
-            {language === 'EN' ? 'No one is on the leaderboard yet!' : 'ಯಾರೂ ಲೀಡರ್‌ಬೋರ್ಡ್‌ನಲ್ಲಿಲ್ಲ!'}
+            {displayLeaderboard.length === 0 ? (language === 'EN' ? 'No one is on the leaderboard yet!' : 'ಯಾರೂ ಲೀಡರ್‌ಬೋರ್ಡ್‌ನಲ್ಲಿಲ್ಲ!') : ''}
           </div>
         )}
       </div>
