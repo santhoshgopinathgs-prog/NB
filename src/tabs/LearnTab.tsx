@@ -281,8 +281,8 @@ export const LearnTab = ({ initialChapter, clearInitialChapter }: { initialChapt
                         {isCompleted ? <CheckCircle size={20} color="#34D399" /> : <PlayCircle size={20} color="#FEF08A" />}
                       </div>
                       <div style={{ flex: 1 }}>
-                        <div style={{ fontWeight: 700, color: '#FFFFFF', marginBottom: '4px', fontSize: '0.95rem' }}>{chapterName}</div>
-                        <div style={{ fontSize: '0.8rem', color: '#A69685' }}>{language === 'EN' ? '4 Lessons' : '4 ಪಾಠಗಳು'} • {language === 'EN' ? '1 Practice Test' : '1 ಅಭ್ಯಾಸ ಪರೀಕ್ಷೆ'}</div>
+                        <div style={{ fontWeight: 800, color: '#FFFFFF', marginBottom: '4px', fontSize: '0.95rem' }}>{chapterName}</div>
+                        <div style={{ fontSize: '0.8rem', color: '#E5DDD0', fontWeight: 600 }}>{language === 'EN' ? '4 Lessons' : '4 ಪಾಠಗಳು'} • {language === 'EN' ? '1 Practice Test' : '1 ಅಭ್ಯಾಸ ಪರೀಕ್ಷೆ'}</div>
                       </div>
                       {isCompleted && (
                         <div style={{ fontSize: '0.75rem', fontWeight: 800, color: '#34D399', background: '#143823', border: '1px solid #059669', padding: '4px 10px', borderRadius: '12px' }}>

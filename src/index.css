@@ -1,15 +1,15 @@
 :root {
-  /* Luxury Dark Espresso & Warm Gold Palette */
+  /* Luxury Dark Espresso & High-Contrast Warm Gold Palette */
   --bg-app: #120F0D; /* Deep dark espresso charcoal */
   --bg-surface: #1B1714; /* Warm dark espresso surface */
   
-  --text-primary: #FFFFFF; /* Pure crisp white for primary titles */
-  --text-secondary: #E5DDD0; /* Warm soft cream for subtitles */
-  --text-tertiary: #A69685; /* Muted mocha for labels & icons */
+  --text-primary: #FFFFFF; /* Pure crisp white for all primary titles and letters */
+  --text-secondary: #F5EFE6; /* Super bright warm cream for subtitles */
+  --text-tertiary: #D8C8B8; /* High contrast bright nude cream for secondary text & labels */
   
   --accent-purple: #C4A482; /* Warm Nude Mocha */
-  --accent-blue: #231E19; /* Dark Mocha Card background */
-  --accent-green: #FEF08A; /* Soft Butter Gold for highlights, active buttons, XP */
+  --accent-blue: #FEF08A; /* Soft Butter Gold for text highlights, active buttons, XP */
+  --accent-green: #34D399; /* Bright Mint Green for success & completed states */
   --accent-orange: #FDE047; /* Bright Butter Gold */
   --accent-red: #F43F5E; 
   
