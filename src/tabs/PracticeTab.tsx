@@ -623,54 +623,92 @@ export const PracticeTab = () => {
         <div className="portrait-roadmap-bg" />
         <div className="portrait-roadmap-overlay" />
 
-        {/* 10 Milestone Platforms Connected via Winding Stone Path */}
-        {ANEKAL_LEVELS.map((lvl, index) => {
-          const unlocked = isLevelUnlocked(index);
-          const isCompleted = completedQuizzes.includes(lvl.id);
-          
-          // Spacious reversed path workflow: Level 1 starts at top archway entrance, winding down to Level 10 at bottom school building with spacious gaps
+        {/* Dynamic SVG Animated Dotted Path Line connecting all 10 milestone nodes */}
+        {(() => {
           const nodePositions = [
-            { left: '46%', top: '6.0%' },   // 1. Basics of Computer (Top Archway Entrance)
-            { left: '62%', top: '15.2%' }, // 2. Typing Champ
-            { left: '39%', top: '24.4%' }, // 3. Internet Navigator
-            { left: '64%', top: '33.8%' }, // 4. Digital Productivity
-            { left: '41%', top: '43.2%' }, // 5. Online Safety
-            { left: '63%', top: '52.6%' }, // 6. Mobile Literacy
-            { left: '39%', top: '62.0%' }, // 7. Digital Creativity
-            { left: '65%', top: '71.4%' }, // 8. Intro to Coding
-            { left: '40%', top: '80.8%' }, // 9. Real Life Project
-            { left: '61%', top: '90.2%' }  // 10. Graduation (Bottom Main School Building)
+            { left: 46, top: 5.5 },   // 1. Basics of Computer
+            { left: 62, top: 15.0 },  // 2. Typing Champ
+            { left: 39, top: 24.5 },  // 3. Internet Navigator
+            { left: 64, top: 34.0 },  // 4. Digital Productivity
+            { left: 41, top: 43.5 },  // 5. Online Safety
+            { left: 63, top: 53.0 },  // 6. Mobile Literacy
+            { left: 39, top: 62.5 },  // 7. Digital Creativity
+            { left: 65, top: 72.0 },  // 8. Intro to Coding
+            { left: 40, top: 81.5 },  // 9. Real Life Project
+            { left: 61, top: 91.0 }   // 10. Graduation
           ];
 
-          const pos = nodePositions[index];
+          const pathD = nodePositions.map((pos, idx) => {
+            if (idx === 0) return `M ${pos.left}% ${pos.top}%`;
+            const prev = nodePositions[idx - 1];
+            const midY = (prev.top + pos.top) / 2;
+            return `C ${prev.left}% ${midY}%, ${pos.left}% ${midY}%, ${pos.left}% ${pos.top}%`;
+          }).join(' ');
 
           return (
-            <div 
-              key={lvl.level}
-              className={`milestone-node-platform ${isCompleted ? 'completed' : (unlocked ? 'active' : 'locked')}`}
-              style={{ left: pos.left, top: pos.top }}
-              onClick={() => handleStartLevel(lvl, index)}
-            >
-              {/* Node Number Badge */}
-              <div className="node-number-badge">
-                {isCompleted ? '✓' : (unlocked ? lvl.level : '🔒')}
-              </div>
-
-              {/* 3D Stone Ring Node Icon */}
-              <div className="node-stone-ring">
-                {lvl.emoji}
-              </div>
-
-              {/* 3D Label Pill Button */}
-              <div 
-                className="node-label-pill"
-                style={{ background: unlocked ? (isCompleted ? '#22C55E' : lvl.color) : '#64748B' }}
-              >
-                {language === 'EN' ? lvl.title : lvl.title_kn}
-              </div>
-            </div>
+            <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 2 }}>
+              <path
+                className="roadmap-path-svg-line"
+                d={pathD}
+                fill="none"
+                stroke="#F59E0B"
+                strokeWidth="7"
+                strokeDasharray="14 14"
+                strokeLinecap="round"
+                style={{ filter: 'drop-shadow(0 4px 10px rgba(0,0,0,0.6))', opacity: 0.95 }}
+              />
+            </svg>
           );
-        })}
+        })()}
+
+        {/* 10 Milestone Platforms Connected via Winding Stone Path */}
+        {(() => {
+          const nodePositions = [
+            { left: '46%', top: '5.5%' },   // 1. Basics of Computer (Top Archway Entrance)
+            { left: '62%', top: '15.0%' }, // 2. Typing Champ
+            { left: '39%', top: '24.5%' }, // 3. Internet Navigator
+            { left: '64%', top: '34.0%' }, // 4. Digital Productivity
+            { left: '41%', top: '43.5%' }, // 5. Online Safety
+            { left: '63%', top: '53.0%' }, // 6. Mobile Literacy
+            { left: '39%', top: '62.5%' }, // 7. Digital Creativity
+            { left: '65%', top: '72.0%' }, // 8. Intro to Coding
+            { left: '40%', top: '81.5%' }, // 9. Real Life Project
+            { left: '61%', top: '91.0%' }  // 10. Graduation (Bottom Main School Building)
+          ];
+
+          return ANEKAL_LEVELS.map((lvl, index) => {
+            const unlocked = isLevelUnlocked(index);
+            const isCompleted = completedQuizzes.includes(lvl.id);
+            const pos = nodePositions[index];
+
+            return (
+              <div 
+                key={lvl.level}
+                className={`milestone-node-platform ${isCompleted ? 'completed' : (unlocked ? 'active' : 'locked')}`}
+                style={{ left: pos.left, top: pos.top }}
+                onClick={() => handleStartLevel(lvl, index)}
+              >
+                {/* Node Number Badge */}
+                <div className="node-number-badge">
+                  {isCompleted ? '✓' : (unlocked ? lvl.level : '🔒')}
+                </div>
+
+                {/* 3D Stone Ring Node Icon */}
+                <div className="node-stone-ring">
+                  {lvl.emoji}
+                </div>
+
+                {/* 3D Label Pill Button */}
+                <div 
+                  className="node-label-pill"
+                  style={{ background: unlocked ? (isCompleted ? '#22C55E' : lvl.color) : '#64748B' }}
+                >
+                  {language === 'EN' ? lvl.title : lvl.title_kn}
+                </div>
+              </div>
+            );
+          });
+        })()}
       </div>
     </div>
   );
