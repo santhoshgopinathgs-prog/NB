@@ -353,9 +353,16 @@ export const PracticeTab = () => {
       <div style={{ padding: '0 20px' }}>
         <div className="map-container">
           <svg className="map-path-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+            {/* Outline path for game look */}
             <polyline 
               points={filteredQuizzes.map((_, i) => `${parseFloat(mapNodePositions[i].left)},${parseFloat(mapNodePositions[i].top)}`).join(' ')} 
-              fill="none" stroke="rgba(255,255,255,0.6)" strokeWidth="1" strokeDasharray="2 2" 
+              fill="none" stroke="#334155" strokeWidth="8" strokeDasharray="12 12" strokeLinecap="round" strokeLinejoin="round"
+              vectorEffect="non-scaling-stroke"
+            />
+            {/* Inner path */}
+            <polyline 
+              points={filteredQuizzes.map((_, i) => `${parseFloat(mapNodePositions[i].left)},${parseFloat(mapNodePositions[i].top)}`).join(' ')} 
+              fill="none" stroke="#ffffff" strokeWidth="4" strokeDasharray="12 12" strokeLinecap="round" strokeLinejoin="round"
               vectorEffect="non-scaling-stroke"
             />
           </svg>
@@ -363,6 +370,13 @@ export const PracticeTab = () => {
             const pos = mapNodePositions[i];
             const isCompleted = completedQuizzes.includes(quiz.id);
             const isActive = selectedMapNode === i;
+            
+            // Map subjects to emojis
+            let emoji = '🎓';
+            if (quiz.subject === 'Mathematics') emoji = '🧮';
+            if (quiz.subject === 'Science') emoji = '🔬';
+            if (quiz.subject === 'Digital Skills') emoji = '💻';
+            
             return (
               <div 
                 key={quiz.id}
@@ -371,7 +385,9 @@ export const PracticeTab = () => {
                 onClick={() => setSelectedMapNode(i)}
               >
                 <div className="map-node-number">{i + 1}</div>
-                <GraduationCap size={24} color={isCompleted ? 'var(--accent-green)' : (isActive ? 'var(--accent-purple)' : 'var(--text-tertiary)')} />
+                <div style={{ filter: isCompleted ? 'none' : (isActive ? 'none' : 'grayscale(100%) opacity(70%)') }}>
+                  {emoji}
+                </div>
                 <div className="map-node-label">{language === 'EN' ? quiz.subject : quiz.subject_kn}</div>
               </div>
             )
