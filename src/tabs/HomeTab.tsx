@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAppContext } from '../context/AppContext';
-import { Search, Moon, Check, Book, Microscope, Monitor, MessageSquare, Trophy, Gamepad2, GraduationCap, Target } from 'lucide-react';
+import { Search, Moon, Check, Book, Microscope, Monitor, MessageSquare, Trophy, Gamepad2, GraduationCap, Target, BookOpen } from 'lucide-react';
 import { LeaderboardPortal } from '../components/LeaderboardPortal';
 import { CertificatesPortal } from '../components/CertificatesPortal';
 import { AITutorPortal } from '../components/AITutorPortal';
@@ -77,6 +77,7 @@ export const HomeTab = ({ navigateToChapter, setActiveTab }: { navigateToChapter
   const mathCompleted = completedQuizzes.filter(q => q.includes('-m-')).length;
   const scienceCompleted = completedQuizzes.filter(q => q.includes('-s-')).length;
   const digitalCompleted = completedQuizzes.filter(q => q.includes('-d-')).length;
+  const englishCompleted = completedQuizzes.filter(q => q.includes('-e-')).length;
 
   return (
     <div className="animate-slide-up" style={{ padding: '0 0px 20px 0px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
@@ -223,6 +224,7 @@ export const HomeTab = ({ navigateToChapter, setActiveTab }: { navigateToChapter
           <SubjectRow icon={<Book color="var(--accent-blue)" />} title="Mathematics" subtitle="ಗಣಿತ" progress={mathCompleted} total={28} color="var(--accent-blue)" pct={Math.round((mathCompleted/28)*100)} />
           <SubjectRow icon={<Microscope color="var(--accent-green)" />} title="Science" subtitle="ವಿಜ್ಞಾನ" progress={scienceCompleted} total={24} color="var(--accent-green)" pct={Math.round((scienceCompleted/24)*100)} />
           <SubjectRow icon={<Monitor color="var(--accent-purple)" />} title="Digital Skills" subtitle="ಡಿಜಿಟಲ್ ಕೌಶಲ್ಯಗಳು" progress={digitalCompleted} total={20} color="var(--accent-purple)" pct={Math.round((digitalCompleted/20)*100)} />
+          <SubjectRow icon={<BookOpen color="#ec4899" />} title="English" subtitle="ಇಂಗ್ಲಿಷ್" progress={englishCompleted} total={20} color="#ec4899" pct={Math.round((englishCompleted/20)*100)} />
           
           <button 
             onClick={() => setActivePortal('ai')}

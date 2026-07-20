@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useAppContext } from '../context/AppContext';
 import { Gamepad2, PlayCircle, CheckCircle, RefreshCcw, Map as MapIcon, GraduationCap } from 'lucide-react';
-import { mockQuizzes, MOCK_MATH_QUESTIONS, MOCK_SCIENCE_QUESTIONS, MOCK_DIGITAL_QUESTIONS } from '../data/mockData';
+import { mockQuizzes, MOCK_MATH_QUESTIONS, MOCK_SCIENCE_QUESTIONS, MOCK_DIGITAL_QUESTIONS, MOCK_ENGLISH_QUESTIONS } from '../data/mockData';
 import '../map.css';
 
 export const PracticeTab = () => {
@@ -63,6 +63,7 @@ export const PracticeTab = () => {
   let activeQuestions = MOCK_MATH_QUESTIONS;
   if (activeQuizData?.subject === 'Science') activeQuestions = MOCK_SCIENCE_QUESTIONS;
   if (activeQuizData?.subject === 'Digital Skills') activeQuestions = MOCK_DIGITAL_QUESTIONS;
+  if (activeQuizData?.subject === 'English') activeQuestions = MOCK_ENGLISH_QUESTIONS;
   
   if (activeQuizData?.id.endsWith('-2')) {
     activeQuestions = activeQuestions.slice(15, 30);
@@ -483,6 +484,7 @@ export const PracticeTab = () => {
             if (quiz.subject === 'Mathematics') emoji = '🧮';
             if (quiz.subject === 'Science') emoji = '🔬';
             if (quiz.subject === 'Digital Skills') emoji = '💻';
+            if (quiz.subject === 'English') emoji = '📖';
             
             return (
               <div 

@@ -212,6 +212,24 @@ export const LEARN_DIGITAL_QUESTIONS = [
   { question_en: 'What is a smartphone?', question_kn: 'ಸ್ಮಾರ್ಟ್ಫೋನ್ ಎಂದರೆ ಏನು?', options_en: ['A smart TV', 'A mobile computer', 'A digital watch', 'A camera'], options_kn: ['ಸ್ಮಾರ್ಟ್ ಟಿವಿ', 'ಮೊಬೈಲ್ ಕಂಪ್ಯೂಟರ್', 'ಡಿಜಿಟಲ್ ವಾಚ್', 'ಕ್ಯಾಮೆರಾ'], correctAnswer: 1 }
 ];
 
+export const MOCK_ENGLISH_QUESTIONS = [
+  { question_en: 'Which of the following is a noun?', question_kn: 'ಇವುಗಳಲ್ಲಿ ಯಾವುದು ನಾಮಪದ (Noun)?', options_en: ['Quickly', 'Happiness', 'Run', 'Blue'], options_kn: ['Quickly', 'Happiness (ಸಂತೋಷ)', 'Run', 'Blue'], correctAnswer: 1 },
+  { question_en: 'Choose the correct past tense of "write".', question_kn: '"write" ನ ಸರಿಯಾದ ಭೂತಕಾಲದ ರೂಪವನ್ನು ಆಯ್ಕೆಮಾಡಿ.', options_en: ['Wrote', 'Written', 'Writing', 'Writes'], options_kn: ['Wrote', 'Written', 'Writing', 'Writes'], correctAnswer: 0 },
+  { question_en: 'What is the synonym of "ancient"?', question_kn: '"ancient" (ಪ್ರಾಚೀನ) ನ ಸಮಾನಾರ್ಥಕ ಪದ ಯಾವುದು?', options_en: ['Modern', 'Old', 'New', 'Young'], options_kn: ['Modern', 'Old (ಹಳೆಯ)', 'New', 'Young'], correctAnswer: 1 },
+  { question_en: 'Identify the conjunction in: "I wanted to go, but it rained."', question_kn: '"I wanted to go, but it rained" ನಲ್ಲಿ ಸಂಯೋಜಕ (conjunction) ಯಾವುದು?', options_en: ['wanted', 'to', 'but', 'rained'], options_kn: ['wanted', 'to', 'but', 'rained'], correctAnswer: 2 },
+  { question_en: 'Fill in the blank: She is ___ honest girl.', question_kn: 'ಖಾಲಿ ಜಾಗ ತುಂಬಿ: She is ___ honest girl.', options_en: ['a', 'an', 'the', 'no article'], options_kn: ['a', 'an', 'the', 'no article'], correctAnswer: 1 },
+  { question_en: 'What is the opposite (antonym) of "expand"?', question_kn: '"expand" ನ ವಿರುದ್ಧ ಪದ ಯಾವುದು?', options_en: ['Grow', 'Contract', 'Stretch', 'Increase'], options_kn: ['Grow', 'Contract (ಕುಗ್ಗಿಸು)', 'Stretch', 'Increase'], correctAnswer: 1 },
+  { question_en: 'Which sentence is in the present continuous tense?', question_kn: 'ಯಾವ ವಾಕ್ಯವು ವರ್ತಮಾನ ಕಾಲದ ಸಾಗುತ್ತಿರುವ ರೂಪದಲ್ಲಿದೆ (Present Continuous)?', options_en: ['He eats an apple.', 'He ate an apple.', 'He is eating an apple.', 'He has eaten an apple.'], options_kn: ['He eats an apple.', 'He ate an apple.', 'He is eating an apple.', 'He has eaten an apple.'], correctAnswer: 2 },
+  { question_en: 'Choose the correct plural form of "child".', question_kn: '"child" ನ ಸರಿಯಾದ ಬಹುವಚನ ರೂಪ ಯಾವುದು?', options_en: ['Childs', 'Children', 'Childrens', 'Childes'], options_kn: ['Childs', 'Children', 'Childrens', 'Childes'], correctAnswer: 1 },
+  { question_en: 'What is the adjective in: "The tall tree swayed in the wind."', question_kn: '"The tall tree swayed in the wind" ವಾಕ್ಯದಲ್ಲಿ ಗುಣವಾಚಕ (adjective) ಯಾವುದು?', options_en: ['tall', 'tree', 'swayed', 'wind'], options_kn: ['tall', 'tree', 'swayed', 'wind'], correctAnswer: 0 },
+  { question_en: 'Fill in the blank: They have been playing ___ two hours.', question_kn: 'ಖಾಲಿ ಜಾಗ ತುಂಬಿ: They have been playing ___ two hours.', options_en: ['since', 'for', 'from', 'at'], options_kn: ['since', 'for', 'from', 'at'], correctAnswer: 1 },
+  { question_en: 'What is a stanza in poetry?', question_kn: 'ಕವನದಲ್ಲಿ (poetry) ಸ್ಟಾಂಜಾ (stanza) ಎಂದರೆ ಏನು?', options_en: ['A line', 'A group of lines / verse', 'The title', 'The rhyme'], options_kn: ['ಒಂದು ಸಾಲು', 'ಸಾಲುಗಳ ಗುಂಪು / ಪದ್ಯಭಾಗ', 'ಶೀರ್ಷಿಕೆ', 'ಪ್ರಾಸ'], correctAnswer: 1 },
+  { question_en: 'Choose the correctly spelled word.', question_kn: 'ಸರಿಯಾಗಿ ಕಾಗುಣಿತ ಹೊಂದಿರುವ ಪದವನ್ನು ಆಯ್ಕೆಮಾಡಿ.', options_en: ['Recieve', 'Receive', 'Receve', 'Recieeve'], options_kn: ['Recieve', 'Receive', 'Receve', 'Recieeve'], correctAnswer: 1 },
+  { question_en: 'What type of sentence is: "Please close the door."', question_kn: '"Please close the door" ಇದು ಯಾವ ರೀತಿಯ ವಾಕ್ಯ?', options_en: ['Declarative', 'Imperative', 'Interrogative', 'Exclamatory'], options_kn: ['Declarative', 'Imperative (ಆಜ್ಞಾರ್ಥಕ/ವಿನಂತಿ)', 'Interrogative', 'Exclamatory'], correctAnswer: 1 },
+  { question_en: 'Identify the adverb in: "He ran quickly."', question_kn: '"He ran quickly" ವಾಕ್ಯದಲ್ಲಿ ಕ್ರಿಯಾವಿಶೇಷಣ (adverb) ಯಾವುದು?', options_en: ['He', 'ran', 'quickly', 'none'], options_kn: ['He', 'ran', 'quickly', 'none'], correctAnswer: 2 },
+  { question_en: 'What is the passive voice of: "The boy kicked the ball."', question_kn: '"The boy kicked the ball" ನ ಕರ್ಮಣಿ ಪ್ರಯೋಗ (passive voice) ಯಾವುದು?', options_en: ['The ball was kicked by the boy.', 'The ball kicked the boy.', 'The boy was kicking the ball.', 'The ball is kicked by the boy.'], options_kn: ['The ball was kicked by the boy.', 'The ball kicked the boy.', 'The boy was kicking the ball.', 'The ball is kicked by the boy.'], correctAnswer: 0 }
+];
+
 export const mockQuizzes = [
   // Class 8
   { id: 'c8-m-1', class: 8, subject: 'Mathematics', subject_kn: 'ಗಣಿತ', title: 'Rational Numbers Mastery', title_kn: 'ಭಾಗಲಬ್ಧ ಸಂಖ್ಯೆಗಳ ಪಾಂಡಿತ್ಯ', questions: 15, xp: 250 },
@@ -220,6 +238,8 @@ export const mockQuizzes = [
   { id: 'c8-s-2', class: 8, subject: 'Science', subject_kn: 'ವಿಜ್ಞಾನ', title: 'Crop Production & Management', title_kn: 'ಬೆಳೆ ಉತ್ಪಾದನೆ ಮತ್ತು ನಿರ್ವಹಣೆ', questions: 15, xp: 250 },
   { id: 'c8-d-1', class: 8, subject: 'Digital Skills', subject_kn: 'ಡಿಜಿಟಲ್ ಕೌಶಲ್ಯಗಳು', title: 'Intro to Computers', title_kn: 'ಕಂಪ್ಯೂಟರ್ ಪರಿಚಯ', questions: 15, xp: 250 },
   { id: 'c8-d-2', class: 8, subject: 'Digital Skills', subject_kn: 'ಡಿಜಿಟಲ್ ಕೌಶಲ್ಯಗಳು', title: 'Internet Safety Basics', title_kn: 'ಇಂಟರ್ನೆಟ್ ಸುರಕ್ಷತೆ ಮೂಲಗಳು', questions: 15, xp: 250 },
+  { id: 'c8-e-1', class: 8, subject: 'English', subject_kn: 'ಇಂಗ್ಲಿಷ್', title: 'English Grammar & Tenses', title_kn: 'ಇಂಗ್ಲಿಷ್ ವ್ಯಾಕರಣ ಮತ್ತು ಕಾಲಗಳು', questions: 15, xp: 250 },
+  { id: 'c8-e-2', class: 8, subject: 'English', subject_kn: 'ಇಂಗ್ಲಿಷ್', title: 'Reading Comprehension', title_kn: 'ಓದುವ ಗ್ರಹಿಕೆ ಮತ್ತು ಶಬ್ದಕೋಶ', questions: 15, xp: 250 },
   
   // Class 9
   { id: 'c9-m-1', class: 9, subject: 'Mathematics', subject_kn: 'ಗಣಿತ', title: 'Number Systems Quiz', title_kn: 'ಸಂಖ್ಯಾ ವ್ಯವಸ್ಥೆ ರಸಪ್ರಶ್ನೆ', questions: 15, xp: 250 },
@@ -228,6 +248,8 @@ export const mockQuizzes = [
   { id: 'c9-s-2', class: 9, subject: 'Science', subject_kn: 'ವಿಜ್ಞಾನ', title: 'Atoms and Molecules', title_kn: 'ಪರಮಾಣುಗಳು ಮತ್ತು ಅಣುಗಳು', questions: 15, xp: 250 },
   { id: 'c9-d-1', class: 9, subject: 'Digital Skills', subject_kn: 'ಡಿಜಿಟಲ್ ಕೌಶಲ್ಯಗಳು', title: 'HTML Tags & Attributes', title_kn: 'HTML ಟ್ಯಾಗ್‌ಗಳು', questions: 15, xp: 250 },
   { id: 'c9-d-2', class: 9, subject: 'Digital Skills', subject_kn: 'ಡಿಜಿಟಲ್ ಕೌಶಲ್ಯಗಳು', title: 'CSS Styling Foundations', title_kn: 'CSS ಸ್ಟೈಲಿಂಗ್ ಮೂಲಗಳು', questions: 15, xp: 250 },
+  { id: 'c9-e-1', class: 9, subject: 'English', subject_kn: 'ಇಂಗ್ಲಿಷ್', title: 'Grammar & Vocabulary Quiz', title_kn: 'ವ್ಯಾಕರಣ ಮತ್ತು ಶಬ್ದಕೋಶ', questions: 15, xp: 250 },
+  { id: 'c9-e-2', class: 9, subject: 'English', subject_kn: 'ಇಂಗ್ಲಿಷ್', title: 'Poetry & Prose Mastery', title_kn: 'ಕವನ ಮತ್ತು ಗದ್ಯ ಪಾಂಡಿತ್ಯ', questions: 15, xp: 250 },
   
   // Class 10
   { id: 'c10-m-1', class: 10, subject: 'Mathematics', subject_kn: 'ಗಣಿತ', title: 'Real Numbers Prep', title_kn: 'ವಾಸ್ತವ ಸಂಖ್ಯೆಗಳ ತಯಾರಿ', questions: 15, xp: 250 },
@@ -236,6 +258,8 @@ export const mockQuizzes = [
   { id: 'c10-s-2', class: 10, subject: 'Science', subject_kn: 'ವಿಜ್ಞಾನ', title: 'Life Processes', title_kn: 'ಜೀವ ಕ್ರಿಯೆಗಳು', questions: 15, xp: 250 },
   { id: 'c10-d-1', class: 10, subject: 'Digital Skills', subject_kn: 'ಡಿಜಿಟಲ್ ಕೌಶಲ್ಯಗಳು', title: 'JavaScript Logic', title_kn: 'ಜಾವಾಸ್ಕ್ರಿಪ್ಟ್ ತರ್ಕ', questions: 15, xp: 250 },
   { id: 'c10-d-2', class: 10, subject: 'Digital Skills', subject_kn: 'ಡಿಜಿಟಲ್ ಕೌಶಲ್ಯಗಳು', title: 'Python Basics', title_kn: 'ಪೈಥಾನ್ ಮೂಲಗಳು', questions: 15, xp: 250 },
+  { id: 'c10-e-1', class: 10, subject: 'English', subject_kn: 'ಇಂಗ್ಲಿಷ್', title: 'Advanced English Grammar', title_kn: 'ಸುಧಾರಿತ ಇಂಗ್ಲಿಷ್ ವ್ಯಾಕರಣ', questions: 15, xp: 250 },
+  { id: 'c10-e-2', class: 10, subject: 'English', subject_kn: 'ಇಂಗ್ಲಿಷ್', title: 'Essay & Letter Writing', title_kn: 'ಪ್ರಬಂಧ ಮತ್ತು ಪತ್ರ ಲೇಖನ', questions: 15, xp: 250 },
 ];
 
 export const syllabusData = [
@@ -244,7 +268,8 @@ export const syllabusData = [
     subjects: [
       { name: 'Mathematics', name_kn: 'ಗಣಿತ', chapters: ['Rational Numbers', 'Linear Equations', 'Understanding Quadrilaterals', 'Data Handling', 'Squares and Square Roots'], chapters_kn: ['ಭಾಗಲಬ್ಧ ಸಂಖ್ಯೆಗಳು', 'ರೇಖಾತ್ಮಕ ಸಮೀಕರಣಗಳು', 'ಚತುರ್ಭುಜಗಳನ್ನು ಅರ್ಥಮಾಡಿಕೊಳ್ಳುವುದು', 'ದತ್ತಾಂಶ ನಿರ್ವಹಣೆ', 'ವರ್ಗಗಳು ಮತ್ತು ವರ್ಗಮೂಲಗಳು'] },
       { name: 'Science', name_kn: 'ವಿಜ್ಞಾನ', chapters: ['Crop Production', 'Microorganisms', 'Synthetic Fibres', 'Metals & Non-Metals', 'Coal and Petroleum'], chapters_kn: ['ಬೆಳೆ ಉತ್ಪಾದನೆ', 'ಸೂಕ್ಷ್ಮಜೀವಿಗಳು', 'ಸಂಶ್ಲೇಷಿತ ಎಳೆಗಳು', 'ಲೋಹಗಳು ಮತ್ತು ಅಲೋಹಗಳು', 'ಕಲ್ಲಿದ್ದಲು ಮತ್ತು ಪೆಟ್ರೋಲಿಯಂ'] },
-      { name: 'Digital Skills', name_kn: 'ಡಿಜಿಟಲ್ ಕೌಶಲ್ಯಗಳು', chapters: ['Intro to Computers', 'Coding with Scratch', 'Typing Mastery', 'Internet Safety', 'Word Processing'], chapters_kn: ['ಕಂಪ್ಯೂಟರ್ ಪರಿಚಯ', 'ಸ್ಕ್ರ್ಯಾಚ್‌ನೊಂದಿಗೆ ಬೇಸಿಕ್ ಕೋಡಿಂಗ್', 'ಟೈಪಿಂಗ್ ಪಾಂಡಿತ್ಯ', 'ಇಂಟರ್ನೆಟ್ ಸುರಕ್ಷತೆ', 'ವರ್ಡ್ ಪ್ರೊಸೆಸಿಂಗ್ ಮೂಲಗಳು'] }
+      { name: 'Digital Skills', name_kn: 'ಡಿಜಿಟಲ್ ಕೌಶಲ್ಯಗಳು', chapters: ['Intro to Computers', 'Coding with Scratch', 'Typing Mastery', 'Internet Safety', 'Word Processing'], chapters_kn: ['ಕಂಪ್ಯೂಟರ್ ಪರಿಚಯ', 'ಸ್ಕ್ರ್ಯಾಚ್‌ನೊಂದಿಗೆ ಬೇಸಿಕ್ ಕೋಡಿಂಗ್', 'ಟೈಪಿಂಗ್ ಪಾಂಡಿತ್ಯ', 'ಇಂಟರ್ನೆಟ್ ಸುರಕ್ಷತೆ', 'ವರ್ಡ್ ಪ್ರೊಸೆಸಿಂಗ್ ಮೂಲಗಳು'] },
+      { name: 'English', name_kn: 'ಇಂಗ್ಲಿಷ್', chapters: ['Parts of Speech', 'Tenses & Verbs', 'Reading Comprehension', 'Vocabulary Building', 'Letter & Notice Writing'], chapters_kn: ['ವ್ಯಾಕರಣದ ಭಾಗಗಳು', 'ಕಾಲಗಳು ಮತ್ತು ಕ್ರಿಯಾಪದಗಳು', 'ಓದುವ ಗ್ರಹಿಕೆ', 'ಶಬ್ದಕೋಶ ವೃದ್ಧಿ', 'ಪತ್ರ ಮತ್ತು ಸೂಚನಾ ಲೇಖನ'] }
     ]
   },
   {
@@ -252,7 +277,8 @@ export const syllabusData = [
     subjects: [
       { name: 'Mathematics', name_kn: 'ಗಣಿತ', chapters: ['Number Systems', 'Polynomials', 'Coordinate Geometry', 'Linear Equations in 2 Variables', 'Introduction to Euclid\'s Geometry'], chapters_kn: ['ಸಂಖ್ಯಾ ವ್ಯವಸ್ಥೆಗಳು', 'ಬಹುಪದೋಕ್ತಿಗಳು', 'ನಿರ್ದೇಶಾಂಕ ರೇಖಾಗಣಿತ', 'ಎರಡು ಚರಾಕ್ಷರಗಳಿರುವ ರೇಖಾತ್ಮಕ ಸಮೀಕರಣಗಳು', 'ಯೂಕ್ಲಿಡ್‌ನ ರೇಖಾಗಣಿತದ ಪರಿಚಯ'] },
       { name: 'Science', name_kn: 'ವಿಜ್ಞಾನ', chapters: ['Matter in Our Surroundings', 'Is Matter Around Us Pure', 'Atoms and Molecules', 'Structure of the Atom', 'The Fundamental Unit of Life'], chapters_kn: ['ನಮ್ಮ ಸುತ್ತಮುತ್ತಲಿನ ದ್ರವ್ಯ', 'ನಮ್ಮ ಸುತ್ತಲಿನ ದ್ರವ್ಯ ಶುದ್ಧವೇ', 'ಪರಮಾಣುಗಳು ಮತ್ತು ಅಣುಗಳು', 'ಪರಮಾಣುವಿನ ರಚನೆ', 'ಜೀವದ ಮೂಲಭೂತ ಘಟಕ'] },
-      { name: 'Digital Skills', name_kn: 'ಡಿಜಿಟಲ್ ಕೌಶಲ್ಯಗಳು', chapters: ['HTML Basics', 'CSS Basics', 'Logic and Flowcharts', 'Presentation Software', 'Spreadsheet Fundamentals'], chapters_kn: ['HTML ಮೂಲಗಳು', 'CSS ಮೂಲಗಳು', 'ತರ್ಕ ಮತ್ತು ಫ್ಲೋಚಾರ್ಟ್‌ಗಳು', 'ಪ್ರಸ್ತುತಿ ಸಾಫ್ಟ್‌ವೇರ್', 'ಸ್ಪ್ರೆಡ್‌ಶೀಟ್ ಮೂಲಭೂತ ಅಂಶಗಳು'] }
+      { name: 'Digital Skills', name_kn: 'ಡಿಜಿಟಲ್ ಕೌಶಲ್ಯಗಳು', chapters: ['HTML Basics', 'CSS Basics', 'Logic and Flowcharts', 'Presentation Software', 'Spreadsheet Fundamentals'], chapters_kn: ['HTML ಮೂಲಗಳು', 'CSS ಮೂಲಗಳು', 'ತರ್ಕ ಮತ್ತು ಫ್ಲೋಚಾರ್ಟ್‌ಗಳು', 'ಪ್ರಸ್ತುತಿ ಸಾಫ್ಟ್‌ವೇರ್', 'ಸ್ಪ್ರೆಡ್‌ಶೀಟ್ ಮೂಲಭೂತ ಅಂಶಗಳು'] },
+      { name: 'English', name_kn: 'ಇಂಗ್ಲಿಷ್', chapters: ['Active & Passive Voice', 'Direct & Indirect Speech', 'Poetry Analysis', 'Short Story Comprehension', 'Essay Writing'], chapters_kn: ['ಕರ್ತರಿ ಮತ್ತು ಕರ್ಮಣಿ ಪ್ರಯೋಗ', 'ಪರೋಕ್ಷ ಮತ್ತು ನೇರ ನುಡಿ', 'ಕವನ ವಿಶ್ಲೇಷಣೆ', 'ಸಣ್ಣ ಕಥೆ ಗ್ರಹಿಕೆ', 'ಪ್ರಬಂಧ ರಚನೆ'] }
     ]
   },
   {
@@ -260,7 +286,8 @@ export const syllabusData = [
     subjects: [
       { name: 'Mathematics', name_kn: 'ಗಣಿತ', chapters: ['Real Numbers', 'Polynomials', 'Quadratic Equations', 'Arithmetic Progressions', 'Triangles'], chapters_kn: ['ವಾಸ್ತವ ಸಂಖ್ಯೆಗಳು', 'ಬಹುಪದೋಕ್ತಿಗಳು', 'ವರ್ಗ ಸಮೀಕರಣಗಳು', 'ಸಮಾಂತರ ಶ್ರೇಢಿಗಳು', 'ತ್ರಿಕೋನಗಳು'] },
       { name: 'Science', name_kn: 'ವಿಜ್ಞಾನ', chapters: ['Chemical Reactions', 'Acids, Bases & Salts', 'Metals & Non-Metals', 'Carbon & its Compounds', 'Periodic Classification'], chapters_kn: ['ರಾಸಾಯನಿಕ ಕ್ರಿಯೆಗಳು ಮತ್ತು ಸಮೀಕರಣಗಳು', 'ಆಮ್ಲಗಳು, ಪ್ರತ್ಯಾಮ್ಲಗಳು ಮತ್ತು ಲವಣಗಳು', 'ಲೋಹಗಳು ಮತ್ತು ಅಲೋಹಗಳು', 'ಇಂಗಾಲ ಮತ್ತು ಅದರ ಸಂಯುಕ್ತಗಳು', 'ಧಾತುಗಳ ಆವರ್ತಕ ವರ್ಗೀಕರಣ'] },
-      { name: 'Digital Skills', name_kn: 'ಡಿಜಿಟಲ್ ಕೌಶಲ್ಯಗಳು', chapters: ['JavaScript Basics', 'Introduction to Python', 'Web Development', 'Data Analysis with Python', 'Cybersecurity Fundamentals'], chapters_kn: ['ಜಾವಾಸ್ಕ್ರಿಪ್ಟ್ ಮೂಲಗಳು', 'ಪೈಥಾನ್ ಪರಿಚಯ', 'ವೆಬ್ ಅಭಿವೃದ್ಧಿ ಯೋಜನೆ', 'ಪೈಥಾನ್‌ನೊಂದಿಗೆ ಡೇಟಾ ವಿಶ್ಲೇಷಣೆ', 'ಸೈಬರ್ ಭದ್ರತೆ ಮೂಲಭೂತ ಅಂಶಗಳು'] }
+      { name: 'Digital Skills', name_kn: 'ಡಿಜಿಟಲ್ ಕೌಶಲ್ಯಗಳು', chapters: ['JavaScript Basics', 'Introduction to Python', 'Web Development', 'Data Analysis with Python', 'Cybersecurity Fundamentals'], chapters_kn: ['ಜಾವಾಸ್ಕ್ರಿಪ್ಟ್ ಮೂಲಗಳು', 'ಪೈಥಾನ್ ಪರಿಚಯ', 'ವೆಬ್ ಅಭಿವೃದ್ಧಿ ಯೋಜನೆ', 'ಪೈಥಾನ್‌ನೊಂದಿಗೆ ಡೇಟಾ ವಿಶ್ಲೇಷಣೆ', 'ಸೈಬರ್ ಭದ್ರತೆ ಮೂಲಭೂತ ಅಂಶಗಳು'] },
+      { name: 'English', name_kn: 'ಇಂಗ್ಲಿಷ್', chapters: ['Advanced Grammar', 'Clause Analysis', 'Formal & Informal Letters', 'Report Writing', 'Précis & Summary Writing'], chapters_kn: ['ಸುಧಾರಿತ ವ್ಯಾಕರಣ', 'ಉಪವಾಕ್ಯ ವಿಶ್ಲೇಷಣೆ', 'ಔಪಚಾರಿಕ ಮತ್ತು ಅನೌಪಚಾರಿಕ ಪತ್ರಗಳು', 'ವರದಿ ಲೇಖನ', 'ಸಾರಾಂಶ ರಚನೆ'] }
     ]
   }
 ];
