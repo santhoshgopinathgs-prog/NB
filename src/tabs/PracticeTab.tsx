@@ -99,36 +99,95 @@ export const PracticeTab = () => {
     setCorrectAnswersCount(0);
   };
 
+  const typingLevelsEN = [
+    "The quick brown fox jumps over the lazy dog",
+    "Practice makes perfect when learning to type.",
+    "A journey of a thousand miles begins with a single step.",
+    "Technology is best when it brings people together.",
+    "Success is not final, failure is not fatal: it is the courage to continue that counts."
+  ];
+  
+  const typingLevelsKN = [
+    "ಕನ್ನಡ ಭಾಷೆ ಸುಂದರವಾಗಿದೆ ಮತ್ತು ಕಲಿಯಲು ಸುಲಭವಾಗಿದೆ",
+    "ಟೈಪಿಂಗ್ ಕಲಿಯುವಾಗ ಅಭ್ಯಾಸವು ಪರಿಪೂರ್ಣತೆಯನ್ನು ತರುತ್ತದೆ.",
+    "ಸಾವಿರ ಮೈಲುಗಳ ಪ್ರಯಾಣವು ಒಂದೇ ಹೆಜ್ಜೆಯಿಂದ ಪ್ರಾರಂಭವಾಗುತ್ತದೆ.",
+    "ತಂತ್ರಜ್ಞಾನವು ಜನರನ್ನು ಒಟ್ಟುಗೂಡಿಸಿದಾಗ ಉತ್ತಮವಾಗಿರುತ್ತದೆ.",
+    "ಯಶಸ್ಸು ಅಂತಿಮವಲ್ಲ, ವೈಫಲ್ಯವು ಮಾರಕವಲ್ಲ: ಮುಂದುವರಿಯುವ ಧೈರ್ಯವೇ ಮುಖ್ಯ."
+  ];
+
+  const [typingLevel, setTypingLevel] = useState<number>(0);
+  const [timeLeft, setTimeLeft] = useState<number>(60);
+
+  React.useEffect(() => {
+    if (isTypingActive && timeLeft > 0) {
+      const timerId = setInterval(() => setTimeLeft(prev => prev - 1), 1000);
+      return () => clearInterval(timerId);
+    }
+  }, [isTypingActive, timeLeft]);
+
   if (isTypingActive) {
-    const targetText = language === 'EN' ? "The quick brown fox jumps over the lazy dog" : "ಕನ್ನಡ ಭಾಷೆ ಸುಂದರವಾಗಿದೆ ಮತ್ತು ಕಲಿಯಲು ಸುಲಭವಾಗಿದೆ";
+    const targetTexts = language === 'EN' ? typingLevelsEN : typingLevelsKN;
+    const targetText = targetTexts[typingLevel];
     
     const handleTypingChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-      const val = e.target.value;
-      setTypingInput(val);
-      if (val.trim().toLowerCase() === targetText.toLowerCase()) {
-        markTypingPracticed();
-        setTimeout(() => {
-          setIsTypingActive(false);
+      setTypingInput(e.target.value);
+    };
+
+    const handleFinishLevel = () => {
+      if (typingInput.trim() === targetText.trim()) {
+        if (typingLevel < 4) {
+          setTypingLevel(prev => prev + 1);
           setTypingInput('');
-          alert(language === 'EN' ? "Typing practice completed! +30 XP" : "ಟೈಪಿಂಗ್ ಅಭ್ಯಾಸ ಪೂರ್ಣಗೊಂಡಿದೆ! +30 XP");
-        }, 500);
+          setTimeLeft(60);
+        } else {
+          markTypingPracticed();
+          setIsTypingActive(false);
+          setTypingLevel(0);
+          setTypingInput('');
+          alert(language === 'EN' ? "All typing levels completed! +30 XP" : "ಎಲ್ಲಾ ಟೈಪಿಂಗ್ ಹಂತಗಳು ಪೂರ್ಣಗೊಂಡಿವೆ! +30 XP");
+        }
+      } else {
+        alert(language === 'EN' ? "Text does not match perfectly. Please fix errors!" : "ಪಠ್ಯವು ಸಂಪೂರ್ಣವಾಗಿ ಹೊಂದಿಕೆಯಾಗುತ್ತಿಲ್ಲ. ದಯವಿಟ್ಟು ದೋಷಗಳನ್ನು ಸರಿಪಡಿಸಿ!");
       }
     };
 
     return (
       <div className="animate-slide-up" style={{ padding: '0 20px 20px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
-        <button onClick={() => setIsTypingActive(false)} style={{ alignSelf: 'flex-start', color: 'var(--accent-blue)', fontWeight: 600 }}>← {t('backToPracticeList')}</button>
+        <button onClick={() => { setIsTypingActive(false); setTypingLevel(0); setTypingInput(''); }} style={{ alignSelf: 'flex-start', color: 'var(--accent-blue)', fontWeight: 600 }}>← {t('backToPracticeList')}</button>
         <div className="card" style={{ padding: '24px' }}>
-          <h3 style={{ marginBottom: '16px', fontSize: '1.2rem' }}>{language === 'EN' ? "Type the following sentence:" : "ಕೆಳಗಿನ ವಾಕ್ಯವನ್ನು ಟೈಪ್ ಮಾಡಿ:"}</h3>
-          <div style={{ padding: '16px', background: 'var(--bg-app)', borderRadius: '12px', marginBottom: '24px', fontSize: '1.1rem', fontWeight: 600, color: 'var(--text-secondary)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+            <h3 style={{ fontSize: '1.2rem', margin: 0 }}>{language === 'EN' ? `Level ${typingLevel + 1} of 5` : `ಹಂತ ${typingLevel + 1} / 5`}</h3>
+            <div style={{ background: timeLeft <= 10 ? '#FEE2E2' : '#EFF6FF', color: timeLeft <= 10 ? 'var(--accent-red)' : 'var(--accent-blue)', padding: '6px 12px', borderRadius: '16px', fontWeight: 800, fontSize: '0.9rem' }}>
+              ⏱ {timeLeft}s
+            </div>
+          </div>
+          <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>{language === 'EN' ? "Type the following sentence:" : "ಕೆಳಗಿನ ವಾಕ್ಯವನ್ನು ಟೈಪ್ ಮಾಡಿ:"}</p>
+          <div style={{ padding: '16px', background: 'var(--bg-app)', borderRadius: '12px', marginBottom: '24px', fontSize: '1.1rem', fontWeight: 600, color: 'var(--text-primary)' }}>
             {targetText}
           </div>
           <textarea
             value={typingInput}
             onChange={handleTypingChange}
             placeholder={language === 'EN' ? "Start typing here..." : "ಇಲ್ಲಿ ಟೈಪ್ ಮಾಡಲು ಪ್ರಾರಂಭಿಸಿ..."}
+            disabled={timeLeft === 0}
             style={{ width: '100%', padding: '16px', borderRadius: '12px', border: '2px solid var(--border-light)', minHeight: '120px', fontSize: '1.1rem', fontFamily: 'inherit', resize: 'vertical' }}
           />
+          {timeLeft === 0 ? (
+            <button 
+              onClick={() => { setTimeLeft(60); setTypingInput(''); }}
+              style={{ width: '100%', padding: '16px', marginTop: '16px', borderRadius: '12px', background: 'var(--accent-red)', color: 'white', fontWeight: 700, border: 'none' }}
+            >
+              {language === 'EN' ? "Time's up! Try Again" : "ಸಮಯ ಮುಗಿದಿದೆ! ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ"}
+            </button>
+          ) : (
+            <button 
+              onClick={handleFinishLevel}
+              disabled={typingInput.length === 0}
+              style={{ width: '100%', padding: '16px', marginTop: '16px', borderRadius: '12px', background: typingInput.length === 0 ? 'var(--border-light)' : 'var(--accent-green)', color: 'white', fontWeight: 700, border: 'none', transition: 'background 0.2s' }}
+            >
+              {language === 'EN' ? "Finish" : "ಮುಗಿಸಿ"}
+            </button>
+          )}
         </div>
       </div>
     );
