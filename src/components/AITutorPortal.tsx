@@ -93,7 +93,7 @@ export const AITutorPortal = ({ onClose, initialQuery }: { onClose: () => void, 
         <div style={{ flex: 1 }}>
           <h2 style={{ fontSize: '1.2rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
             <div style={{ width: '32px', height: '32px', borderRadius: '50%', overflow: 'hidden', border: '2px solid var(--accent-green)' }}>
-              <img src="https://api.dicebear.com/9.x/avataaars/svg?seed=Buddy&top=turban&skinColor=ae5d29&clothing=shirtCrewNeck&clothingColor=ffffff&topColor=81ecec&mouth=smile" alt="Buddy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              <img src="/bot_icon.jpg" alt="Buddy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
             Namma Buddy
           </h2>
@@ -106,7 +106,7 @@ export const AITutorPortal = ({ onClose, initialQuery }: { onClose: () => void, 
           <div key={i} style={{ alignSelf: msg.isBot ? 'flex-start' : 'flex-end', maxWidth: '85%', display: 'flex', gap: '8px', alignItems: 'flex-end' }}>
             {msg.isBot && (
               <div style={{ width: '28px', height: '28px', borderRadius: '50%', overflow: 'hidden', flexShrink: 0 }}>
-                <img src="https://api.dicebear.com/9.x/avataaars/svg?seed=Buddy&top=turban&skinColor=ae5d29&clothing=shirtCrewNeck&clothingColor=ffffff&topColor=81ecec&mouth=smile" alt="Buddy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                <img src="/bot_icon.jpg" alt="Buddy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
             )}
             <div style={{ 

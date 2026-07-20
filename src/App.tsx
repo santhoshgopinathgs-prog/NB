@@ -88,7 +88,7 @@ function AppContent() {
             padding: 0
           }}
         >
-          <img src="https://api.dicebear.com/9.x/avataaars/svg?seed=Buddy&top=turban&skinColor=ae5d29&clothing=shirtCrewNeck&clothingColor=ffffff&topColor=81ecec&mouth=smile" alt="AI Buddy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          <img src="/bot_icon.jpg" alt="AI Buddy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
         </button>
       )}
 
