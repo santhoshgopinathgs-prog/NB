@@ -175,7 +175,7 @@ export const HomeTab = ({ navigateToChapter, setActiveTab }: { navigateToChapter
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px', position: 'relative', zIndex: 1 }}>
           <button 
             onClick={() => navigateToChapter && navigateToChapter('Mathematics', 'Mathematics', 'Coordinate Geometry')}
-            style={{ background: '#FEF08A', color: '#161310', padding: '10px 20px', borderRadius: '24px', fontWeight: 800, fontSize: '0.9rem', border: 'none', cursor: 'pointer', transition: 'transform 0.1s' }}
+            style={{ background: 'white', color: 'var(--text-primary)', padding: '10px 20px', borderRadius: '24px', fontWeight: 800, fontSize: '0.9rem', border: 'none', cursor: 'pointer', transition: 'transform 0.1s' }}
             onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
             onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
             onMouseDown={(e) => e.currentTarget.style.transform = 'scale(0.95)'}
@@ -191,7 +191,7 @@ export const HomeTab = ({ navigateToChapter, setActiveTab }: { navigateToChapter
       <div style={{ margin: '0 20px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
           <h3 style={{ fontSize: '1.4rem', fontFamily: 'Georgia, "Times New Roman", Times, serif', fontWeight: 800, color: 'var(--text-primary)' }}>{language === 'EN' ? "Daily Quests" : "ದೈನಂದಿನ ಪ್ರಶ್ನೆಗಳು"}</h3>
-          <span style={{ background: '#332B24', color: '#FEF08A', fontSize: '0.75rem', padding: '4px 12px', borderRadius: '12px', fontWeight: 800 }}>
+          <span style={{ background: '#EBE3D5', color: 'var(--text-primary)', fontSize: '0.75rem', padding: '4px 12px', borderRadius: '12px', fontWeight: 800 }}>
             {[dailyQuests.lessons >= 2, dailyQuests.quiz80, dailyQuests.aiTutor, dailyQuests.typing].filter(Boolean).length}/4 done
           </span>
         </div>
@@ -309,19 +309,19 @@ export const HomeTab = ({ navigateToChapter, setActiveTab }: { navigateToChapter
 // Subcomponents
 
 const QuestCard = ({ icon, title, xp, done, progress = 0, onClick }: any) => (
-  <div onClick={onClick} style={{ cursor: onClick && !done ? 'pointer' : 'default', padding: '16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', border: '1px solid #332B24', borderRadius: '20px', background: '#231E19', opacity: done ? 0.7 : 1 }}>
+  <div onClick={onClick} style={{ cursor: onClick && !done ? 'pointer' : 'default', padding: '16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', border: '1px solid var(--border-light)', borderRadius: '20px', background: 'transparent', opacity: done ? 0.7 : 1 }}>
     <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-      <div style={{ width: '36px', height: '36px', background: '#332B24', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.1rem' }}>
+      <div style={{ width: '36px', height: '36px', background: '#EBE3D5', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.1rem' }}>
         {icon}
       </div>
       <div>
-        <div style={{ fontWeight: 800, fontSize: '0.9rem', color: done ? '#A69685' : '#FFFFFF', textDecoration: done ? 'line-through' : 'none' }}>{title}</div>
-        <div className="progress-track" style={{ marginTop: '8px', width: '150px', background: '#332B24' }}><div className="progress-fill" style={{ width: `${Math.min(100, Math.max(0, progress * 100))}%`, background: '#FEF08A' }}></div></div>
+        <div style={{ fontWeight: 800, fontSize: '0.9rem', color: done ? 'var(--text-tertiary)' : 'var(--text-primary)', textDecoration: done ? 'line-through' : 'none' }}>{title}</div>
+        <div className="progress-track" style={{ marginTop: '8px', width: '150px', background: '#E0D9C8' }}><div className="progress-fill" style={{ width: `${Math.min(100, Math.max(0, progress * 100))}%`, background: 'var(--accent-green)' }}></div></div>
       </div>
     </div>
     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-      <div style={{ background: '#FEF08A', color: '#161310', padding: '4px 10px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: 900 }}>{xp}</div>
-      {done && <div style={{ background: '#FEF08A', borderRadius: '50%', padding: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Check size={14} color="#161310" /></div>}
+      <div style={{ background: 'var(--accent-green)', color: 'var(--text-primary)', padding: '4px 10px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: 800 }}>{xp}</div>
+      {done && <div style={{ background: 'var(--accent-green)', borderRadius: '50%', padding: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Check size={14} color="white" /></div>}
     </div>
   </div>
 );

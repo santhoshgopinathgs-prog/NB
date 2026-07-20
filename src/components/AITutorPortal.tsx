@@ -137,19 +137,19 @@ export const AITutorPortal = ({ onClose, initialQuery }: { onClose: () => void, 
   };
 
   return createPortal(
-    <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: '#120F0D', zIndex: 9999, display: 'flex', flexDirection: 'column' }}>
-      <div style={{ padding: '20px', display: 'flex', alignItems: 'center', gap: '16px', background: '#1B1714', borderBottom: '1px solid #332B24', zIndex: 10 }}>
-        <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '8px', fontSize: '1.5rem', color: '#FFFFFF' }}>
+    <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'var(--bg-app)', zIndex: 9999, display: 'flex', flexDirection: 'column' }}>
+      <div style={{ padding: '20px', display: 'flex', alignItems: 'center', gap: '16px', background: 'white', boxShadow: '0 2px 10px rgba(0,0,0,0.05)', zIndex: 10 }}>
+        <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '8px', fontSize: '1.5rem' }}>
           ←
         </button>
         <div style={{ flex: 1 }}>
-          <h2 style={{ fontSize: '1.2rem', display: 'flex', alignItems: 'center', gap: '8px', color: '#FFFFFF' }}>
-            <div style={{ width: '32px', height: '32px', borderRadius: '50%', overflow: 'hidden', border: '2px solid #FEF08A' }}>
+          <h2 style={{ fontSize: '1.2rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div style={{ width: '32px', height: '32px', borderRadius: '50%', overflow: 'hidden', border: '2px solid var(--accent-green)' }}>
               <img src="/bot_icon.jpg" alt="Buddy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
             Namma Buddy
           </h2>
-          <div style={{ fontSize: '0.8rem', color: '#A69685' }}>Online • Kannada, English</div>
+          <div style={{ fontSize: '0.8rem', color: 'var(--text-tertiary)' }}>Online • Kannada, English</div>
         </div>
       </div>
 
@@ -162,34 +162,32 @@ export const AITutorPortal = ({ onClose, initialQuery }: { onClose: () => void, 
               </div>
             )}
             <div style={{ 
-              background: msg.isBot ? '#231E19' : '#FEF08A', 
-              color: msg.isBot ? '#FFFFFF' : '#161310', 
-              border: msg.isBot ? '1px solid #332B24' : 'none',
+              background: msg.isBot ? 'white' : 'var(--accent-blue)', 
+              color: msg.isBot ? 'var(--text-primary)' : 'white', 
               padding: '16px', 
               borderRadius: msg.isBot ? '20px 20px 20px 4px' : '20px 20px 4px 20px',
-              boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
               lineHeight: 1.6,
-              fontSize: '0.95rem',
-              fontWeight: msg.isBot ? 500 : 700
+              fontSize: '0.95rem'
             }}>
               {msg.text}
             </div>
             {!msg.isBot && (
-              <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: '#FEF08A', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                <User size={16} color="#161310" />
+              <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: 'var(--accent-blue)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <User size={16} color="white" />
               </div>
             )}
           </div>
         ))}
         {isLoading && (
-          <div style={{ alignSelf: 'flex-start', background: '#231E19', border: '1px solid #332B24', padding: '16px', borderRadius: '20px 20px 20px 4px', boxShadow: '0 2px 8px rgba(0,0,0,0.2)' }}>
-            <Loader2 className="animate-spin" size={20} color="#FEF08A" />
+          <div style={{ alignSelf: 'flex-start', background: 'white', padding: '16px', borderRadius: '20px 20px 20px 4px', boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
+            <Loader2 className="animate-spin" size={20} color="var(--accent-blue)" />
           </div>
         )}
         <div ref={messagesEndRef} />
       </div>
 
-      <div style={{ padding: '20px', background: '#1B1714', borderTop: '1px solid #332B24', display: 'flex', gap: '12px' }}>
+      <div style={{ padding: '20px', background: 'white', borderTop: '1px solid var(--border-light)', display: 'flex', gap: '12px' }}>
         <input 
           type="text" 
           value={input}
@@ -197,9 +195,9 @@ export const AITutorPortal = ({ onClose, initialQuery }: { onClose: () => void, 
           onKeyDown={(e) => e.key === 'Enter' && handleSend()}
           disabled={isLoading}
           placeholder={language === 'EN' ? "Ask me anything..." : "ಏನಾದರೂ ಕೇಳಿ..."}
-          style={{ flex: 1, padding: '16px', borderRadius: '24px', border: '1px solid #332B24', background: '#120F0D', outline: 'none', fontSize: '1rem', color: '#FFFFFF' }}
+          style={{ flex: 1, padding: '16px', borderRadius: '24px', border: '1px solid var(--border-light)', background: 'var(--bg-app)', outline: 'none', fontSize: '1rem' }}
         />
-        <button disabled={isLoading || !input.trim()} onClick={handleSend} style={{ width: '50px', height: '50px', borderRadius: '50%', background: (isLoading || !input.trim()) ? '#332B24' : '#FEF08A', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', fontSize: '1.2rem', color: (isLoading || !input.trim()) ? '#A69685' : '#161310', transition: 'all 0.2s' }}>
+        <button disabled={isLoading || !input.trim()} onClick={handleSend} style={{ width: '50px', height: '50px', borderRadius: '50%', background: (isLoading || !input.trim()) ? 'var(--border-light)' : 'var(--accent-blue)', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', fontSize: '1.2rem', color: 'white', transition: 'background 0.2s' }}>
           ➤
         </button>
       </div>

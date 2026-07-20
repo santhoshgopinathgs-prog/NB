@@ -1,25 +1,25 @@
 :root {
-  /* Luxury Dark Espresso & High-Contrast Warm Gold Palette */
-  --bg-app: #120F0D; /* Deep dark espresso charcoal */
-  --bg-surface: #1B1714; /* Warm dark espresso surface */
+  /* Vintage Academic Palette */
+  --bg-app: #F9F6F0; /* Warm cream background */
+  --bg-surface: #F9F6F0;
   
-  --text-primary: #FFFFFF; /* Pure crisp white for all primary titles and letters */
-  --text-secondary: #F5EFE6; /* Super bright warm cream for subtitles */
-  --text-tertiary: #D8C8B8; /* High contrast bright nude cream for secondary text & labels */
+  --text-primary: #1C2A3A; /* Dark Navy for crisp readability */
+  --text-secondary: #64748B; /* Medium gray for secondary text */
+  --text-tertiary: #94A3B8;
   
-  --accent-purple: #C4A482; /* Warm Nude Mocha */
-  --accent-blue: #FEF08A; /* Soft Butter Gold for text highlights, active buttons, XP */
-  --accent-green: #34D399; /* Bright Mint Green for success & completed states */
-  --accent-orange: #FDE047; /* Bright Butter Gold */
-  --accent-red: #F43F5E; 
+  --accent-purple: #8b5cf6; 
+  --accent-blue: #2B3245; /* Dark Slate / Navy for major cards */
+  --accent-green: #CBA75A; /* Gold for success states, XP, active tabs */
+  --accent-orange: #B99341; /* Darker gold/orange for contrast */
+  --accent-red: #f43f5e; 
   
-  --border-light: #332B24; /* Muted espresso border */
+  --border-light: #E0D9C8; /* Muted beige for borders */
   
-  --shadow-sm: 0 4px 12px rgba(0,0,0,0.3);
-  --shadow-md: 0 8px 24px rgba(0,0,0,0.4);
-  --shadow-lg: 0 14px 35px rgba(0,0,0,0.5);
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+  --shadow-lg: 0 10px 25px rgba(0,0,0,0.08);
   
-  --font-main: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-main: 'Inter', system-ui, -apple-system, sans-serif;
   --transition-fast: 0.2s ease;
 }
 
@@ -31,7 +31,7 @@
 
 body {
   font-family: var(--font-main);
-  background-color: #0A0807;
+  background-color: var(--bg-app);
   color: var(--text-primary);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
@@ -42,10 +42,10 @@ body {
   max-width: 480px;
   margin: 0 auto;
   min-height: 100vh;
-  background: var(--bg-app);
+  background: var(--bg-surface);
   position: relative;
   overflow-x: hidden;
-  box-shadow: 0 0 40px rgba(0,0,0,0.7);
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
   display: flex;
   flex-direction: column;
 }
@@ -58,8 +58,8 @@ body {
 
 /* Utilities */
 .card {
-  background: #231E19;
-  border-radius: 28px;
+  background: var(--bg-surface);
+  border-radius: 20px;
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--border-light);
 }
@@ -80,17 +80,17 @@ button {
   flex: 1;
   overflow-y: auto;
   padding: 0 20px 100px 20px; /* Space for bottom nav */
-  background: var(--bg-app);
+  background: var(--bg-surface);
 }
 
 /* Animations */
 @keyframes slideUp {
-  from { opacity: 0; transform: translateY(12px); }
+  from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 .animate-slide-up {
-  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: slideUp 0.3s ease forwards;
 }
 
 /* Header */
@@ -99,13 +99,13 @@ button {
   justify-content: space-between;
   align-items: center;
   padding: 20px;
-  background: var(--bg-app);
+  background: var(--bg-surface);
   position: sticky;
   top: 0;
   z-index: 10;
 }
 
-/* Bottom Nav - Luxury Espresso Floating Bar */
+/* Bottom Nav */
 .bottom-nav {
   position: fixed;
   bottom: 0;
@@ -113,53 +113,47 @@ button {
   transform: translateX(-50%);
   width: 100%;
   max-width: 480px;
-  padding: 10px 20px 24px 20px;
-  background: linear-gradient(to top, #0A0807 85%, rgba(10, 8, 7, 0));
+  padding: 10px 20px 20px 20px;
+  background: linear-gradient(to top, #F9F6F0 80%, rgba(249, 246, 240, 0));
   z-index: 100;
 }
 
 .nav-container {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
-  padding: 10px 16px;
-  background: #1B1714;
-  border: 1px solid #332B24;
-  border-radius: 36px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  padding: 12px 24px;
+  background: var(--bg-surface);
+  border-radius: 30px;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.03);
 }
 
 .nav-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
+  gap: 4px;
   color: var(--text-tertiary);
-  transition: all 0.25s ease;
+  font-size: 0.7rem;
+  font-weight: 800;
 }
 
 .nav-item.active {
-  background: #FEF08A;
-  color: #161310;
-  box-shadow: 0 4px 15px rgba(254, 240, 138, 0.35);
-  transform: scale(1.08);
+  color: var(--accent-green);
 }
 
 .nav-item.active svg {
-  stroke: #161310 !important;
+  stroke: var(--accent-green);
 }
 
 /* Search Bar */
 .search-bar {
   display: flex;
   align-items: center;
-  background: #231E19;
+  background: var(--bg-surface);
   border: 1px solid var(--border-light);
-  border-radius: 28px;
-  padding: 14px 22px;
+  border-radius: 25px;
+  padding: 12px 20px;
   box-shadow: var(--shadow-sm);
   margin-bottom: 20px;
   gap: 12px;
@@ -168,10 +162,9 @@ button {
   border: none;
   outline: none;
   font-family: inherit;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   width: 100%;
   color: var(--text-primary);
-  background: transparent;
 }
 .search-bar input::placeholder {
   color: var(--text-tertiary);
@@ -182,19 +175,18 @@ button {
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 14px 18px;
-  border-radius: 24px;
-  background: #231E19;
+  padding: 12px 16px;
+  border-radius: 20px;
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--border-light);
   margin-bottom: 24px;
 }
 .level-badge {
-  background: #FEF08A;
-  color: #161310;
-  font-weight: 800;
-  width: 42px;
-  height: 42px;
+  background: var(--accent-purple);
+  color: white;
+  font-weight: 700;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -203,14 +195,13 @@ button {
 
 /* Progress bar generic */
 .progress-track {
-  height: 8px;
-  background: #332B24;
-  border-radius: 6px;
+  height: 6px;
+  background: var(--border-light);
+  border-radius: 4px;
   overflow: hidden;
   width: 100%;
 }
 .progress-fill {
   height: 100%;
-  background: #FEF08A;
-  border-radius: 6px;
+  border-radius: 4px;
 }
