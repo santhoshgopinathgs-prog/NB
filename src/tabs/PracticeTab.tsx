@@ -64,15 +64,17 @@ export const PracticeTab = () => {
     xp: 250
   };
 
-  let activeQuestions = MOCK_DIGITAL_QUESTIONS;
-  if (activeQuizData?.subject === 'Mathematics') activeQuestions = MOCK_MATH_QUESTIONS;
-  if (activeQuizData?.subject === 'Science') activeQuestions = MOCK_SCIENCE_QUESTIONS;
-  if (activeQuizData?.subject === 'English') activeQuestions = MOCK_ENGLISH_QUESTIONS;
-  
-  if (activeQuizData?.id?.endsWith('-2')) {
-    activeQuestions = activeQuestions.slice(15, 30);
-  } else {
-    activeQuestions = activeQuestions.slice(0, 15);
+  let rawQuestions = MOCK_DIGITAL_QUESTIONS;
+  if (activeQuizData?.subject === 'Mathematics') rawQuestions = MOCK_MATH_QUESTIONS;
+  if (activeQuizData?.subject === 'Science') rawQuestions = MOCK_SCIENCE_QUESTIONS;
+  if (activeQuizData?.subject === 'English') rawQuestions = MOCK_ENGLISH_QUESTIONS;
+
+  let activeQuestions = rawQuestions.slice(0, 15);
+  if (activeQuizData?.id?.endsWith('-2') && rawQuestions.length >= 30) {
+    activeQuestions = rawQuestions.slice(15, 30);
+  }
+  if (!activeQuestions || activeQuestions.length === 0) {
+    activeQuestions = MOCK_DIGITAL_QUESTIONS.slice(0, 15);
   }
 
   const handleNext = React.useCallback(() => {
@@ -364,9 +366,9 @@ export const PracticeTab = () => {
       );
     }
 
-    const currentQuestion = activeQuestions[currentQuestionIndex];
-    const options = language === 'EN' ? currentQuestion.options_en : currentQuestion.options_kn;
-    const questionText = language === 'EN' ? currentQuestion.question_en : currentQuestion.question_kn;
+    const currentQuestion = activeQuestions[currentQuestionIndex] || activeQuestions[0] || MOCK_DIGITAL_QUESTIONS[0];
+    const options = (language === 'EN' ? currentQuestion?.options_en : currentQuestion?.options_kn) || ['Option A', 'Option B', 'Option C', 'Option D'];
+    const questionText = (language === 'EN' ? currentQuestion?.question_en : currentQuestion?.question_kn) || 'Question';
     
     // Determine difficulty
     let difficulty = 'Easy';
@@ -606,7 +608,10 @@ export const PracticeTab = () => {
             <div 
               key={lvl.level}
               className={`anekal-level-card ${isSelected ? 'selected' : ''}`}
-              onClick={() => setSelectedLevelId(lvl.id)}
+              onClick={() => {
+                setSelectedLevelId(lvl.id);
+                handleStartLevel(lvl);
+              }}
             >
               <div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
