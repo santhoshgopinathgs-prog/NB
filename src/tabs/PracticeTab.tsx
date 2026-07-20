@@ -630,18 +630,18 @@ export const PracticeTab = () => {
           const unlocked = isLevelUnlocked(index);
           const isCompleted = completedQuizzes.includes(lvl.id);
           
-          // Curved winding path positions (left %, top %) matching the exact screenshot layout
+          // Curved winding path positions (left %, top %) matching the 10 stone platforms in the new background image from bottom (Level 1) to top (Level 10)
           const nodePositions = [
-            { left: '28%', top: '15%' }, // 1. Basics of Computer
-            { left: '50%', top: '23%' }, // 2. Typing Champ
-            { left: '72%', top: '31%' }, // 3. Internet Navigator
-            { left: '28%', top: '40%' }, // 4. Digital Productivity
-            { left: '50%', top: '48%' }, // 5. Online Safety
-            { left: '72%', top: '56%' }, // 6. Mobile Literacy
-            { left: '28%', top: '65%' }, // 7. Digital Creativity
-            { left: '50%', top: '74%' }, // 8. Intro to Coding
-            { left: '72%', top: '83%' }, // 9. Real Life Project
-            { left: '50%', top: '92%' }  // 10. Graduation
+            { left: '46%', top: '92.5%' }, // 1. Basics of Computer
+            { left: '60%', top: '80.5%' }, // 2. Typing Champ
+            { left: '40%', top: '71.5%' }, // 3. Internet Navigator
+            { left: '63%', top: '61.5%' }, // 4. Digital Productivity
+            { left: '43%', top: '53.0%' }, // 5. Online Safety
+            { left: '62%', top: '44.0%' }, // 6. Mobile Literacy
+            { left: '41%', top: '35.5%' }, // 7. Digital Creativity
+            { left: '64%', top: '28.0%' }, // 8. Intro to Coding
+            { left: '43%', top: '21.0%' }, // 9. Real Life Project
+            { left: '64%', top: '15.0%' }  // 10. Graduation
           ];
 
           const pos = nodePositions[index];
