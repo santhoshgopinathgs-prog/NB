@@ -160,22 +160,22 @@ export const HomeTab = ({ navigateToChapter, setActiveTab }: { navigateToChapter
       </div>
 
       {/* Today's Mission */}
-      <div style={{ margin: '0 20px', background: 'var(--accent-blue)', borderRadius: '24px', padding: '24px', color: 'white', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', right: '-20px', bottom: '-20px', opacity: 0.05, fontSize: '150px' }}>📐</div>
+      <div style={{ margin: '0 20px', background: 'linear-gradient(135deg, #4A6FA5, #35537F)', borderRadius: '24px', padding: '24px', color: 'white', position: 'relative', overflow: 'hidden', boxShadow: '0 8px 24px rgba(74, 111, 165, 0.25)' }}>
+        <div style={{ position: 'absolute', right: '-20px', bottom: '-20px', opacity: 0.08, fontSize: '150px' }}>📐</div>
         
-        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: '#3D4455', padding: '4px 12px', borderRadius: '16px', fontSize: '0.75rem', fontWeight: 600, marginBottom: '16px' }}>
+        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(255,255,255,0.2)', padding: '4px 12px', borderRadius: '16px', fontSize: '0.75rem', fontWeight: 600, marginBottom: '16px' }}>
           <Moon size={14} fill="#FCD34D" color="#FCD34D" /> {language === 'EN' ? "Today's Mission" : "ಇಂದಿನ ಮಿಷನ್"}
         </div>
         
         <h2 style={{ fontSize: '1.4rem', marginBottom: '8px', position: 'relative', zIndex: 1, fontFamily: 'Georgia, "Times New Roman", Times, serif' }}>{language === 'EN' ? "Coordinate Geometry" : "ನಿರ್ದೇಶಾಂಕ ರೇಖಾಗಣಿತ"}</h2>
-        <div style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.8)', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+        <div style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.9)', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '6px' }}>
           {language === 'EN' ? "Chapter 3 • 5 Questions" : "ಅಧ್ಯಾಯ 3 • 5 ಪ್ರಶ್ನೆಗಳು"} <span style={{ color: '#FCD34D' }}>⚡</span> 50 XP
         </div>
         
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px', position: 'relative', zIndex: 1 }}>
           <button 
             onClick={() => navigateToChapter && navigateToChapter('Mathematics', 'Mathematics', 'Coordinate Geometry')}
-            style={{ background: 'white', color: 'var(--text-primary)', padding: '10px 20px', borderRadius: '24px', fontWeight: 800, fontSize: '0.9rem', border: 'none', cursor: 'pointer', transition: 'transform 0.1s' }}
+            style={{ background: '#F4A261', color: '#FFFFFF', padding: '10px 22px', borderRadius: '24px', fontWeight: 800, fontSize: '0.9rem', border: 'none', cursor: 'pointer', boxShadow: '0 4px 12px rgba(244, 162, 97, 0.4)', transition: 'transform 0.1s' }}
             onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
             onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
             onMouseDown={(e) => e.currentTarget.style.transform = 'scale(0.95)'}
@@ -183,15 +183,15 @@ export const HomeTab = ({ navigateToChapter, setActiveTab }: { navigateToChapter
           >
             {language === 'EN' ? "Start Now 🚀" : "ಈಗ ಪ್ರಾರಂಭಿಸಿ 🚀"}
           </button>
-          <span style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.8)' }}>⏱ ~5 min</span>
+          <span style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.9)' }}>⏱ ~5 min</span>
         </div>
       </div>
 
       {/* Daily Quests */}
       <div style={{ margin: '0 20px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-          <h3 style={{ fontSize: '1.4rem', fontFamily: 'Georgia, "Times New Roman", Times, serif', fontWeight: 800, color: 'var(--text-primary)' }}>{language === 'EN' ? "Daily Quests" : "ದೈನಂದಿನ ಪ್ರಶ್ನೆಗಳು"}</h3>
-          <span style={{ background: '#EBE3D5', color: 'var(--text-primary)', fontSize: '0.75rem', padding: '4px 12px', borderRadius: '12px', fontWeight: 800 }}>
+          <h3 style={{ fontSize: '1.4rem', fontFamily: 'Georgia, "Times New Roman", Times, serif', fontWeight: 800, color: '#2D3142' }}>{language === 'EN' ? "Daily Quests" : "ದೈನಂದಿನ ಪ್ರಶ್ನೆಗಳು"}</h3>
+          <span style={{ background: '#EBF1F9', color: '#4A6FA5', border: '1px solid #D0E0F2', fontSize: '0.75rem', padding: '4px 12px', borderRadius: '12px', fontWeight: 800 }}>
             {[dailyQuests.lessons >= 2, dailyQuests.quiz80, dailyQuests.aiTutor, dailyQuests.typing].filter(Boolean).length}/4 done
           </span>
         </div>

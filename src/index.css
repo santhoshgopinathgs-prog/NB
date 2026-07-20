@@ -1,25 +1,25 @@
 :root {
-  /* Vintage Academic Palette */
-  --bg-app: #F9F6F0; /* Warm cream background */
-  --bg-surface: #F9F6F0;
+  /* Calm Focus (Blue & Cream) Palette */
+  --bg-app: #EDE6DB; /* Warm Cream background */
+  --bg-surface: #FFFFFF; /* Pure Clean White Card surface */
   
-  --text-primary: #1C2A3A; /* Dark Navy for crisp readability */
-  --text-secondary: #64748B; /* Medium gray for secondary text */
-  --text-tertiary: #94A3B8;
+  --text-primary: #2D3142; /* Dark Navy-Grey for high contrast readability */
+  --text-secondary: #5C6479; /* Medium Slate Navy-Grey for subtitles */
+  --text-tertiary: #8C94A6; /* Muted Slate Gray for secondary labels */
   
-  --accent-purple: #8b5cf6; 
-  --accent-blue: #2B3245; /* Dark Slate / Navy for major cards */
-  --accent-green: #CBA75A; /* Gold for success states, XP, active tabs */
-  --accent-orange: #B99341; /* Darker gold/orange for contrast */
-  --accent-red: #f43f5e; 
+  --accent-blue: #4A6FA5; /* Soft Blue Primary */
+  --accent-purple: #4A6FA5; 
+  --accent-green: #38A169; /* Soft Emerald Green for success & completed states */
+  --accent-orange: #F4A261; /* Warm Orange for CTAs & highlights */
+  --accent-red: #E76F51; 
   
-  --border-light: #E0D9C8; /* Muted beige for borders */
+  --border-light: #D8CFBE; /* Muted warm beige border */
   
-  --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
-  --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
-  --shadow-lg: 0 10px 25px rgba(0,0,0,0.08);
+  --shadow-sm: 0 4px 12px rgba(45, 49, 66, 0.05);
+  --shadow-md: 0 8px 20px rgba(45, 49, 66, 0.08);
+  --shadow-lg: 0 12px 30px rgba(45, 49, 66, 0.12);
   
-  --font-main: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-main: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
   --transition-fast: 0.2s ease;
 }
 
@@ -31,7 +31,7 @@
 
 body {
   font-family: var(--font-main);
-  background-color: var(--bg-app);
+  background-color: #DFD7CB;
   color: var(--text-primary);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
@@ -42,10 +42,10 @@ body {
   max-width: 480px;
   margin: 0 auto;
   min-height: 100vh;
-  background: var(--bg-surface);
+  background: var(--bg-app);
   position: relative;
   overflow-x: hidden;
-  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  box-shadow: 0 0 30px rgba(45, 49, 66, 0.15);
   display: flex;
   flex-direction: column;
 }
@@ -59,7 +59,7 @@ body {
 /* Utilities */
 .card {
   background: var(--bg-surface);
-  border-radius: 20px;
+  border-radius: 24px;
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--border-light);
 }
@@ -80,7 +80,7 @@ button {
   flex: 1;
   overflow-y: auto;
   padding: 0 20px 100px 20px; /* Space for bottom nav */
-  background: var(--bg-surface);
+  background: var(--bg-app);
 }
 
 /* Animations */
@@ -90,7 +90,7 @@ button {
 }
 
 .animate-slide-up {
-  animation: slideUp 0.3s ease forwards;
+  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 /* Header */
@@ -99,7 +99,7 @@ button {
   justify-content: space-between;
   align-items: center;
   padding: 20px;
-  background: var(--bg-surface);
+  background: var(--bg-app);
   position: sticky;
   top: 0;
   z-index: 10;
@@ -114,46 +114,52 @@ button {
   width: 100%;
   max-width: 480px;
   padding: 10px 20px 20px 20px;
-  background: linear-gradient(to top, #F9F6F0 80%, rgba(249, 246, 240, 0));
+  background: linear-gradient(to top, #EDE6DB 85%, rgba(237, 230, 219, 0));
   z-index: 100;
 }
 
 .nav-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
-  padding: 12px 24px;
-  background: var(--bg-surface);
-  border-radius: 30px;
-  box-shadow: 0 -4px 20px rgba(0,0,0,0.03);
+  padding: 10px 16px;
+  background: #FFFFFF;
+  border: 1px solid var(--border-light);
+  border-radius: 32px;
+  box-shadow: 0 8px 24px rgba(45, 49, 66, 0.08);
 }
 
 .nav-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
   color: var(--text-tertiary);
-  font-size: 0.7rem;
-  font-weight: 800;
+  transition: all 0.25s ease;
 }
 
 .nav-item.active {
-  color: var(--accent-green);
+  background: #4A6FA5;
+  color: #FFFFFF;
+  box-shadow: 0 4px 14px rgba(74, 111, 165, 0.35);
+  transform: scale(1.06);
 }
 
 .nav-item.active svg {
-  stroke: var(--accent-green);
+  stroke: #FFFFFF !important;
 }
 
 /* Search Bar */
 .search-bar {
   display: flex;
   align-items: center;
-  background: var(--bg-surface);
+  background: #FFFFFF;
   border: 1px solid var(--border-light);
   border-radius: 25px;
-  padding: 12px 20px;
+  padding: 14px 20px;
   box-shadow: var(--shadow-sm);
   margin-bottom: 20px;
   gap: 12px;
@@ -162,9 +168,10 @@ button {
   border: none;
   outline: none;
   font-family: inherit;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   width: 100%;
   color: var(--text-primary);
+  background: transparent;
 }
 .search-bar input::placeholder {
   color: var(--text-tertiary);
@@ -175,18 +182,19 @@ button {
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 12px 16px;
-  border-radius: 20px;
+  padding: 14px 18px;
+  border-radius: 24px;
+  background: #FFFFFF;
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--border-light);
   margin-bottom: 24px;
 }
 .level-badge {
-  background: var(--accent-purple);
-  color: white;
-  font-weight: 700;
-  width: 40px;
-  height: 40px;
+  background: #4A6FA5;
+  color: #FFFFFF;
+  font-weight: 800;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -195,13 +203,14 @@ button {
 
 /* Progress bar generic */
 .progress-track {
-  height: 6px;
-  background: var(--border-light);
-  border-radius: 4px;
+  height: 8px;
+  background: #E5DDD0;
+  border-radius: 6px;
   overflow: hidden;
   width: 100%;
 }
 .progress-fill {
   height: 100%;
-  border-radius: 4px;
+  background: #F4A261;
+  border-radius: 6px;
 }
