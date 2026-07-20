@@ -87,7 +87,7 @@ export const HomeTab = ({ navigateToChapter, setActiveTab }: { navigateToChapter
       {activePortal === 'ai' && <AITutorPortal onClose={() => setActivePortal(null)} initialQuery={aiInitialQuery} />}
 
       {/* Search Bar */}
-      <div style={{ margin: '0 20px', position: 'relative' }}>
+      <div style={{ width: '100%', position: 'relative' }}>
         <div className="search-bar" style={{ margin: 0 }}>
           <Search size={24} color="var(--accent-blue)" />
           <input 
@@ -146,7 +146,7 @@ export const HomeTab = ({ navigateToChapter, setActiveTab }: { navigateToChapter
       </div>
 
       {/* Level Card */}
-      <div className="level-card" style={{ margin: '0 20px', background: 'var(--bg-surface)', padding: '18px 24px' }}>
+      <div className="level-card" style={{ width: '100%', background: 'var(--bg-surface)', padding: '18px 24px' }}>
         <div className="level-badge" style={{ width: '52px', height: '52px', fontSize: '1.3rem' }}>{level}</div>
         <div style={{ flex: 1 }}>
           <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '8px', fontWeight: 700 }}>Level {level} - {currentLevelXP} / 500 XP</div>
@@ -160,7 +160,7 @@ export const HomeTab = ({ navigateToChapter, setActiveTab }: { navigateToChapter
       </div>
 
       {/* Today's Mission */}
-      <div style={{ margin: '0 20px', background: 'linear-gradient(135deg, var(--accent-green), #1E5E3A)', borderRadius: '24px', padding: '28px', color: 'white', position: 'relative', overflow: 'hidden', boxShadow: '0 8px 24px rgba(46, 139, 87, 0.3)' }}>
+      <div style={{ width: '100%', background: 'linear-gradient(135deg, var(--accent-green), #1E5E3A)', borderRadius: '24px', padding: '28px', color: 'white', position: 'relative', overflow: 'hidden', boxShadow: '0 8px 24px rgba(46, 139, 87, 0.3)' }}>
         <div style={{ position: 'absolute', right: '-20px', bottom: '-20px', opacity: 0.1, fontSize: '160px' }}>📐</div>
         
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(255,255,255,0.2)', padding: '6px 16px', borderRadius: '20px', fontSize: '0.85rem', fontWeight: 700, marginBottom: '18px' }}>
@@ -188,7 +188,7 @@ export const HomeTab = ({ navigateToChapter, setActiveTab }: { navigateToChapter
       </div>
 
       {/* Daily Quests */}
-      <div style={{ margin: '0 20px' }}>
+      <div style={{ width: '100%' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '18px' }}>
           <h3 style={{ fontSize: '1.6rem', fontFamily: 'Georgia, "Times New Roman", Times, serif', fontWeight: 800, color: 'var(--text-primary)' }}>{language === 'EN' ? "Daily Quests" : "ದೈನಂದಿನ ಪ್ರಶ್ನೆಗಳು"}</h3>
           <span style={{ background: 'rgba(46, 139, 87, 0.15)', color: 'var(--accent-green)', border: '1px solid rgba(46, 139, 87, 0.3)', fontSize: '0.85rem', padding: '6px 14px', borderRadius: '14px', fontWeight: 800 }}>
@@ -196,7 +196,7 @@ export const HomeTab = ({ navigateToChapter, setActiveTab }: { navigateToChapter
           </span>
         </div>
         
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', width: '100%' }}>
           <QuestCard 
             icon="📚" title={language === 'EN' ? "Complete 2 Lessons" : "2 ಪಾಠಗಳನ್ನು ಪೂರ್ಣಗೊಳಿಸಿ"} xp="+50 XP" done={dailyQuests.lessons >= 2} progress={dailyQuests.lessons / 2} 
             onClick={() => setActiveTab && setActiveTab('learn')}
@@ -217,10 +217,10 @@ export const HomeTab = ({ navigateToChapter, setActiveTab }: { navigateToChapter
       </div>
 
       {/* Continue Learning */}
-      <div style={{ margin: '0 20px', marginTop: '10px' }}>
+      <div style={{ width: '100%', marginTop: '10px' }}>
         <h3 style={{ fontSize: '1.5rem', marginBottom: '18px', fontWeight: 800, color: 'var(--text-primary)' }}>{language === 'EN' ? 'Continue Learning' : 'ಕಲಿಯುವುದನ್ನು ಮುಂದುವರಿಸಿ'}</h3>
         
-        <div className="card" style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+        <div className="card" style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '24px', width: '100%' }}>
           <SubjectRow icon={<Book size={28} color="var(--accent-blue)" />} title="Mathematics" subtitle="ಗಣಿತ" progress={mathCompleted} total={28} color="var(--accent-blue)" pct={Math.round((mathCompleted/28)*100)} />
           <SubjectRow icon={<Microscope size={28} color="var(--accent-green)" />} title="Science" subtitle="ವಿಜ್ಞಾನ" progress={scienceCompleted} total={24} color="var(--accent-green)" pct={Math.round((scienceCompleted/24)*100)} />
           <SubjectRow icon={<Monitor size={28} color="var(--accent-purple)" />} title="Digital Skills" subtitle="ಡಿಜಿಟಲ್ ಕೌಶಲ್ಯಗಳು" progress={digitalCompleted} total={20} color="var(--accent-purple)" pct={Math.round((digitalCompleted/20)*100)} />
@@ -243,9 +243,9 @@ export const HomeTab = ({ navigateToChapter, setActiveTab }: { navigateToChapter
       </div>
 
       {/* Quick Access */}
-      <div style={{ margin: '0 20px', marginTop: '10px' }}>
+      <div style={{ width: '100%', marginTop: '10px' }}>
         <h3 style={{ fontSize: '1.5rem', marginBottom: '18px', fontWeight: 800, color: 'var(--text-primary)' }}>{language === 'EN' ? "Quick Access" : "ತ್ವರಿತ ಪ್ರವೇಶ"}</h3>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', width: '100%' }}>
           <QuickAccessBtn onClick={() => setActivePortal('leaderboard')} icon={<Trophy size={36} color="#f59e0b" />} label="Leaderboard" bg="#FEF3C7" />
           <QuickAccessBtn onClick={() => setActiveTab && setActiveTab('practice')} icon={<Gamepad2 size={36} color="#8b5cf6" />} label="Challenge" bg="#EDE9FE" />
           <QuickAccessBtn onClick={() => setActivePortal('certificates')} icon={<GraduationCap size={36} color="#1f2937" />} label="Certificates" bg="#F3F4F6" />
@@ -254,13 +254,13 @@ export const HomeTab = ({ navigateToChapter, setActiveTab }: { navigateToChapter
       </div>
 
       {/* This Week */}
-      <div style={{ margin: '0 20px', marginTop: '10px' }}>
+      <div style={{ width: '100%', marginTop: '10px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '18px' }}>
           <h3 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--text-primary)' }}>{language === 'EN' ? 'This Week' : 'ಈ ವಾರ'}</h3>
           <span style={{ color: 'var(--accent-green)', fontSize: '1rem', fontWeight: 800 }}>+{userXP} XP</span>
         </div>
         
-        <div className="card" style={{ padding: '28px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+        <div className="card" style={{ padding: '28px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', width: '100%' }}>
           {Array(7).fill(0).map((_, index) => {
             const daysEN = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
             const daysKN = ['ಸೋಮ', 'ಮಂಗಳ', 'ಬುಧ', 'ಗುರು', 'ಶುಕ್ರ', 'ಶನಿ', 'ಭಾನು'];
@@ -281,7 +281,7 @@ export const HomeTab = ({ navigateToChapter, setActiveTab }: { navigateToChapter
       {/* Weekly Championship */}
       <button 
         onClick={() => setActivePortal('leaderboard')}
-        style={{ margin: '0 20px', marginTop: '10px', background: 'linear-gradient(135deg, var(--accent-purple), #6366f1)', borderRadius: '24px', padding: '28px', color: 'white', position: 'relative', overflow: 'hidden', textAlign: 'left', border: 'none', cursor: 'pointer', display: 'block', width: 'calc(100% - 40px)' }}
+        style={{ width: '100%', marginTop: '10px', background: 'linear-gradient(135deg, var(--accent-purple), #6366f1)', borderRadius: '24px', padding: '28px', color: 'white', position: 'relative', overflow: 'hidden', textAlign: 'left', border: 'none', cursor: 'pointer', display: 'block' }}
       >
         <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
           <div>
@@ -309,19 +309,19 @@ export const HomeTab = ({ navigateToChapter, setActiveTab }: { navigateToChapter
 // Subcomponents
 
 const QuestCard = ({ icon, title, xp, done, progress = 0, onClick }: any) => (
-  <div onClick={onClick} style={{ cursor: onClick && !done ? 'pointer' : 'default', padding: '18px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', border: '1px solid var(--border-light)', borderRadius: '20px', background: 'var(--bg-surface)', opacity: done ? 0.75 : 1, boxShadow: 'var(--shadow-sm)' }}>
-    <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-      <div style={{ width: '48px', height: '48px', background: '#EBE3D5', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem', boxShadow: '0 2px 6px rgba(0,0,0,0.05)' }}>
+  <div onClick={onClick} style={{ cursor: onClick && !done ? 'pointer' : 'default', padding: '14px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', border: '1px solid var(--border-light)', borderRadius: '20px', background: 'var(--bg-surface)', opacity: done ? 0.75 : 1, boxShadow: 'var(--shadow-sm)', gap: '10px', width: '100%' }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flex: 1, minWidth: 0 }}>
+      <div style={{ width: '42px', height: '42px', minWidth: '42px', background: '#EBE3D5', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.3rem', boxShadow: '0 2px 6px rgba(0,0,0,0.05)' }}>
         {icon}
       </div>
-      <div>
-        <div style={{ fontWeight: 800, fontSize: '1.15rem', color: done ? 'var(--text-tertiary)' : 'var(--text-primary)', textDecoration: done ? 'line-through' : 'none' }}>{title}</div>
-        <div className="progress-track" style={{ marginTop: '10px', width: '220px', height: '8px', background: '#E0D9C8' }}><div className="progress-fill" style={{ width: `${Math.min(100, Math.max(0, progress * 100))}%`, background: 'var(--accent-green)' }}></div></div>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ fontWeight: 800, fontSize: '0.95rem', color: done ? 'var(--text-tertiary)' : 'var(--text-primary)', textDecoration: done ? 'line-through' : 'none', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{title}</div>
+        <div className="progress-track" style={{ marginTop: '8px', width: '100%', maxWidth: '160px', height: '8px', background: '#E0D9C8' }}><div className="progress-fill" style={{ width: `${Math.min(100, Math.max(0, progress * 100))}%`, background: 'var(--accent-green)' }}></div></div>
       </div>
     </div>
-    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-      <div style={{ background: 'var(--accent-green)', color: '#FFFFFF', padding: '6px 14px', borderRadius: '14px', fontSize: '0.85rem', fontWeight: 800 }}>{xp}</div>
-      {done && <div style={{ background: 'var(--accent-green)', borderRadius: '50%', padding: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Check size={16} color="white" /></div>}
+    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
+      <div style={{ background: 'var(--accent-green)', color: '#FFFFFF', padding: '5px 10px', borderRadius: '12px', fontSize: '0.8rem', fontWeight: 800 }}>{xp}</div>
+      {done && <div style={{ background: 'var(--accent-green)', borderRadius: '50%', padding: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', minWidth: '22px', minHeight: '22px' }}><Check size={14} color="white" /></div>}
     </div>
   </div>
 );
