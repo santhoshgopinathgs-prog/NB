@@ -153,6 +153,7 @@ export const PracticeTab = () => {
 
   const [typingLevel, setTypingLevel] = useState<number>(0);
   const [timeLeft, setTimeLeft] = useState<number>(60);
+  const [typingStatus, setTypingStatus] = useState<{ type: 'error' | 'success', msg: string } | null>(null);
 
   React.useEffect(() => {
     if (isTypingActive && timeLeft > 0) {
@@ -167,29 +168,47 @@ export const PracticeTab = () => {
     
     const handleTypingChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       setTypingInput(e.target.value);
+      if (typingStatus) setTypingStatus(null);
     };
 
     const handleFinishLevel = () => {
-      if (typingInput.trim() === targetText.trim()) {
+      const userText = typingInput.trim();
+      const target = targetText.trim();
+
+      if (userText === target) {
         if (typingLevel < 4) {
           setTypingLevel(prev => prev + 1);
           setTypingInput('');
           setTimeLeft(60);
+          setTypingStatus({
+            type: 'success',
+            msg: language === 'EN' ? `🎉 Level ${typingLevel + 1} Passed! Moving to Level ${typingLevel + 2}...` : `🎉 ಹಂತ ${typingLevel + 1} ಪೂರ್ಣಗೊಂಡಿದೆ! ಹಂತ ${typingLevel + 2} ಕ್ಕೆ ಸಾಗುತ್ತಿದೆ...`
+          });
         } else {
           markTypingPracticed();
           setIsTypingActive(false);
           setTypingLevel(0);
           setTypingInput('');
-          alert(language === 'EN' ? "All typing levels completed! +30 XP" : "ಎಲ್ಲಾ ಟೈಪಿಂಗ್ ಹಂತಗಳು ಪೂರ್ಣಗೊಂಡಿವೆ! +30 XP");
+          setTypingStatus(null);
         }
       } else {
-        alert(language === 'EN' ? "Text does not match perfectly. Please fix errors!" : "ಪಠ್ಯವು ಸಂಪೂರ್ಣವಾಗಿ ಹೊಂದಿಕೆಯಾಗುತ್ತಿಲ್ಲ. ದಯವಿಟ್ಟು ದೋಷಗಳನ್ನು ಸರಿಪಡಿಸಿ!");
+        if (userText.toLowerCase() === target.toLowerCase()) {
+          setTypingStatus({
+            type: 'error',
+            msg: language === 'EN' ? "⚠️ Check capital letters! (e.g. 'T' instead of 't')" : "⚠️ ದೊಡ್ಡ ಅಕ್ಷರಗಳನ್ನು ಪರಿಶೀಲಿಸಿ!"
+          });
+        } else {
+          setTypingStatus({
+            type: 'error',
+            msg: language === 'EN' ? "⚠️ Text does not match. Please check spelling & spaces!" : "⚠️ ಪಠ್ಯವು ಹೊಂದಿಕೆಯಾಗುತ್ತಿಲ್ಲ. ದಯವಿಟ್ಟು ಕಾಗುಣಿತವನ್ನು ಪರಿಶೀಲಿಸಿ!"
+          });
+        }
       }
     };
 
     return (
       <div className="animate-slide-up" style={{ padding: '0 20px 20px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
-        <button onClick={() => { setIsTypingActive(false); setTypingLevel(0); setTypingInput(''); }} style={{ alignSelf: 'flex-start', color: 'var(--accent-blue)', fontWeight: 600 }}>← {t('backToPracticeList')}</button>
+        <button onClick={() => { setIsTypingActive(false); setTypingLevel(0); setTypingInput(''); setTypingStatus(null); }} style={{ alignSelf: 'flex-start', color: 'var(--accent-blue)', fontWeight: 600 }}>← {t('backToPracticeList')}</button>
         <div className="card" style={{ padding: '24px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
             <h3 style={{ fontSize: '1.2rem', margin: 0 }}>{language === 'EN' ? `Level ${typingLevel + 1} of 5` : `ಹಂತ ${typingLevel + 1} / 5`}</h3>
@@ -206,11 +225,28 @@ export const PracticeTab = () => {
             onChange={handleTypingChange}
             placeholder={language === 'EN' ? "Start typing here..." : "ಇಲ್ಲಿ ಟೈಪ್ ಮಾಡಲು ಪ್ರಾರಂಭಿಸಿ..."}
             disabled={timeLeft === 0}
-            style={{ width: '100%', padding: '16px', borderRadius: '12px', border: '2px solid var(--border-light)', minHeight: '120px', fontSize: '1.1rem', fontFamily: 'inherit', resize: 'vertical' }}
+            style={{ 
+              width: '100%', padding: '16px', borderRadius: '12px', 
+              border: typingStatus?.type === 'error' ? '2px solid var(--accent-red)' : (typingStatus?.type === 'success' ? '2px solid var(--accent-green)' : '2px solid var(--border-light)'), 
+              minHeight: '120px', fontSize: '1.1rem', fontFamily: 'inherit', resize: 'vertical',
+              transition: 'border-color 0.2s'
+            }}
           />
+          
+          {typingStatus && (
+            <div className="animate-slide-up" style={{ 
+              padding: '12px 16px', marginTop: '12px', borderRadius: '12px', fontWeight: 600, fontSize: '0.9rem',
+              background: typingStatus.type === 'error' ? '#FEE2E2' : '#D1FAE5',
+              color: typingStatus.type === 'error' ? 'var(--accent-red)' : 'var(--accent-green)',
+              border: `1px solid ${typingStatus.type === 'error' ? '#FCA5A5' : '#6EE7B7'}`
+            }}>
+              {typingStatus.msg}
+            </div>
+          )}
+
           {timeLeft === 0 ? (
             <button 
-              onClick={() => { setTimeLeft(60); setTypingInput(''); }}
+              onClick={() => { setTimeLeft(60); setTypingInput(''); setTypingStatus(null); }}
               style={{ width: '100%', padding: '16px', marginTop: '16px', borderRadius: '12px', background: 'var(--accent-red)', color: 'white', fontWeight: 700, border: 'none' }}
             >
               {language === 'EN' ? "Time's up! Try Again" : "ಸಮಯ ಮುಗಿದಿದೆ! ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ"}
@@ -219,7 +255,7 @@ export const PracticeTab = () => {
             <button 
               onClick={handleFinishLevel}
               disabled={typingInput.length === 0}
-              style={{ width: '100%', padding: '16px', marginTop: '16px', borderRadius: '12px', background: typingInput.length === 0 ? 'var(--border-light)' : 'var(--accent-green)', color: 'white', fontWeight: 700, border: 'none', transition: 'background 0.2s' }}
+              style={{ width: '100%', padding: '16px', marginTop: '16px', borderRadius: '12px', background: typingInput.length === 0 ? 'var(--border-light)' : 'var(--accent-green)', color: 'white', fontWeight: 700, border: 'none', transition: 'background 0.2s', cursor: typingInput.length === 0 ? 'not-allowed' : 'pointer' }}
             >
               {language === 'EN' ? "Finish" : "ಮುಗಿಸಿ"}
             </button>

@@ -78,10 +78,6 @@ export const LearnTab = ({ initialChapter, clearInitialChapter }: { initialChapt
     
     // We can leave them on the chapter page or close it. Let's just close it.
     setActiveChapter(null);
-    
-    if (earnedCert) {
-      alert(language === 'EN' ? `🎉 You earned the ${activeChapter?.subjectDisplay} Certificate!` : `🎉 ನೀವು ಪ್ರಮಾಣಪತ್ರವನ್ನು ಗಳಿಸಿದ್ದೀರಿ!`);
-    }
   };
 
   if (activeChapter) {

@@ -247,9 +247,9 @@ export const HomeTab = ({ navigateToChapter, setActiveTab }: { navigateToChapter
         <h3 style={{ fontSize: '1.2rem', marginBottom: '16px' }}>{language === 'EN' ? "Quick Access" : "ತ್ವರಿತ ಪ್ರವೇಶ"}</h3>
         <div style={{ display: 'flex', justifyContent: 'space-between', gap: '12px' }}>
           <QuickAccessBtn onClick={() => setActivePortal('leaderboard')} icon={<Trophy color="#f59e0b" />} label="Leaderboard" bg="#FEF3C7" />
-          <QuickAccessBtn onClick={() => alert('Challenges are generated daily! Check back tomorrow.')} icon={<Gamepad2 color="#8b5cf6" />} label="Challenge" bg="#EDE9FE" />
+          <QuickAccessBtn onClick={() => setActiveTab && setActiveTab('practice')} icon={<Gamepad2 color="#8b5cf6" />} label="Challenge" bg="#EDE9FE" />
           <QuickAccessBtn onClick={() => setActivePortal('certificates')} icon={<GraduationCap color="#1f2937" />} label="Certificates" bg="#F3F4F6" />
-          <QuickAccessBtn onClick={() => alert('Career mapping is unlocked at Level 20!')} icon={<Target color="#ef4444" />} label="Career" bg="#FEE2E2" />
+          <QuickAccessBtn onClick={() => { setAiInitialQuery('What career options are available for me after school in Karnataka?'); setActivePortal('ai'); }} icon={<Target color="#ef4444" />} label="Career" bg="#FEE2E2" />
         </div>
       </div>
 
