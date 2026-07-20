@@ -227,13 +227,13 @@ export const LearnTab = ({ initialChapter, clearInitialChapter }: { initialChapt
   return (
     <div className="animate-slide-up" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '0 20px' }}>
-        <BookOpen color="var(--accent-blue)" />
-        <h2 style={{ fontSize: '1.5rem' }}>{t('learn')}</h2>
+        <BookOpen color="#FEF08A" />
+        <h2 style={{ fontSize: '1.5rem', color: '#FFFFFF' }}>{t('learn')}</h2>
         <span 
           style={{ 
-            marginLeft: 'auto', background: 'var(--bg-app)', padding: '6px 14px', 
-            borderRadius: '16px', fontSize: '0.85rem', fontWeight: 700, 
-            color: 'var(--accent-blue)', border: '1px solid var(--border-light)'
+            marginLeft: 'auto', background: '#231E19', padding: '6px 14px', 
+            borderRadius: '16px', fontSize: '0.85rem', fontWeight: 800, 
+            color: '#FEF08A', border: '1px solid #332B24'
           }}
         >
           {t('classText')} {user?.class} Syllabus
@@ -246,7 +246,7 @@ export const LearnTab = ({ initialChapter, clearInitialChapter }: { initialChapt
           
           return (
             <div key={idx} style={{ padding: '0 20px' }}>
-              <h3 style={{ fontSize: '1.2rem', marginBottom: '12px', color: 'var(--text-primary)' }}>{subjectName}</h3>
+              <h3 style={{ fontSize: '1.2rem', marginBottom: '12px', color: '#FFFFFF' }}>{subjectName}</h3>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                 
                 {subject.chapters.map((chapter, chapterIdx) => {
@@ -267,24 +267,25 @@ export const LearnTab = ({ initialChapter, clearInitialChapter }: { initialChapt
                       className="card" 
                       style={{ 
                         display: 'flex', alignItems: 'center', padding: '16px', gap: '16px', 
-                        border: 'none', textAlign: 'left', width: '100%', cursor: 'pointer',
-                        transition: 'transform 0.2s ease',
+                        border: '1px solid #332B24', textAlign: 'left', width: '100%', cursor: 'pointer',
+                        background: '#231E19', transition: 'all 0.2s ease',
                       }}
                     >
                       <div style={{ 
-                        width: '40px', height: '40px', borderRadius: '50%', flexShrink: 0,
-                        background: isCompleted ? '#D1FAE5' : '#EFF6FF', 
+                        width: '42px', height: '42px', borderRadius: '50%', flexShrink: 0,
+                        background: isCompleted ? '#143823' : '#120F0D', 
+                        border: isCompleted ? '1px solid #059669' : '1px solid #332B24',
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        color: isCompleted ? 'var(--accent-green)' : 'var(--accent-blue)'
+                        color: isCompleted ? '#34D399' : '#FEF08A'
                       }}>
-                        {isCompleted ? <CheckCircle size={20} /> : <PlayCircle size={20} />}
+                        {isCompleted ? <CheckCircle size={20} color="#34D399" /> : <PlayCircle size={20} color="#FEF08A" />}
                       </div>
                       <div style={{ flex: 1 }}>
-                        <div style={{ fontWeight: 600, color: 'var(--text-primary)', marginBottom: '4px' }}>{chapterName}</div>
-                        <div style={{ fontSize: '0.8rem', color: 'var(--text-tertiary)' }}>{language === 'EN' ? '4 Lessons' : '4 ಪಾಠಗಳು'} • {language === 'EN' ? '1 Practice Test' : '1 ಅಭ್ಯಾಸ ಪರೀಕ್ಷೆ'}</div>
+                        <div style={{ fontWeight: 700, color: '#FFFFFF', marginBottom: '4px', fontSize: '0.95rem' }}>{chapterName}</div>
+                        <div style={{ fontSize: '0.8rem', color: '#A69685' }}>{language === 'EN' ? '4 Lessons' : '4 ಪಾಠಗಳು'} • {language === 'EN' ? '1 Practice Test' : '1 ಅಭ್ಯಾಸ ಪರೀಕ್ಷೆ'}</div>
                       </div>
                       {isCompleted && (
-                        <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--accent-green)', background: '#D1FAE5', padding: '4px 8px', borderRadius: '12px' }}>
+                        <div style={{ fontSize: '0.75rem', fontWeight: 800, color: '#34D399', background: '#143823', border: '1px solid #059669', padding: '4px 10px', borderRadius: '12px' }}>
                           {language === 'EN' ? 'Completed' : 'ಪೂರ್ಣಗೊಂಡಿದೆ'}
                         </div>
                       )}
