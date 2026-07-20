@@ -7,7 +7,7 @@ import { AITutorPortal } from '../components/AITutorPortal';
 import { syllabusData } from '../data/mockData';
 
 export const HomeTab = ({ navigateToChapter }: { navigateToChapter?: (subjectId: string, subjectDisplay: string, chapter: string) => void }) => {
-  const { language, userXP, user, completedQuizzes, dailyQuests, claimQuestXP } = useAppContext();
+  const { language, userXP, user, completedQuizzes, dailyQuests, claimQuestXP, incrementLessonsCompleted, markQuiz80Percent, markAITutorUsed, markTypingPracticed } = useAppContext();
   
   const [activePortal, setActivePortal] = useState<'leaderboard' | 'certificates' | 'ai' | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -196,10 +196,22 @@ export const HomeTab = ({ navigateToChapter }: { navigateToChapter?: (subjectId:
         </div>
         
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-          <QuestCard icon="📚" title={language === 'EN' ? "Complete 2 Lessons" : "2 ಪಾಠಗಳನ್ನು ಪೂರ್ಣಗೊಳಿಸಿ"} xp="+50 XP" done={dailyQuests.lessons >= 2} progress={dailyQuests.lessons / 2} />
-          <QuestCard icon="🎯" title={language === 'EN' ? "Score 80%+ in a Quiz" : "ರಸಪ್ರಶ್ನೆಯಲ್ಲಿ 80%+ ಸ್ಕೋರ್ ಮಾಡಿ"} xp="+75 XP" done={dailyQuests.quiz80} progress={dailyQuests.quiz80 ? 1 : 0} />
-          <QuestCard icon="🤖" title={language === 'EN' ? "Use AI Tutor" : "AI ಟ್ಯೂಟರ್ ಬಳಸಿ"} xp="+25 XP" done={dailyQuests.aiTutor} progress={dailyQuests.aiTutor ? 1 : 0} />
-          <QuestCard icon="⌨️" title={language === 'EN' ? "Practice Typing 5 min" : "5 ನಿಮಿಷ ಟೈಪಿಂಗ್ ಅಭ್ಯಾಸ ಮಾಡಿ"} xp="+30 XP" done={dailyQuests.typing} progress={dailyQuests.typing ? 1 : 0} />
+          <QuestCard 
+            icon="📚" title={language === 'EN' ? "Complete 2 Lessons" : "2 ಪಾಠಗಳನ್ನು ಪೂರ್ಣಗೊಳಿಸಿ"} xp="+50 XP" done={dailyQuests.lessons >= 2} progress={dailyQuests.lessons / 2} 
+            onClick={() => { if (dailyQuests.lessons < 2) { incrementLessonsCompleted(); incrementLessonsCompleted(); } }}
+          />
+          <QuestCard 
+            icon="🎯" title={language === 'EN' ? "Score 80%+ in a Quiz" : "ರಸಪ್ರಶ್ನೆಯಲ್ಲಿ 80%+ ಸ್ಕೋರ್ ಮಾಡಿ"} xp="+75 XP" done={dailyQuests.quiz80} progress={dailyQuests.quiz80 ? 1 : 0} 
+            onClick={() => { if (!dailyQuests.quiz80) markQuiz80Percent(); }}
+          />
+          <QuestCard 
+            icon="🤖" title={language === 'EN' ? "Use AI Tutor" : "AI ಟ್ಯೂಟರ್ ಬಳಸಿ"} xp="+25 XP" done={dailyQuests.aiTutor} progress={dailyQuests.aiTutor ? 1 : 0} 
+            onClick={() => { if (!dailyQuests.aiTutor) markAITutorUsed(); }}
+          />
+          <QuestCard 
+            icon="⌨️" title={language === 'EN' ? "Practice Typing 5 min" : "5 ನಿಮಿಷ ಟೈಪಿಂಗ್ ಅಭ್ಯಾಸ ಮಾಡಿ"} xp="+30 XP" done={dailyQuests.typing} progress={dailyQuests.typing ? 1 : 0} 
+            onClick={() => { if (!dailyQuests.typing) markTypingPracticed(); }}
+          />
         </div>
       </div>
 
@@ -294,8 +306,8 @@ export const HomeTab = ({ navigateToChapter }: { navigateToChapter?: (subjectId:
 
 // Subcomponents
 
-const QuestCard = ({ icon, title, xp, done, progress = 0 }: any) => (
-  <div style={{ padding: '16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', border: '1px solid var(--border-light)', borderRadius: '20px', background: 'transparent' }}>
+const QuestCard = ({ icon, title, xp, done, progress = 0, onClick }: any) => (
+  <div onClick={onClick} style={{ cursor: onClick && !done ? 'pointer' : 'default', padding: '16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', border: '1px solid var(--border-light)', borderRadius: '20px', background: 'transparent', opacity: done ? 0.7 : 1 }}>
     <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
       <div style={{ width: '36px', height: '36px', background: '#EBE3D5', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.1rem' }}>
         {icon}
