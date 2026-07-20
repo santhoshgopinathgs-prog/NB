@@ -57,13 +57,15 @@ function AppContent() {
   };
 
   return (
-    <>
-      {activeTab !== 'achievements' && <Header setActiveTab={setActiveTab} />}
-      <main className="page-container" style={{ padding: activeTab === 'achievements' ? 0 : undefined }}>
-        {renderTab()}
-      </main>
+    <div className="app-layout">
       {activeTab !== 'achievements' && <BottomNav activeTab={activeTab} setActiveTab={setActiveTab} />}
-      
+      <div className="app-main-content">
+        {activeTab !== 'achievements' && <Header setActiveTab={setActiveTab} />}
+        <main className="page-container" style={{ padding: activeTab === 'achievements' ? 0 : undefined }}>
+          {renderTab()}
+        </main>
+      </div>
+
       {/* Floating AI Buddy Button */}
       {isAuthenticated && (
         <button 
@@ -93,7 +95,7 @@ function AppContent() {
       )}
 
       {showAITutor && <AITutorPortal onClose={() => setShowAITutor(false)} />}
-    </>
+    </div>
   );
 }
 

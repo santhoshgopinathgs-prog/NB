@@ -33,10 +33,10 @@ export const BottomNav = ({ activeTab, setActiveTab }: BottomNavProps) => {
               <Icon 
                 size={22} 
                 strokeWidth={isActive ? 2.5 : 2} 
-                color={isActive ? 'var(--accent-green)' : 'var(--text-tertiary)'}
-                fill={isActive ? 'rgba(203, 167, 90, 0.2)' : 'none'} 
+                color={isActive ? '#FFFFFF' : 'var(--text-tertiary)'}
+                fill={isActive ? 'rgba(255, 255, 255, 0.2)' : 'none'} 
               />
-              <span style={{ marginTop: '4px' }}>{tab.label}</span>
+              <span className="nav-label">{tab.label}</span>
             </button>
           );
         })}

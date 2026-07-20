@@ -107,21 +107,38 @@ body {
 
 /* App Layout */
 #root {
-  max-width: 480px;
+  max-width: 100%;
   margin: 0 auto;
   min-height: 100vh;
   background: var(--bg-app);
   position: relative;
   overflow-x: hidden;
-  box-shadow: 0 0 40px rgba(0, 0, 0, 0.25);
   display: flex;
   flex-direction: column;
 }
 
+.app-layout {
+  display: flex;
+  flex: 1;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.app-main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
 /* Scrollbar hide */
 ::-webkit-scrollbar {
-  width: 0px;
-  background: transparent;
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-light);
+  border-radius: 4px;
 }
 
 /* Utilities */
@@ -174,7 +191,7 @@ button {
   z-index: 10;
 }
 
-/* Bottom Nav */
+/* Bottom Nav / PC Sidebar */
 .bottom-nav {
   position: fixed;
   bottom: 0;
@@ -197,6 +214,83 @@ button {
   border-radius: 32px;
   box-shadow: var(--shadow-md);
   transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+/* PC Desktop Web Responsive System (min-width: 768px) */
+@media (min-width: 768px) {
+  body {
+    padding: 20px 0;
+  }
+
+  #root {
+    max-width: 1200px;
+    min-height: 92vh;
+    margin: 0 auto;
+    border-radius: 24px;
+    border: 1px solid var(--border-light);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+  }
+
+  .app-layout {
+    flex-direction: row;
+    min-height: 92vh;
+  }
+
+  /* Transform Bottom Nav to PC Left Sidebar Navigation */
+  .bottom-nav {
+    position: static;
+    transform: none;
+    width: 240px;
+    min-width: 240px;
+    max-width: 240px;
+    padding: 32px 16px;
+    background: var(--bg-surface);
+    border-right: 1px solid var(--border-light);
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+  }
+
+  .nav-container {
+    flex-direction: column;
+    gap: 12px;
+    padding: 0;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    width: 100%;
+  }
+
+  .nav-item {
+    width: 100%;
+    height: 52px;
+    border-radius: 16px;
+    flex-direction: row;
+    justify-content: flex-start;
+    padding: 0 18px;
+    gap: 14px;
+  }
+
+  .nav-item span.nav-label {
+    display: inline-block;
+    font-size: 0.95rem;
+    font-weight: 700;
+  }
+
+  .page-container {
+    padding: 24px 36px 40px 36px;
+  }
+
+  .app-header {
+    padding: 24px 36px;
+  }
+}
+
+@media (max-width: 767px) {
+  .nav-item span.nav-label {
+    font-size: 0.65rem;
+    margin-top: 2px;
+  }
 }
 
 .nav-item {
