@@ -269,11 +269,47 @@ export const HomeTab = ({ navigateToChapter, setActiveTab }: { navigateToChapter
       <div style={{ width: '100%', marginTop: '10px' }}>
         <h3 style={{ fontSize: '1.5rem', marginBottom: '18px', fontWeight: 800, color: 'var(--text-primary)' }}>{language === 'EN' ? 'Continue Learning' : 'ಕಲಿಯುವುದನ್ನು ಮುಂದುವರಿಸಿ'}</h3>
         
-        <div className="card" style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '24px', width: '100%' }}>
-          <SubjectRow icon={<Book size={28} color="var(--accent-blue)" />} title="Mathematics" subtitle="ಗಣಿತ" progress={mathCompleted} total={28} color="var(--accent-blue)" pct={Math.round((mathCompleted/28)*100)} />
-          <SubjectRow icon={<Microscope size={28} color="var(--accent-green)" />} title="Science" subtitle="ವಿಜ್ಞಾನ" progress={scienceCompleted} total={24} color="var(--accent-green)" pct={Math.round((scienceCompleted/24)*100)} />
-          <SubjectRow icon={<Monitor size={28} color="var(--accent-purple)" />} title="Digital Skills" subtitle="ಡಿಜಿಟಲ್ ಕೌಶಲ್ಯಗಳು" progress={digitalCompleted} total={20} color="var(--accent-purple)" pct={Math.round((digitalCompleted/20)*100)} />
-          <SubjectRow icon={<BookOpen size={28} color="#ec4899" />} title="English" subtitle="ಇಂಗ್ಲಿಷ್" progress={englishCompleted} total={20} color="#ec4899" pct={Math.round((englishCompleted/20)*100)} />
+        <div className="card" style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '20px', width: '100%' }}>
+          <SubjectRow 
+            icon={<Book size={28} color="var(--accent-blue)" />} 
+            title="Mathematics" 
+            subtitle="ಗಣಿತ" 
+            progress={mathCompleted} 
+            total={28} 
+            color="var(--accent-blue)" 
+            pct={Math.round((mathCompleted/28)*100)} 
+            onClick={() => navigateToChapter && navigateToChapter('Mathematics', 'Mathematics', 'Rational Numbers')}
+          />
+          <SubjectRow 
+            icon={<Microscope size={28} color="var(--accent-green)" />} 
+            title="Science" 
+            subtitle="ವಿಜ್ಞಾನ" 
+            progress={scienceCompleted} 
+            total={24} 
+            color="var(--accent-green)" 
+            pct={Math.round((scienceCompleted/24)*100)} 
+            onClick={() => navigateToChapter && navigateToChapter('Science', 'Science', 'Crop Production and Management')}
+          />
+          <SubjectRow 
+            icon={<Monitor size={28} color="var(--accent-purple)" />} 
+            title="Digital Skills" 
+            subtitle="ಡಿಜಿಟಲ್ ಕೌಶಲ್ಯಗಳು" 
+            progress={digitalCompleted} 
+            total={20} 
+            color="var(--accent-purple)" 
+            pct={Math.round((digitalCompleted/20)*100)} 
+            onClick={() => navigateToChapter && navigateToChapter('Digital Skills', 'Digital Skills', 'Computer Hardware & OS')}
+          />
+          <SubjectRow 
+            icon={<BookOpen size={28} color="#ec4899" />} 
+            title="English" 
+            subtitle="ಇಂಗ್ಲಿಷ್" 
+            progress={englishCompleted} 
+            total={20} 
+            color="#ec4899" 
+            pct={Math.round((englishCompleted/20)*100)} 
+            onClick={() => navigateToChapter && navigateToChapter('English', 'English', 'The Best Christmas Present in the World')}
+          />
           
           <button 
             onClick={() => setActivePortal('ai')}
@@ -397,24 +433,44 @@ const FlameIcon = () => (
   </svg>
 );
 
-const SubjectRow = ({ icon, title, subtitle, progress, total, color, pct }: any) => (
-  <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+const SubjectRow = ({ icon, title, subtitle, progress, total, color, pct, onClick }: any) => (
+  <div 
+    onClick={onClick}
+    style={{ 
+      display: 'flex', flexDirection: 'column', gap: '14px', 
+      cursor: 'pointer', padding: '14px', borderRadius: '18px', 
+      transition: 'all 0.2s ease', background: 'var(--bg-surface, #F8FAFC)',
+      border: '1.5px solid var(--border-light, #E2E8F0)'
+    }}
+    onMouseOver={(e) => {
+      e.currentTarget.style.transform = 'translateY(-2px)';
+      e.currentTarget.style.boxShadow = '0 8px 20px rgba(0,0,0,0.06)';
+      e.currentTarget.style.borderColor = color;
+    }}
+    onMouseOut={(e) => {
+      e.currentTarget.style.transform = 'none';
+      e.currentTarget.style.boxShadow = 'none';
+      e.currentTarget.style.borderColor = 'var(--border-light, #E2E8F0)';
+    }}
+  >
     <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-        <div style={{ background: 'var(--bg-app)', padding: '14px', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ background: 'white', padding: '14px', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 6px rgba(0,0,0,0.04)' }}>
           {icon}
         </div>
         <div>
-          <div style={{ fontWeight: 800, fontSize: '1.25rem', color: 'var(--text-primary)' }}>{title}</div>
-          <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', fontWeight: 600 }}>{subtitle}</div>
+          <div style={{ fontWeight: 800, fontSize: '1.2rem', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+            {title} <span style={{ fontSize: '0.9rem', color: color, fontWeight: 800 }}>➔</span>
+          </div>
+          <div style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', fontWeight: 600 }}>{subtitle}</div>
         </div>
       </div>
-      <div style={{ background: 'var(--bg-app)', color: color, fontWeight: 800, padding: '6px 14px', borderRadius: '16px', fontSize: '0.85rem' }}>
+      <div style={{ background: 'white', color: color, fontWeight: 800, padding: '6px 14px', borderRadius: '16px', fontSize: '0.85rem', boxShadow: '0 2px 6px rgba(0,0,0,0.04)' }}>
         {pct}%
       </div>
     </div>
     <div>
-      <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '8px', fontWeight: 600 }}>{progress}/{total} lessons</div>
+      <div style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', marginBottom: '8px', fontWeight: 600 }}>{progress}/{total} lessons</div>
       <div className="progress-track" style={{ height: '10px' }}>
         <div className="progress-fill" style={{ width: `${pct}%`, background: color }}></div>
       </div>
