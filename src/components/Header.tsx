@@ -33,20 +33,28 @@ export const Header: React.FC<HeaderProps> = ({ setActiveTab }) => {
 
   const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
 
+  const getAvatarLetter = () => {
+    if (userRole === 'teacher') return 'S';
+    if (userRole === 'principal') return 'R';
+    return user?.name ? user.name.charAt(0).toUpperCase() : 'S';
+  };
+
   return (
     <header className="app-header">
       <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
         <div style={{ 
           width: '48px', height: '48px', borderRadius: '50%', 
-          background: userRole === 'teacher' ? '#2563EB' : (userRole === 'principal' ? '#0F172A' : 'var(--accent-blue)'), display: 'flex', 
+          background: userRole === 'teacher' ? 'linear-gradient(135deg, #2563EB, #1D4ED8)' : (userRole === 'principal' ? 'linear-gradient(135deg, #0F172A, #1E293B)' : 'var(--accent-blue)'), 
+          display: 'flex', 
           alignItems: 'center', justifyContent: 'center',
-          color: 'white', fontWeight: 800, fontSize: '1.4rem',
-          overflow: 'hidden', boxShadow: 'var(--shadow-sm)'
+          color: 'white', fontWeight: 900, fontSize: '1.4rem',
+          overflow: 'hidden', boxShadow: '0 4px 12px rgba(0,0,0,0.18)',
+          border: '2px solid rgba(255,255,255,0.8)'
         }}>
-          {user?.avatar ? (
+          {userRole === 'student' && user?.avatar ? (
             <img src={user.avatar} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           ) : (
-            userRole === 'teacher' ? '👩‍🏫' : (userRole === 'principal' ? '🏛️' : user?.name.charAt(0).toUpperCase())
+            <span>{getAvatarLetter()}</span>
           )}
         </div>
         <div>

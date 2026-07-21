@@ -43,7 +43,7 @@ function AppContent() {
     return <RegistrationScreen />;
   }
 
-  if (isAuthenticated && user && !user.avatar) {
+  if (isAuthenticated && user && !user.avatar && userRole === 'student') {
     return <AvatarSelectionScreen />;
   }
 
