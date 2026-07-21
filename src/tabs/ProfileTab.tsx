@@ -77,7 +77,7 @@ export const ProfileTab = () => {
                 <button 
                   onClick={() => downloadCertificate(
                     user?.name || 'Student',
-                    user?.school || 'Namma Buddy School',
+                    user?.school || 'GHPS Anekal',
                     cert.classLevel,
                     cert.subject
                   )}

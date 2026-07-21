@@ -52,7 +52,7 @@ export const CertificatesPortal = ({ onClose }: { onClose: () => void }) => {
                     <button 
                       onClick={() => downloadCertificate(
                         user?.name || 'Student',
-                        user?.school || 'Namma Buddy School',
+                        user?.school || 'GHPS Anekal',
                         quizInfo.class,
                         quizInfo.subject
                       )}
