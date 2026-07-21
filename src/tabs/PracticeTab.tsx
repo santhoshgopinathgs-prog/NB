@@ -639,23 +639,27 @@ export const PracticeTab = () => {
           ];
 
           const pathD = nodePositions.map((pos, idx) => {
-            if (idx === 0) return `M ${pos.left}% ${pos.top}%`;
+            if (idx === 0) return `M ${pos.left} ${pos.top}`;
             const prev = nodePositions[idx - 1];
             const midY = (prev.top + pos.top) / 2;
-            return `C ${prev.left}% ${midY}%, ${pos.left}% ${midY}%, ${pos.left}% ${pos.top}%`;
+            return `C ${prev.left} ${midY}, ${pos.left} ${midY}, ${pos.left} ${pos.top}`;
           }).join(' ');
 
           return (
-            <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 2 }}>
+            <svg 
+              viewBox="0 0 100 100" 
+              preserveAspectRatio="none"
+              style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 2 }}
+            >
               <path
                 className="roadmap-path-svg-line"
                 d={pathD}
                 fill="none"
                 stroke="#F59E0B"
-                strokeWidth="7"
-                strokeDasharray="14 14"
+                strokeWidth="2.5"
+                strokeDasharray="4 4"
                 strokeLinecap="round"
-                style={{ filter: 'drop-shadow(0 4px 10px rgba(0,0,0,0.6))', opacity: 0.95 }}
+                style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.6))', opacity: 0.95 }}
               />
             </svg>
           );

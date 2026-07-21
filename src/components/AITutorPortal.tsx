@@ -106,29 +106,24 @@ export const AITutorPortal = ({ onClose, initialQuery }: { onClose: () => void, 
       }
     }
 
-    // 2. Try Free Real LLM API (Pollinations AI)
+    // 2. Try Free AI Endpoint with silent fallback
     try {
-      const apiMessages = [
-        { role: 'system', content: systemPrompt },
-        ...newMsgs.slice(-6).map(m => ({ role: m.isBot ? 'assistant' : 'user', content: m.text }))
-      ];
-
-      const response = await fetch('https://text.pollinations.ai/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: apiMessages, model: 'openai' })
+      const promptQuery = `Answer concisely in ${language === 'EN' ? 'English' : 'Kannada'} for a Grade 8 student: ${userMsg}`;
+      const response = await fetch(`https://text.pollinations.ai/${encodeURIComponent(promptQuery)}`, {
+        method: 'GET',
+        headers: { 'Accept': 'text/plain' }
       });
 
       if (response.ok) {
         const text = await response.text();
-        if (text && text.trim()) {
+        if (text && text.trim() && !text.includes('Payment Required') && !text.includes('402') && !text.includes('<!DOCTYPE')) {
           setMessages([...newMsgs, { text: text.trim(), isBot: true }]);
           setIsLoading(false);
           return;
         }
       }
     } catch (err) {
-      console.warn("Pollinations AI fetch failed, using smart fallback...", err);
+      // Ignore network errors and fallback smoothly
     }
 
     // 3. Fallback to smart offline response generator
