@@ -139,20 +139,22 @@ export const RegistrationScreen = () => {
       display: 'flex', 
       justifyContent: 'center',
       alignItems: 'center',
-      background: '#F8FAFC',
-      backgroundImage: 'radial-gradient(#CBD5E1 1.2px, transparent 1.2px)',
-      backgroundSize: '24px 24px',
+      background: 'linear-gradient(rgba(15, 23, 42, 0.45), rgba(15, 23, 42, 0.65)), url("/school_bg.jpg")',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
       padding: '24px',
       position: 'relative'
     }}>
       
       {/* Language Toggle */}
-      <div style={{ position: 'absolute', top: '24px', right: '24px' }}>
+      <div style={{ position: 'absolute', top: '24px', right: '24px', zIndex: 10 }}>
         <button 
           onClick={toggleLanguage}
           style={{ 
-            background: '#FFFFFF', 
-            border: '1.5px solid #E2E8F0',
+            background: 'rgba(255, 255, 255, 0.9)', 
+            backdropFilter: 'blur(8px)',
+            border: '1.5px solid rgba(255, 255, 255, 0.8)',
             borderRadius: '24px',
             padding: '4px',
             display: 'flex',
@@ -161,7 +163,7 @@ export const RegistrationScreen = () => {
             fontWeight: 800,
             color: '#0F172A',
             cursor: 'pointer',
-            boxShadow: '0 4px 12px rgba(15,23,42,0.06)'
+            boxShadow: '0 8px 20px rgba(0,0,0,0.2)'
           }}
         >
           <span style={{ padding: '6px 14px', borderRadius: '18px', background: language === 'EN' ? '#2563EB' : 'transparent', color: language === 'EN' ? '#FFFFFF' : '#64748B', transition: 'all 0.2s ease' }}>EN</span>
@@ -170,15 +172,17 @@ export const RegistrationScreen = () => {
       </div>
 
       <div style={{
-        background: '#FFFFFF',
+        background: 'rgba(255, 255, 255, 0.96)',
+        backdropFilter: 'blur(12px)',
         borderRadius: '24px',
         padding: '40px 32px',
         width: '100%',
         maxWidth: '440px',
-        boxShadow: '0 20px 40px rgba(15, 23, 42, 0.08)',
-        border: '1px solid #E2E8F0',
+        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.35)',
+        border: '1px solid rgba(255, 255, 255, 0.8)',
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        zIndex: 5
       }}>
         
         {/* Header Section */}
