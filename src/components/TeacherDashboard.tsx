@@ -3,7 +3,7 @@ import { useAppContext } from '../context/AppContext';
 import { 
   Users, UserCheck, BookOpen, AlertTriangle, Search, Filter, 
   Plus, CheckCircle, FileText, Bot, Download, Award, TrendingUp, 
-  Calendar, Send, Sparkles, PieChart, BarChart2, ShieldAlert
+  Calendar, Send, Sparkles, PieChart, BarChart2, ShieldAlert, LogOut
 } from 'lucide-react';
 
 interface StudentData {
@@ -36,8 +36,13 @@ const MOCK_STUDENTS: StudentData[] = [
 ];
 
 export const TeacherDashboard: React.FC = () => {
-  const { language } = useAppContext();
+  const { language, setUserRole, logout } = useAppContext();
   const [activeSubTab, setActiveSubTab] = useState<'overview' | 'students' | 'attendance' | 'assignments' | 'quizzes' | 'analytics' | 'ai' | 'reports'>('overview');
+  
+  const handleTeacherLogout = () => {
+    setUserRole('student');
+    logout();
+  };
   
   // Search & Filter state for Students
   const [searchQuery, setSearchQuery] = useState('');
@@ -119,7 +124,7 @@ export const TeacherDashboard: React.FC = () => {
               Assigned Classes: <strong>Class 8-A & Class 9-B</strong> • Today: {new Date().toLocaleDateString('en-IN', { weekday: 'short', month: 'short', day: 'numeric' })}
             </p>
           </div>
-          <div style={{ display: 'flex', gap: '10px' }}>
+          <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
             <button 
               onClick={() => setShowCreateAssignment(true)}
               style={{ background: '#10B981', color: 'white', border: 'none', padding: '10px 16px', borderRadius: '16px', fontWeight: 800, fontSize: '0.9rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', boxShadow: '0 4px 12px rgba(16,185,129,0.3)' }}
@@ -131,6 +136,13 @@ export const TeacherDashboard: React.FC = () => {
               style={{ background: '#F59E0B', color: 'white', border: 'none', padding: '10px 16px', borderRadius: '16px', fontWeight: 800, fontSize: '0.9rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', boxShadow: '0 4px 12px rgba(245,158,11,0.3)' }}
             >
               <Sparkles size={18} /> Create Quiz
+            </button>
+            <button 
+              onClick={handleTeacherLogout}
+              style={{ background: '#EF4444', color: 'white', border: 'none', padding: '10px 16px', borderRadius: '16px', fontWeight: 800, fontSize: '0.9rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', boxShadow: '0 4px 12px rgba(239,68,68,0.3)' }}
+              title="Logout Teacher Account"
+            >
+              <LogOut size={18} /> Logout
             </button>
           </div>
         </div>

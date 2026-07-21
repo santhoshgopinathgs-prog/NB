@@ -3,7 +3,7 @@ import { useAppContext } from '../context/AppContext';
 import { 
   Building2, Users, UserCheck, BookOpen, AlertCircle, TrendingUp, 
   BarChart2, Award, Bot, Download, Send, Bell, Settings, ShieldCheck, 
-  Sparkles, CheckCircle2, ChevronRight, Activity, Calendar
+  Sparkles, CheckCircle2, ChevronRight, Activity, Calendar, LogOut
 } from 'lucide-react';
 
 interface TeacherItem {
@@ -25,8 +25,13 @@ const MOCK_TEACHERS: TeacherItem[] = [
 ];
 
 export const PrincipalDashboard: React.FC = () => {
-  const { language } = useAppContext();
+  const { language, setUserRole, logout } = useAppContext();
   const [activeSubTab, setActiveSubTab] = useState<'overview' | 'analytics' | 'teachers' | 'classes' | 'dropout' | 'ai' | 'announcements' | 'reports'>('overview');
+
+  const handlePrincipalLogout = () => {
+    setUserRole('student');
+    logout();
+  };
 
   // Announcement modal state
   const [showAnnouncementModal, setShowAnnouncementModal] = useState(false);
@@ -80,7 +85,7 @@ export const PrincipalDashboard: React.FC = () => {
             </p>
           </div>
           
-          <div style={{ display: 'flex', gap: '10px' }}>
+          <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
             <div style={{ background: 'rgba(16,185,129,0.2)', border: '1px solid #10B981', padding: '10px 16px', borderRadius: '16px', color: '#34D399', fontWeight: 900, fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
               <ShieldCheck size={20} /> School Health Score: 92/100
             </div>
@@ -89,6 +94,13 @@ export const PrincipalDashboard: React.FC = () => {
               style={{ background: '#38BDF8', color: '#0F172A', border: 'none', padding: '10px 16px', borderRadius: '16px', fontWeight: 900, fontSize: '0.9rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}
             >
               <Bell size={18} /> Broadcast Announcement
+            </button>
+            <button 
+              onClick={handlePrincipalLogout}
+              style={{ background: '#EF4444', color: 'white', border: 'none', padding: '10px 16px', borderRadius: '16px', fontWeight: 800, fontSize: '0.9rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', boxShadow: '0 4px 12px rgba(239,68,68,0.3)' }}
+              title="Logout Principal Account"
+            >
+              <LogOut size={18} /> Logout
             </button>
           </div>
         </div>
