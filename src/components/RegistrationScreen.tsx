@@ -18,6 +18,7 @@ export const RegistrationScreen = () => {
   const [school, setSchool] = useState('');
   const [selectedClass, setSelectedClass] = useState<number | null>(null);
   
+  const [securityCode, setSecurityCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
@@ -28,7 +29,24 @@ export const RegistrationScreen = () => {
     setErrorMsg('');
     setSuccessMsg('');
 
-    // Set selected role in AppContext
+    // Role-based Security Verification
+    if (selectedRole === 'teacher') {
+      const isTeacherValid = securityCode.trim().toUpperCase() === 'TEACHER2026' || email.toLowerCase().includes('teacher');
+      if (!isTeacherValid) {
+        setIsLoading(false);
+        setErrorMsg(language === 'EN' ? '⚠️ Access Denied: Invalid Teacher Security Key. Students cannot access Teacher Portal.' : '⚠️ ಪ್ರವೇಶ ನಿರಾಕರಿಸಲಾಗಿದೆ: ಅಮಾನ್ಯ ಶಿಕ್ಷಕರ ಭದ್ರತಾ ಕೀ.');
+        return;
+      }
+    } else if (selectedRole === 'principal') {
+      const isPrincipalValid = securityCode.trim().toUpperCase() === 'PRINCIPAL2026' || email.toLowerCase().includes('principal');
+      if (!isPrincipalValid) {
+        setIsLoading(false);
+        setErrorMsg(language === 'EN' ? '⚠️ Access Denied: Invalid Executive Security Key. Students cannot access Principal Portal.' : '⚠️ ಪ್ರವೇಶ ನಿರಾಕರಿಸಲಾಗಿದೆ: ಅಮಾನ್ಯ ಪ್ರಾಂಶುಪಾಲರ ಭದ್ರತಾ ಕೀ.');
+        return;
+      }
+    }
+
+    // Set authenticated user role in AppContext
     setUserRole(selectedRole);
     
     try {
@@ -205,7 +223,6 @@ export const RegistrationScreen = () => {
                     type="button"
                     onClick={() => {
                       setSelectedRole(role.id as any);
-                      setUserRole(role.id as any);
                     }}
                     style={{
                       padding: '10px 4px',
@@ -228,6 +245,29 @@ export const RegistrationScreen = () => {
                     <span>{role.label}</span>
                   </button>
                 ))}
+              </div>
+            </div>
+          )}
+
+          {/* Security Key for Teacher or Principal */}
+          {selectedRole !== 'student' && !forgotPasswordMode && (
+            <div style={{ position: 'relative', background: selectedRole === 'teacher' ? '#EFF6FF' : '#F8FAFC', padding: '12px 14px', borderRadius: '14px', border: `1.5px solid ${selectedRole === 'teacher' ? '#2563EB' : '#0F172A'}` }}>
+              <label style={{ ...labelStyle, color: selectedRole === 'teacher' ? '#1E40AF' : '#0F172A', marginBottom: '4px' }}>
+                {selectedRole === 'teacher' ? '🔒 Teacher Security Passcode' : '🔑 Executive Security Passcode'}
+              </label>
+              <div style={{ position: 'relative' }}>
+                <Lock style={iconStyle} />
+                <input 
+                  type="password" 
+                  value={securityCode}
+                  onChange={(e) => setSecurityCode(e.target.value)}
+                  placeholder={selectedRole === 'teacher' ? 'Passcode: TEACHER2026' : 'Passcode: PRINCIPAL2026'}
+                  style={{ ...inputStyle, borderBottomColor: selectedRole === 'teacher' ? '#2563EB' : '#0F172A', fontWeight: 800 }}
+                  required
+                />
+              </div>
+              <div style={{ fontSize: '0.72rem', color: selectedRole === 'teacher' ? '#1E40AF' : '#475569', marginTop: '6px', fontWeight: 700 }}>
+                ℹ️ Passcode Required. Students attempting login will be denied access.
               </div>
             </div>
           )}
