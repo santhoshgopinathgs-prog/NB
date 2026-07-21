@@ -92,29 +92,30 @@ export const RegistrationScreen = () => {
 
   const inputStyle = {
     width: '100%',
-    padding: '8px 8px 8px 36px',
-    border: 'none',
-    borderBottom: '1px solid #D1CFC7',
-    background: 'transparent',
-    fontSize: '1rem',
-    color: '#1C2A3A',
+    padding: '12px 12px 12px 40px',
+    border: '1.5px solid #E2E8F0',
+    borderRadius: '14px',
+    background: '#F8FAFC',
+    fontSize: '0.95rem',
+    color: '#0F172A',
+    fontWeight: 600,
     outline: 'none',
-    transition: 'border-color 0.2s ease',
+    transition: 'all 0.2s ease',
   };
 
   const labelStyle = {
-    fontSize: '0.75rem',
+    fontSize: '0.78rem',
     fontWeight: 800,
-    color: '#1C2A3A',
+    color: '#0F172A',
     textTransform: 'uppercase' as const,
-    letterSpacing: '1px',
-    marginBottom: '8px',
+    letterSpacing: '0.8px',
+    marginBottom: '6px',
     display: 'block'
   };
 
   const iconStyle = {
     position: 'absolute' as const,
-    left: '0px',
+    left: '12px',
     top: '50%',
     transform: 'translateY(-50%)',
     color: '#64748B',
@@ -128,8 +129,8 @@ export const RegistrationScreen = () => {
       display: 'flex', 
       justifyContent: 'center',
       alignItems: 'center',
-      background: '#171F2E',
-      backgroundImage: 'radial-gradient(#2A3441 1px, transparent 1px)',
+      background: '#F8FAFC',
+      backgroundImage: 'radial-gradient(#CBD5E1 1.2px, transparent 1.2px)',
       backgroundSize: '24px 24px',
       padding: '24px',
       position: 'relative'
@@ -140,55 +141,56 @@ export const RegistrationScreen = () => {
         <button 
           onClick={toggleLanguage}
           style={{ 
-            background: 'rgba(255,255,255,0.1)', 
-            border: '1px solid rgba(255,255,255,0.2)',
-            borderRadius: '20px',
+            background: '#FFFFFF', 
+            border: '1.5px solid #E2E8F0',
+            borderRadius: '24px',
             padding: '4px',
             display: 'flex',
             alignItems: 'center',
-            fontSize: '0.75rem',
-            fontWeight: 700,
-            color: 'white',
+            fontSize: '0.78rem',
+            fontWeight: 800,
+            color: '#0F172A',
             cursor: 'pointer',
-            backdropFilter: 'blur(10px)'
+            boxShadow: '0 4px 12px rgba(15,23,42,0.06)'
           }}
         >
-          <span style={{ padding: '6px 12px', borderRadius: '16px', background: language === 'EN' ? '#CBA75A' : 'transparent', color: language === 'EN' ? '#171F2E' : 'inherit', transition: 'all 0.2s ease' }}>EN</span>
-          <span style={{ padding: '6px 12px', borderRadius: '16px', background: language === 'KN' ? '#CBA75A' : 'transparent', color: language === 'KN' ? '#171F2E' : 'inherit', transition: 'all 0.2s ease' }}>KN</span>
+          <span style={{ padding: '6px 14px', borderRadius: '18px', background: language === 'EN' ? '#2563EB' : 'transparent', color: language === 'EN' ? '#FFFFFF' : '#64748B', transition: 'all 0.2s ease' }}>EN</span>
+          <span style={{ padding: '6px 14px', borderRadius: '18px', background: language === 'KN' ? '#2563EB' : 'transparent', color: language === 'KN' ? '#FFFFFF' : '#64748B', transition: 'all 0.2s ease' }}>KN</span>
         </button>
       </div>
 
       <div style={{
-        background: '#F9F6F0',
+        background: '#FFFFFF',
         borderRadius: '24px',
-        padding: '48px 40px',
+        padding: '40px 32px',
         width: '100%',
         maxWidth: '440px',
-        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
+        boxShadow: '0 20px 40px rgba(15, 23, 42, 0.08)',
+        border: '1px solid #E2E8F0',
         display: 'flex',
         flexDirection: 'column'
       }}>
         
         {/* Header Section */}
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '40px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '32px' }}>
           <div style={{ 
-            width: '80px', height: '80px', borderRadius: '50%', 
-            background: '#171F2E', display: 'flex', alignItems: 'center', justifyContent: 'center',
-            marginBottom: '20px', border: '2px solid #CBA75A', padding: '4px'
+            width: '76px', height: '76px', borderRadius: '50%', 
+            background: 'linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+            marginBottom: '16px', border: '3px solid #DBEAFE', padding: '4px', boxShadow: '0 8px 20px rgba(37,99,235,0.25)'
           }}>
             <img src="/logo.jpg" alt="Logo" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
           </div>
           <h1 style={{ 
-            fontSize: '2rem', fontWeight: 800, color: '#1C2A3A', margin: '0 0 8px 0',
-            fontFamily: 'Georgia, "Times New Roman", Times, serif'
+            fontSize: '1.8rem', fontWeight: 900, color: '#0F172A', margin: '0 0 6px 0',
+            fontFamily: 'Inter, system-ui, sans-serif'
           }}>
             Namma Buddy
           </h1>
           <p style={{ 
-            fontSize: '0.75rem', color: '#64748B', margin: 0, 
-            textTransform: 'uppercase', letterSpacing: '2px', fontWeight: 600
+            fontSize: '0.78rem', color: '#64748B', margin: 0, 
+            textTransform: 'uppercase', letterSpacing: '1.5px', fontWeight: 700
           }}>
-            {language === 'EN' ? 'Bridging the digital divide' : 'ಡಿಜಿಟಲ್ ವಿಭಜನೆಯನ್ನು ಸೇತುವೆ ಮಾಡುವುದು'}
+            {language === 'EN' ? 'Digital Learning Platform • Karnataka' : 'ಡಿಜಿಟಲ್ ಕಲಿಕಾ ವೇದಿಕೆ • ಕರ್ನಾಟಕ'}
           </p>
         </div>
 
@@ -388,14 +390,14 @@ export const RegistrationScreen = () => {
 
           {isLoginMode && !forgotPasswordMode && (
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '-8px' }}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '0.9rem', color: '#64748B' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '0.85rem', color: '#64748B', fontWeight: 600 }}>
                 <input 
                   type="checkbox" 
                   checked={rememberMe}
                   onChange={(e) => setRememberMe(e.target.checked)}
                   style={{ 
-                    width: '16px', height: '16px', accentColor: '#CBA75A', cursor: 'pointer',
-                    border: '1px solid #D1CFC7', borderRadius: '4px'
+                    width: '16px', height: '16px', accentColor: '#2563EB', cursor: 'pointer',
+                    border: '1px solid #CBD5E1', borderRadius: '4px'
                   }}
                 />
                 {language === 'EN' ? 'Remember me' : 'ನನ್ನನ್ನು ನೆನಪಿನಲ್ಲಿಡು'}
@@ -404,7 +406,7 @@ export const RegistrationScreen = () => {
               <button 
                 type="button"
                 onClick={() => setForgotPasswordMode(true)}
-                style={{ background: 'none', border: 'none', color: '#B99341', fontSize: '0.9rem', fontWeight: 700, cursor: 'pointer' }}
+                style={{ background: 'none', border: 'none', color: '#2563EB', fontSize: '0.85rem', fontWeight: 800, cursor: 'pointer' }}
               >
                 {language === 'EN' ? 'Forgot password?' : 'ಪಾಸ್ವರ್ಡ್ ಮರೆತಿರಾ?'}
               </button>
@@ -415,13 +417,13 @@ export const RegistrationScreen = () => {
             type="submit"
             disabled={isLoading || !isFormValid()}
             style={{
-              padding: '16px', borderRadius: '8px',
-              background: (isLoading || !isFormValid()) ? '#E2E8F0' : '#CBA75A',
-              color: (isLoading || !isFormValid()) ? '#94A3B8' : '#1C2A3A',
-              fontSize: '1rem', fontWeight: 800, border: 'none',
+              padding: '14px', borderRadius: '14px',
+              background: (isLoading || !isFormValid()) ? '#CBD5E1' : '#2563EB',
+              color: (isLoading || !isFormValid()) ? '#94A3B8' : '#FFFFFF',
+              fontSize: '1rem', fontWeight: 900, border: 'none',
               cursor: (isLoading || !isFormValid()) ? 'not-allowed' : 'pointer',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              boxShadow: (isLoading || !isFormValid()) ? 'none' : '0 4px 12px rgba(203, 167, 90, 0.3)',
+              boxShadow: (isLoading || !isFormValid()) ? 'none' : '0 6px 18px rgba(37, 99, 235, 0.35)',
               transition: 'all 0.2s ease',
               marginTop: '8px'
             }}
@@ -435,20 +437,20 @@ export const RegistrationScreen = () => {
         </form>
 
         <div style={{ 
-          display: 'flex', alignItems: 'center', margin: '32px 0 24px', 
-          color: '#94A3B8', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 600
+          display: 'flex', alignItems: 'center', margin: '28px 0 20px', 
+          color: '#94A3B8', fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 700
         }}>
-          <div style={{ flex: 1, height: '1px', background: '#D1CFC7' }}></div>
+          <div style={{ flex: 1, height: '1px', background: '#E2E8F0' }}></div>
           <span style={{ padding: '0 16px' }}>OR</span>
-          <div style={{ flex: 1, height: '1px', background: '#D1CFC7' }}></div>
+          <div style={{ flex: 1, height: '1px', background: '#E2E8F0' }}></div>
         </div>
 
-        <div style={{ textAlign: 'center', fontSize: '0.95rem', color: '#64748B' }}>
+        <div style={{ textAlign: 'center', fontSize: '0.9rem', color: '#64748B', fontWeight: 600 }}>
           {forgotPasswordMode ? (
             <button 
               type="button"
               onClick={() => { setForgotPasswordMode(false); setIsLoginMode(true); }}
-              style={{ background: 'none', border: 'none', color: '#1C2A3A', fontWeight: 700, cursor: 'pointer', textDecoration: 'underline', textDecorationColor: '#CBA75A', textDecorationThickness: '2px', textUnderlineOffset: '4px' }}
+              style={{ background: 'none', border: 'none', color: '#2563EB', fontWeight: 800, cursor: 'pointer', textDecoration: 'underline', textDecorationColor: '#2563EB', textDecorationThickness: '2px', textUnderlineOffset: '4px' }}
             >
               {language === 'EN' ? 'Back to Sign in' : 'ಸೈನ್ ಇನ್‌ಗೆ ಹಿಂತಿರುಗಿ'}
             </button>
@@ -458,7 +460,7 @@ export const RegistrationScreen = () => {
               <button 
                 type="button"
                 onClick={() => { setIsLoginMode(false); setErrorMsg(''); setSuccessMsg(''); }}
-                style={{ background: 'none', border: 'none', color: '#1C2A3A', fontWeight: 700, cursor: 'pointer', textDecoration: 'underline', textDecorationColor: '#CBA75A', textDecorationThickness: '2px', textUnderlineOffset: '4px' }}
+                style={{ background: 'none', border: 'none', color: '#2563EB', fontWeight: 800, cursor: 'pointer', textDecoration: 'underline', textDecorationColor: '#2563EB', textDecorationThickness: '2px', textUnderlineOffset: '4px' }}
               >
                 {language === 'EN' ? 'Create an account' : 'ಖಾತೆ ತೆರೆಯಿರಿ'}
               </button>
@@ -469,7 +471,7 @@ export const RegistrationScreen = () => {
               <button 
                 type="button"
                 onClick={() => { setIsLoginMode(true); setErrorMsg(''); setSuccessMsg(''); }}
-                style={{ background: 'none', border: 'none', color: '#1C2A3A', fontWeight: 700, cursor: 'pointer', textDecoration: 'underline', textDecorationColor: '#CBA75A', textDecorationThickness: '2px', textUnderlineOffset: '4px' }}
+                style={{ background: 'none', border: 'none', color: '#2563EB', fontWeight: 800, cursor: 'pointer', textDecoration: 'underline', textDecorationColor: '#2563EB', textDecorationThickness: '2px', textUnderlineOffset: '4px' }}
               >
                 {language === 'EN' ? 'Sign in' : 'ಸೈನ್ ಇನ್ ಮಾಡಿ'}
               </button>
