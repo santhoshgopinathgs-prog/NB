@@ -6,13 +6,23 @@ const getLogoDataUrl = (): Promise<string | null> => {
     img.src = '/logo.jpg';
     img.onload = () => {
       try {
+        const size = Math.max(img.width, img.height);
         const canvas = document.createElement('canvas');
-        canvas.width = img.width;
-        canvas.height = img.height;
+        canvas.width = size;
+        canvas.height = size;
         const ctx = canvas.getContext('2d');
         if (ctx) {
-          ctx.drawImage(img, 0, 0);
-          resolve(canvas.toDataURL('image/jpeg'));
+          // Circular clip to remove any square black background corners around logo
+          ctx.beginPath();
+          ctx.arc(size / 2, size / 2, (size / 2) - 4, 0, Math.PI * 2);
+          ctx.closePath();
+          ctx.clip();
+
+          // Draw image centered inside the circle
+          ctx.drawImage(img, 0, 0, size, size);
+
+          // Return clean transparent PNG data URL
+          resolve(canvas.toDataURL('image/png'));
         } else {
           resolve(null);
         }
@@ -40,7 +50,7 @@ export const downloadCertificate = async (
   const width = doc.internal.pageSize.getWidth();
   const height = doc.internal.pageSize.getHeight();
 
-  // Clean School Name (fix AU bug)
+  // Clean School Name
   const cleanSchool = (schoolName && schoolName.trim().length >= 3 && schoolName.trim().toUpperCase() !== 'AU')
     ? schoolName.trim()
     : 'GHPS Anekal, Karnataka';
@@ -68,11 +78,11 @@ export const downloadCertificate = async (
   doc.rect(28, height - 44, 16, 16, 'F');
   doc.rect(width - 44, height - 44, 16, 16, 'F');
 
-  // Load and add Namma Buddy Logo at Top Center
+  // Load and render BIGGER circular logo without black background (90px x 90px)
   try {
     const logoUrl = await getLogoDataUrl();
     if (logoUrl) {
-      doc.addImage(logoUrl, 'JPEG', width / 2 - 28, 40, 56, 56);
+      doc.addImage(logoUrl, 'PNG', width / 2 - 45, 36, 90, 90);
     }
   } catch (e) {
     console.warn('Could not render logo in certificate:', e);
@@ -80,41 +90,41 @@ export const downloadCertificate = async (
 
   // Certificate Title
   doc.setTextColor(15, 23, 42); // #0F172A
-  doc.setFontSize(38);
+  doc.setFontSize(36);
   doc.setFont('helvetica', 'bold');
-  doc.text('Certificate of Excellence', width / 2, 130, { align: 'center' });
+  doc.text('Certificate of Excellence', width / 2, 155, { align: 'center' });
 
   // Subtitle
   doc.setFontSize(14);
   doc.setFont('helvetica', 'normal');
   doc.setTextColor(100, 116, 139);
-  doc.text('This proudly recognizes that', width / 2, 165, { align: 'center' });
+  doc.text('This proudly recognizes that', width / 2, 185, { align: 'center' });
 
   // Student Name
   doc.setFontSize(30);
   doc.setFont('helvetica', 'bold');
   doc.setTextColor(37, 99, 235); // Primary Blue #2563EB
-  doc.text(cleanName.toUpperCase(), width / 2, 215, { align: 'center' });
+  doc.text(cleanName.toUpperCase(), width / 2, 232, { align: 'center' });
 
   // Underline for Student Name
   doc.setDrawColor(203, 213, 225);
   doc.setLineWidth(1.5);
-  doc.line(width / 2 - 220, 225, width / 2 + 220, 225);
+  doc.line(width / 2 - 220, 242, width / 2 + 220, 242);
 
   // Achievement details
   doc.setFontSize(14);
   doc.setFont('helvetica', 'normal');
   doc.setTextColor(51, 65, 85);
   
-  doc.text(`from ${cleanSchool} (Class ${classLevel})`, width / 2, 265, { align: 'center' });
-  doc.text(`has successfully mastered all practice modules and demonstrated`, width / 2, 292, { align: 'center' });
+  doc.text(`from ${cleanSchool} (Class ${classLevel})`, width / 2, 280, { align: 'center' });
+  doc.text(`has successfully mastered all practice modules and demonstrated`, width / 2, 305, { align: 'center' });
   
   doc.setFont('helvetica', 'bold');
   doc.setTextColor(16, 185, 129); // Accent Green #10B981
-  doc.text(`outstanding proficiency in ${subject}.`, width / 2, 318, { align: 'center' });
+  doc.text(`outstanding proficiency in ${subject}.`, width / 2, 330, { align: 'center' });
 
-  // Official Seal Badge (Fixes the && bug!)
-  const sealY = 390;
+  // Official Seal Badge
+  const sealY = 398;
   // Outer Gold Circle
   doc.setFillColor(245, 158, 11); // #F59E0B
   doc.circle(width / 2, sealY, 32, 'F');
@@ -133,33 +143,33 @@ export const downloadCertificate = async (
   const dateX = width / 4 + 20;
   doc.setDrawColor(203, 213, 225);
   doc.setLineWidth(1);
-  doc.line(dateX - 70, 465, dateX + 70, 465);
+  doc.line(dateX - 70, 468, dateX + 70, 468);
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(11);
   doc.setTextColor(100, 116, 139);
-  doc.text('Date Achieved', dateX, 482, { align: 'center' });
+  doc.text('Date Achieved', dateX, 485, { align: 'center' });
 
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(12);
   doc.setTextColor(15, 23, 42);
-  doc.text(date, dateX, 456, { align: 'center' });
+  doc.text(date, dateX, 458, { align: 'center' });
 
   // Signature Line (Right side)
   const sigX = (width / 4) * 3 - 20;
   doc.setDrawColor(203, 213, 225);
   doc.setLineWidth(1);
-  doc.line(sigX - 70, 465, sigX + 70, 465);
+  doc.line(sigX - 70, 468, sigX + 70, 468);
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(11);
   doc.setTextColor(100, 116, 139);
-  doc.text('Authorized Authority', sigX, 482, { align: 'center' });
+  doc.text('Authorized Authority', sigX, 485, { align: 'center' });
 
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(12);
   doc.setTextColor(37, 99, 235);
-  doc.text('Namma Buddy', sigX, 456, { align: 'center' });
+  doc.text('Namma Buddy', sigX, 458, { align: 'center' });
 
   // Save PDF file
   const fileName = `${cleanName.replace(/\s+/g, '_')}_${subject}_Certificate.pdf`;
