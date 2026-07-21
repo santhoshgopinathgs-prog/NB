@@ -4,6 +4,8 @@ import { User, Award, Download, CheckCircle2, LogOut, Edit2 } from 'lucide-react
 import { downloadCertificate } from '../utils/generateCertificate';
 import { AvatarSelectionScreen } from '../components/AvatarSelectionScreen';
 
+import { formatCapitalizedName } from '../utils/formatName';
+
 export const ProfileTab = () => {
   const { t, language, user, logout, userXP, certificates } = useAppContext();
   const [isEditingAvatar, setIsEditingAvatar] = React.useState(false);
@@ -32,7 +34,7 @@ export const ProfileTab = () => {
           )}
         </div>
         <div style={{ textAlign: 'center' }}>
-          <h3 style={{ fontSize: '1.4rem' }}>{user?.name}</h3>
+          <h3 style={{ fontSize: '1.4rem' }}>{formatCapitalizedName(user?.name || 'Student')}</h3>
           
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginTop: '4px' }}>
             <div style={{ color: 'var(--text-tertiary)' }}>{t('classText')}</div>

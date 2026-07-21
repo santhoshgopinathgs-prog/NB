@@ -1,6 +1,7 @@
 import React from 'react';
 import { useAppContext } from '../context/AppContext';
 import { Flame, Coins, Trophy, Award, CheckCircle2, ChevronRight, User, MapPin } from 'lucide-react';
+import { formatCapitalizedName } from '../utils/formatName';
 
 interface RightSidebarProps {
   setActiveTab: (tab: string) => void;
@@ -33,7 +34,7 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({ setActiveTab }) => {
           {/* User Info Column */}
           <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: '3px' }}>
             <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', margin: 0, lineHeight: 1.2 }}>
-              {user?.name || 'Student'}
+              {formatCapitalizedName(user?.name || 'Student')}
             </h3>
             <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', margin: 0 }}>
               {user?.school || 'GHPS Anekal'}
@@ -116,7 +117,7 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({ setActiveTab }) => {
               </div>
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                  {item.name}
+                  {formatCapitalizedName(item.name)}
                 </div>
                 <div style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Anekal</div>
               </div>

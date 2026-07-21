@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Mail, Lock, User, School, GraduationCap, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import { supabase } from '../utils/supabaseClient';
+import { formatCapitalizedName } from '../utils/formatName';
 
 export const RegistrationScreen = () => {
   const { language, toggleLanguage, userRole, setUserRole } = useAppContext();
@@ -50,7 +51,7 @@ export const RegistrationScreen = () => {
     setUserRole(selectedRole);
 
     if (name.trim()) {
-      localStorage.setItem('nb_user_profile_name', name.trim());
+      localStorage.setItem('nb_user_profile_name', formatCapitalizedName(name.trim()));
     }
     if (school.trim()) {
       localStorage.setItem('nb_user_profile_school', school.trim());

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Flame, Coins, Bell, CheckCircle } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import { NotificationsMenu } from './NotificationsMenu';
+import { formatCapitalizedName } from '../utils/formatName';
 
 interface HeaderProps {
   setActiveTab: (tab: string) => void;
@@ -44,7 +45,7 @@ export const Header: React.FC<HeaderProps> = ({ setActiveTab }) => {
 
   const getUserDisplayName = () => {
     if (user?.name && user.name.trim().length > 0) {
-      return user.name;
+      return formatCapitalizedName(user.name);
     }
     if (userRole === 'teacher') return 'Teacher';
     if (userRole === 'principal') return 'Principal';

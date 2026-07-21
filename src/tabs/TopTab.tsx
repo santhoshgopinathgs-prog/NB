@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAppContext } from '../context/AppContext';
 import { Trophy, Medal } from 'lucide-react';
+import { formatCapitalizedName } from '../utils/formatName';
 
 export const TopTab = () => {
   const { t, language, user, leaderboard } = useAppContext();
@@ -8,7 +9,7 @@ export const TopTab = () => {
 
   const displayLeaderboard = leaderboard.map((u, index) => ({
     rank: index + 1,
-    name: u.name,
+    name: formatCapitalizedName(u.name),
     xp: u.xp,
     region: language === 'EN' ? 'Karnataka' : 'ಕರ್ನಾಟಕ',
     isMe: u.id === user?.id

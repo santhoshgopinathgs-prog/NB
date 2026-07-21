@@ -123,10 +123,13 @@ export const RAW_COLLECTED_STUDENTS: Omit<CollectedStudent, 'id'>[] = [
   { name: 'Bhoomika (Teacher)', age: 24, gender: 'Female', school: 'Vidhatha High School', classLevel: 9, language: 'en', points: 0 }
 ];
 
+import { formatCapitalizedName } from '../utils/formatName';
+
 export const COLLECTED_STUDENTS: CollectedStudent[] = RAW_COLLECTED_STUDENTS
   .sort((a, b) => b.points - a.points)
   .map((s, idx) => ({
     ...s,
+    name: formatCapitalizedName(s.name),
     id: `cs_${idx + 1}`,
     rollNo: `80${(idx + 1).toString().padStart(2, '0')}`,
     attendance: Math.min(100, Math.max(72, 98 - (idx % 12))),

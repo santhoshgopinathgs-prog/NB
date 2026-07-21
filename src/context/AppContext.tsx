@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { Language, translations, mockQuizzes } from '../data/mockData';
 import { supabase } from '../utils/supabaseClient';
-
+import { formatCapitalizedName } from '../utils/formatName';
 import { COLLECTED_STUDENTS } from '../data/collectedStudents';
 
 export interface Certificate {
@@ -196,7 +196,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       const { data: certs } = await supabase.from('user_certificates').select('subject, class_level').eq('user_id', userId);
 
       const storedName = localStorage.getItem(`nb_user_profile_name_${userId}`) || localStorage.getItem('nb_user_profile_name');
-      const displayName = profile?.name || authUser.user_metadata?.name || storedName || (authUser.email ? authUser.email.split('@')[0] : 'User');
+      const rawName = profile?.name || authUser.user_metadata?.name || storedName || (authUser.email ? authUser.email.split('@')[0] : 'User');
+      const displayName = formatCapitalizedName(rawName);
 
       setUser({
         id: authUser.id,
