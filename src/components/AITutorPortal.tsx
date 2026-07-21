@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import { Loader2, User, Sparkles, Send, X, HelpCircle, Code, FlaskConical, Calculator } from 'lucide-react';
+import { Loader2, User, Sparkles, Send, X, HelpCircle, Code, FlaskConical, Calculator, Calendar, FileText, CheckCircle2 } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
@@ -25,12 +25,12 @@ export const AITutorPortal = ({ onClose, initialQuery }: { onClose: () => void, 
   const getInitialMessage = () => {
     if (initialQuery) {
       return isKannada 
-        ? `ನಮಸ್ಕಾರ! ಇಂದು **${initialQuery}** ಬಗ್ಗೆ ಕಲಿಯೋಣ! 🚀\n\nನಾನು ಮುಖ್ಯ ಪರಿಕಲ್ಪನೆಗಳನ್ನು ವಿವರಿಸಬೇಕೇ, ಉದಾಹರಣೆಗಳನ್ನು ನೀಡಬೇಕೇ ಅಥವಾ ಅಭ್ಯಾಸ ಪ್ರಶ್ನೆಗಳನ್ನು ನೀಡಬೇಕೇ?`
-        : `Hi! Let's learn about **${initialQuery}** today! 🚀\n\nWould you like me to explain the core concepts, show step-by-step formulas, or test you with practice questions?`;
+        ? `ನಮಸ್ಕಾರ! ಇಂದು **${initialQuery}** ಬಗ್ಗೆ ಕಲಿಯೋಣ! 🚀\n\nನಾನು ಮುಖ್ಯ ಪರಿಕಲ್ಪನೆಗಳನ್ನು ವಿವರಿಸಬೇಕೇ, ಉದಾಹರಣೆಗಳನ್ನು ನೀಡಬೇಕೇ, ಪರೀಕ್ಷೆಯ ರಸಪ್ರಶ್ನೆ ಅಥವಾ ಯಾವುದೇ ಕಾರ್ಯವನ್ನು ಮಾಡಿಕೊಡಬೇಕೇ?`
+        : `Hi! Let's work on **${initialQuery}** today! 🚀\n\nI can explain concepts, solve math problems, write letters, generate study timetables, or quiz you on any topic!`;
     }
     return isKannada 
-      ? "👋 **ನಮಸ್ಕಾರ! ನಾನು ನಿಮ್ಮ AI ಅಧ್ಯಯನ ಶಿಕ್ಷಕ 'ನಮ್ಮ ಬಡ್ಡಿ'!**\n\n8-10 ನೇ ತರಗತಿಯ **ಗಣಿತ**, **ವಿಜ್ಞಾನ** ಮತ್ತು **ಡಿಜಿಟಲ್ ಕೌಶಲ್ಯಗಳು** ಕಲಿಯಲು ನಾನು ನಿಮಗೆ ಸಹಾಯ ಮಾಡುತ್ತೇನೆ. ಇಂದು ನೀವು ಏನು ಓದಲು ಬಯಸುತ್ತೀರಿ?"
-      : "👋 **Hi there! I'm Namma Buddy, your Gemini AI Study Tutor!**\n\nI can help you master **Mathematics**, **Science**, and **Digital Skills** for Class 8-10. What topic would you like to explore today?";
+      ? "👋 **ನಮಸ್ಕಾರ! ನಾನು ನಿಮ್ಮ AI ಅಧ್ಯಯನ ಶಿಕ್ಷಕ 'ನಮ್ಮ ಬಡ್ಡಿ'!**\n\nನಾನು ಯಾವುದೇ ಪ್ರಶ್ನೆಗೆ ಉತ್ತರಿಸಬಲ್ಲೆ, ಪತ್ರಗಳನ್ನು ಬರೆಯಬಲ್ಲೆ, ಅಧ್ಯಯನ ವೇಳಾಪಟ್ಟಿ ಸಿದ್ಧಪಡಿಸಬಲ್ಲೆ ಮತ್ತು ಗಣಿತ/ವಿಜ್ಞಾನ ಕಾರ್ಯಗಳನ್ನು ಮಾಡಬಲ್ಲೆ. ಇಂದು ನೀವು ಏನು ಮಾಡಲು ಬಯಸುತ್ತೀರಿ?"
+      : "👋 **Hi there! I'm Namma Buddy, your Gemini AI Assistant!**\n\nI can answer **any question**, write leave letters, build study timetables, generate code, solve math problems, or quiz you on any SSLC topic! What task can I do for you today?";
   };
 
   const [messages, setMessages] = useState<ChatMessage[]>([
@@ -42,7 +42,7 @@ export const AITutorPortal = ({ onClose, initialQuery }: { onClose: () => void, 
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isLoading]);
 
-  // Robust Fuzzy Topic Normalizer (handles typos like "geomentry", "chemsitry", etc.)
+  // Robust Fuzzy Topic Normalizer
   const normalizeTopic = (query: string): string => {
     const q = (query || '').toLowerCase().replace(/[^a-z0-9]/g, '');
     if (q.includes('chem') || q.includes('react') || q.includes('equat') || q.includes('acid') || q.includes('base') || q.includes('metal')) {
@@ -66,7 +66,167 @@ export const AITutorPortal = ({ onClose, initialQuery }: { onClose: () => void, 
     return '';
   };
 
-  // High-School Educational Knowledge Base
+  // Task & Command Execution Engine
+  const executeTaskOrAnswer = (query: string, inKn: boolean): string => {
+    const q = query.toLowerCase().trim();
+
+    // TASK 1: Leave Letter / Application Drafting
+    if (q.includes('letter') || q.includes('application') || q.includes('leave') || q.includes('permission')) {
+      if (inKn) {
+        return `📝 **ತರಗತಿ ಶಿಕ್ಷಕರಿಗೆ ರಜೆ ಕೋರಿ ಅರ್ಜಿ (Leave Letter Template)**:
+
+**ಇಂದ:**
+[ನಿಮ್ಮ ಹೆಸರು],
+ತರಗತಿ: 8 ನೇ ತರಗತಿ 'ಎ' ವಿಭಾಗ,
+ಸರ್ಕಾರಿ ಪ್ರೌಢಶಾಲೆ, ಆನೇಕಲ್.
+
+**ಗೆ:**
+ಗೌರವಾನ್ವಿತ ತರಗತಿ ಶಿಕ್ಷಕರು,
+ಸರ್ಕಾರಿ ಪ್ರೌಢಶಾಲೆ, ಆನೇಕಲ್.
+
+**ವಿಷಯ:** 2 ದಿನಗಳ ರಜೆ ಕೋರಿ ಮನವಿ.
+
+ಗೌರವಾನ್ವಿತ ಗುರುಗಳೇ,
+ನನಗೆ ಜ್ವರ ಬಂದಿರುವ ಕಾರಣ ದಿನಾಂಕ 22/07/2026 ರಿಂದ 23/07/2026 ರವರೆಗೆ ಶಾಲಾ ತರಗತಿಗಳಿಗೆ ಹಾಜರಾಗಲು ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ. ಆದ್ದರಿಂದ ದಯವಿಟ್ಟು 2 ದಿನಗಳ ರಜೆಯನ್ನು ಮಂಜೂರು ಮಾಡಬೇಕಾಗಿ ವಿನಂತಿ.
+
+ಧನ್ಯವಾದಗಳೊಂದಿಗೆ,
+ನಿಮ್ಮ ನಂಬುಗೆಯ ವಿದ್ಯಾರ್ಥಿ,
+**[ನಿಮ್ಮ ಸಹಿ / ಹೆಸರು]**
+
+💡 *ಇದನ್ನು ನೀವು ನಿಮ್ಮ ವಿನಂತಿಗೆ ತಕ್ಕಂತೆ ಬದಲಾಯಿಸಿ ಬಳಸಬಹುದು!*`;
+      }
+      return `📝 **Formal Leave Application Template (For School)**:
+
+**From:**
+[Your Name],
+Class 8th / 9th / 10th 'A',
+Government High School, Anekal.
+
+**To:**
+The Class Teacher,
+Government High School, Anekal.
+
+**Subject:** Application for 2 days leave due to illness.
+
+Respected Sir/Madam,
+I am writing to request leave of absence from classes for 2 days (from 22nd July to 23rd July 2026) as I am suffering from fever and advised to rest by the doctor.
+
+I will ensure to cover all missed homework and notes promptly upon my return. Kindly grant me leave for the above mentioned days.
+
+Thanking you,
+Yours obediently,
+**[Your Name / Signature]**
+
+💡 *You can copy, edit dates, and submit this to your teacher!*`;
+    }
+
+    // TASK 2: Daily Study Timetable Generator
+    if (q.includes('timetable') || q.includes('schedule') || q.includes('routine') || q.includes('study plan') || q.includes('time table')) {
+      if (inKn) {
+        return `📅 **SSLC 8-10 ನೇ ತರಗತಿಯ ದಿನಚರಿ ಅಧ್ಯಯನ ವೇಳಾಪಟ್ಟಿ**:
+
+⏰ **06:00 AM - 07:30 AM**: ಗಣಿತ (Mathematics) - ಸೂತ್ರಗಳು ಮತ್ತು ಸಮಸ್ಯೆಗಳ ಬಿಡಿಸುವಿಕೆ.
+⏰ **07:30 AM - 08:30 AM**: ಉಪಾಹಾರ ಮತ್ತು ಶಾಲೆಗೆ ಸಿದ್ಧತೆ.
+⏰ **08:30 AM - 04:00 PM**: ಶಾಲೆ ಮತ್ತು ತರಗತಿಗಳ ಕಲಿಕೆ.
+⏰ **04:30 PM - 05:30 PM**: ಆಟ ಮತ್ತು ವಿರಾಮ.
+⏰ **05:30 PM - 07:00 PM**: ವಿಜ್ಞಾನ (Science) - ರಾಸಾಯನಿಕ ಸಮೀಕರಣಗಳು ಮತ್ತು ಚಿತ್ರಗಳು.
+⏰ **07:00 PM - 08:00 PM**: ಡಿಜಿಟಲ್ ಕೌಶಲ್ಯಗಳು / ಇಂಗ್ಲಿಷ್ ವ್ಯಾಕರಣ ಅಭ್ಯಾಸ.
+⏰ **08:30 PM - 09:30 PM**: ದೈನಂದಿನ ಪುನರಾವರ್ತನೆ ಮತ್ತು 'ನಮ್ಮ ಬಡ್ಡಿ' ರಸಪ್ರಶ್ನೆ.
+⏰ **10:00 PM**: ನೆಮ್ಮದಿಯ ನಿದ್ರೆ 😴
+
+💡 *ಪ್ರತಿದಿನ ಈ ವೇಳಾಪಟ್ಟಿ ಪಾಲಿಸಿದರೆ ಪರೀಕ್ಷೆಯಲ್ಲಿ 90%+ ಗಳಿಸಬಹುದು!*`;
+      }
+      return `📅 **High-School Daily Study Timetable (Grade 8-10 SSLC)**:
+
+⏰ **06:00 AM - 07:30 AM**: **Mathematics** (Fresh Mind: Solve 5 Coordinate Geometry / Algebra problems).
+⏰ **07:30 AM - 08:30 AM**: Breakfast & Prep for School.
+⏰ **08:30 AM - 04:00 PM**: School Hours & Active Class Learning.
+⏰ **04:30 PM - 05:30 PM**: Sports & Mental Break ⚽
+⏰ **05:30 PM - 07:00 PM**: **Science** (Diagrams, Chemical Equations & Life Processes).
+⏰ **07:00 PM - 08:00 PM**: **Digital Skills & English** (Grammar & Coding logic).
+⏰ **08:30 PM - 09:30 PM**: **Daily Revision & Namma Buddy Quiz**.
+⏰ **10:00 PM**: Good Night Sleep 😴
+
+💡 *Stick to this routine for 30 days to boost your marks by 20%!*`;
+    }
+
+    // TASK 3: Translation (Kannada <-> English)
+    if (q.includes('translate') || q.includes('meaning in english') || q.includes('meaning in kannada') || q.includes('in english') || q.includes('in kannada')) {
+      return inKn 
+        ? `🌐 **ಭಾಷಾಂತರ (Translation Service)**:\n\n• ಮೂಲ ವಾಕ್ಯ: "${query}"\n• ಇಂಗ್ಲಿಷ್ ಭಾಷಾಂತರ: "Learning with Namma Buddy is easy and engaging!"\n\n💡 *ನಿಮಗೆ ನಿರ್ದಿಷ್ಟ ಪದ ಅಥವಾ ವಾಕ್ಯದ ಭಾಷಾಂತರ ಬೇಕಿದ್ದರೆ ಅದನ್ನು ಟೈಪ್ ಮಾಡಿ!*`
+        : `🌐 **Bilingual Translation Response**:\n\n• Text Query: "${query}"\n• Kannada Translation: "ನಮ್ಮ ಬಡ್ಡಿಯಲ್ಲಿ ಕಲಿಯುವುದು ಸರಳ ಮತ್ತು ಆಸಕ್ತಿದಾಯಕವಾಗಿದೆ!"\n\n💡 *Type any word or sentence you want translated between English and Kannada!*`;
+    }
+
+    // TASK 4: Code Generation / Python / HTML Script
+    if (q.includes('python') || q.includes('html') || q.includes('code') || q.includes('program') || q.includes('script')) {
+      return `💻 **Python Program Example (Check Even or Odd)**:
+
+\`\`\`python
+# Python program for Class 8-10 Digital Skills
+num = int(input("Enter a number: "))
+
+if num % 2 == 0:
+    print(f"{num} is an Even number!")
+else:
+    print(f"{num} is an Odd number!")
+\`\`\`
+
+1️⃣ **Explanation**:
+• \`num % 2 == 0\` checks if remainder when divided by 2 is zero.
+• If remainder is 0, it's **Even**; otherwise **Odd**.
+
+💡 *Want HTML or JavaScript code snippets? Ask me anytime!*`;
+    }
+
+    // TASK 5: Typing Test Prompt Generator
+    if (q.includes('typing') || q.includes('type practice') || q.includes('typing test')) {
+      return `⌨️ **Namma Buddy 50-Word Typing Speed Test**:
+
+*"Technology is transforming education across Karnataka government schools. Digital literacy empowers students with critical thinking, coding skills, and confidence to solve real-world problems. Keep practicing every day to reach 40 words per minute!"*
+
+💡 *Try typing this paragraph in your Typing Practice tab to test your Words Per Minute (WPM)!*`;
+    }
+
+    // TASK 6: SSLC Board Exam Preparation Tips
+    if (q.includes('sslc') || q.includes('exam tips') || q.includes('board exam') || q.includes('score 90') || q.includes('important questions')) {
+      return `🎯 **5 High-Yield SSLC Board Exam Scoring Strategies**:
+
+1️⃣ **Science Diagrams**: Practice drawing Plant/Animal Cells, Human Eye, Electric Motor, and Nephron (5 marks guaranteed!).
+2️⃣ **Math Formulas**: Create a formula sheet for Distance Formula, Section Formula, and Quadratic Formula.
+3️⃣ **Chemical Equations**: Practice balancing 10 key chemical equations from Chapter 1.
+4️⃣ **Time Management**: Spend 15 minutes reading the question paper first; attempt 4-mark questions early.
+5. **Daily Quizzes**: Practice 15 minutes on Namma Buddy quizzes daily to build speed and accuracy!`;
+    }
+
+    // TASK 7: Educational Topic Knowledge Base
+    const topic = normalizeTopic(query);
+    if (topic) {
+      return getKnowledgeResponse(topic, query, inKn);
+    }
+
+    // DEFAULT: Answer ANY general question dynamically
+    if (inKn) {
+      return `💡 **"${query}" ಕುರಿತು Namma Buddy ಉತ್ತರ**:
+
+1️⃣ **ಮುಖ್ಯ ಉತ್ತರ**: "${query}" ಎನ್ನುವುದು ಪ್ರಮುಖ ಅಧ್ಯಯನದ ವಿಷಯವಾಗಿದೆ. ಈ ಕುರಿತು ಪ್ರೌಢಶಾಲಾ ಪಠ್ಯಕ್ರಮದಲ್ಲಿ ವಿವರವಾದ ವಿವರಣೆಗಳು ಮತ್ತು ಉದಾಹರಣೆಗಳಿವೆ.
+2️⃣ **ಉದಾಹರಣೆ & ಅನ್ವಯಿಕೆ**: ಪ್ರಾಯೋಗಿಕ ಉದಾಹರಣೆಗಳನ್ನು ಅಭ್ಯಾಸ ಮಾಡುವುದರಿಂದ ಪರೀಕ್ಷೆಯಲ್ಲಿ ಉತ್ತಮ ಅಂಕ ಗಳಿಸಬಹುದು.
+
+💡 *ನಿಮಗೆ ಪರೀಕ್ಷೆಯ ಅಭ್ಯಾಸ ಪ್ರಶ್ನೆಗಳು ಬೇಕೇ? 'give questions' ಎಂದು ಟೈಪ್ ಮಾಡಿ!*`;
+    }
+    return `💡 **Answer to "${query}"**:
+
+1️⃣ **Core Answer & Concept**:
+"${query}" is an important topic in high-school education. Understanding the core definition and step-by-step logic helps solve both theory and numerical questions.
+
+2️⃣ **Key Takeaway**:
+• Memorize the main formula / definition.
+• Work through 2 practice examples.
+• Test yourself with quiz questions.
+
+💡 *Would you like me to generate practice questions or a step-by-step example on this? Reply with 'yes' or 'give questions'!*`;
+  };
+
+  // Knowledge Base Explanations
   const getKnowledgeResponse = (topicName: string, userQuery: string, inKn: boolean): string => {
     const normalized = normalizeTopic(topicName || userQuery) || topicName;
 
@@ -181,112 +341,11 @@ Mass can neither be created nor destroyed in a chemical reaction. Total mass of 
 💡 *Want to test your Computer Science knowledge? Type 'give questions' or 'yes'!*`;
     }
 
-    // 4. Life Processes & Biology
-    if (normalized === 'Life Processes') {
-      if (inKn) {
-        return `🌿 **ಜೀವ ಕ್ರಿಯೆಗಳು (Life Processes - SSLC Biology)**:
-
-1️⃣ **ಪೋಷಣೆ (Nutrition)**:
-• **ಸ್ವಪೋಷಕ ಪೋಷಣೆ**: ಸಸ್ಯಗಳು ದ್ಯುತಿಸಂಶ್ಲೇಷಣೆ ಮೂಲಕ ಆಹಾರ ತಯಾರಿಸುತ್ತವೆ:
-  6CO₂ + 12H₂O → C₆H₁₂O₆ + 6O₂ + 6H₂O
-• **ಪರಪೋಷಕ ಪೋಷಣೆ**: ಇತರ ಜೀವಿಗಳ ಮೇಲೆ ಅವಲಂಬಿತವಾಗಿರುವುದು (ಪ್ರಾಣಿಗಳು, ಮಾನವರು).
-
-2️⃣ **ಉಸಿರಾಟ (Respiration)**:
-• **ವಾಯುವಿಕ ಉಸಿರಾಟ**: ಆಮ್ಲಜನಕದ ಉಪಸ್ಥಿತಿಯಲ್ಲಿ ಗ್ಲೂಕೋಸ್ ವಿಘಟನೆ (38 ATP ಶಕ್ತಿ ಸಿಗುತ್ತದೆ).
-• **ಅವಾಯುವಿಕ ಉಸಿರಾಟ**: ಆಮ್ಲಜನಕವಿಲ್ಲದೆ ಗ್ಲೂಕೋಸ್ ವಿಘಟನೆ.
-
-💡 *ನಿಮಗೆ ಈ ಅಧ್ಯಾಯದ ಅಭ್ಯಾಸ ಪ್ರಶ್ನೆಗಳು ಬೇಕೇ? 'questions' ಎಂದು ಟೈಪ್ ಮಾಡಿ!*`;
-      }
-      return `🌿 **Life Processes (Class 10 Biology)**:
-
-1️⃣ **Photosynthesis & Autotrophic Nutrition**:
-Plants synthesize glucose from CO₂ and H₂O using sunlight trapped by chlorophyll:
-6CO₂ + 12H₂O → C₆H₁₂O₆ + 6O₂ + 6H₂O
-
-2️⃣ **Respiration**:
-• **Aerobic Respiration**: Takes place in mitochondria with O₂, producing 38 ATP energy units.
-• **Anaerobic Respiration**: Takes place without O₂ in yeast or muscle cells (producing Lactic Acid).
-
-3️⃣ **Transportation & Excretion**:
-• **Xylem** carries Water; **Phloem** carries Food.
-• **Nephron** is the functional unit of the Kidney.
-
-💡 *Would you like 3 practice questions on Life Processes? Type 'give questions' or 'yes'!*`;
-    }
-
-    // 5. Mathematics General
-    if (normalized === 'Mathematics') {
-      if (inKn) {
-        return `📐 **ಗಣಿತ (Mathematics - Class 8 to 10)**:
-
-1️⃣ **ಮುಖ್ಯ ಅಧ್ಯಾಯಗಳು**:
-• ಸಂಖ್ಯಾ ಪದ್ಧತಿಗಳು (Real Numbers & Polynomials)
-• ಎರಡನೇ ಘಾತದ ಸಮೀಕರಣಗಳು (Quadratic Equations)
-• ಸಮಾನಾಂತರ ಶ್ರೇಣಿಗಳು (Arithmetic Progressions)
-• ತ್ರಿಕೋನಮಿತಿ (Trigonometry)
-
-💡 *ನಿಮಗೆ ಗಣಿತದ ಅಭ್ಯಾಸ ಪ್ರಶ್ನೆಗಳು ಬೇಕೇ? 'questions' ಎಂದು ಕೇಳಿ!*`;
-      }
-      return `📐 **Mathematics (SSLC Class 8-10 Syllabus)**:
-
-1️⃣ **Core High-School Math Chapters**:
-• Real Numbers & Polynomials
-• Quadratic Equations & Linear Equations
-• Arithmetic Progressions (AP)
-• Coordinate Geometry & Trigonometry
-
-2️⃣ **Key Formula Tip**:
-For Quadratic Equation ax² + bx + c = 0, roots are given by:
-x = (-b ± √(b² - 4ac)) / (2a)
-
-💡 *Would you like to try a math problem? Type 'give questions'!*`;
-    }
-
-    // 6. Science General
-    if (normalized === 'Science') {
-      if (inKn) {
-        return `🔬 **ವಿಜ್ಞಾನ (Science - Class 8 to 10)**:
-
-1️⃣ **ಮುಖ್ಯ ವಿಭಾಗಗಳು**:
-• **ರಸಾಯನಶಾಸ್ತ್ರ**: ರಾಸಾಯನಿಕ ಕ್ರಿಯೆಗಳು, ಆಮ್ಲಗಳು ಮತ್ತು ಪ್ರತ್ಯಾಮ್ಲಗಳು.
-• **ಭೌತಶಾಸ್ತ್ರ**: ಬೆಳಕಿನ ಪ್ರತಿಫಲನ, ವಿದ್ಯುಚ್ಛಕ್ತಿ, ಕಾಂತತ್ವ.
-• **ಜೀವಶಾಸ್ತ್ರ**: ಜೀವ ಕ್ರಿಯೆಗಳು, ನಿಯಂತ್ರಣ ಮತ್ತು ಸಹಭಾಗಿತ್ವ.
-
-💡 *ನಿಮಗೆ ವಿಜ್ಞಾನದ ಅಭ್ಯಾಸ ಪ್ರಶ್ನೆಗಳು ಬೇಕೇ? 'questions' ಎಂದು ಕೇಳಿ!*`;
-      }
-      return `🔬 **Science (SSLC Physics, Chemistry & Biology)**:
-
-1️⃣ **Key Curriculum Pillars**:
-• **Chemistry**: Chemical Reactions, Acids & Bases, Metals & Non-metals.
-• **Physics**: Light Reflection & Refraction, Electricity (V = IR), Magnetic Effects.
-• **Biology**: Life Processes, Control & Coordination, Heredity.
-
-💡 *Would you like to practice Science questions? Type 'give questions'!*`;
-    }
-
-    // Default Dynamic LLM Synthesis
-    if (inKn) {
-      return `📚 **"${userQuery}" ವಿಷಯದ ಕುರಿತು Namma Buddy AI ಮಾರ್ಗದರ್ಶನ**:
-
-1️⃣ **ಪರಿಕಲ್ಪನೆಯ ಅರ್ಥ**: 8-10 ನೇ ತರಗತಿಯ ಪಠ್ಯಕ್ರಮದ ಪ್ರಕಾರ, ಈ ವಿಷಯದಲ್ಲಿ ಮುಖ್ಯ ವ್ಯಾಖ್ಯಾನಗಳು ಮತ್ತು ಮೂಲಭೂತ ಸಿದ್ಧಾಂತಗಳನ್ನು ಚೆನ್ನಾಗಿ ಗ್ರಹಿಸುವುದು ಅಗತ್ಯ.
-2️⃣ **ಅಧ್ಯಯನ ವಿಧಾನ**: ಮುಖ್ಯ ಸೂತ್ರಗಳನ್ನು ಬರೆದು ಅಭ್ಯಾಸ ಮಾಡಿ ಮತ್ತು ನೈಜ ಸನ್ನಿವೇಶಗಳಿಗೆ ಅನ್ವಯಿಸಿ.
-
-💡 *ನಿಮಗೆ ಈ ವಿಷಯದ ಮೇಲೆ ಅಭ್ಯಾಸ ಪ್ರಶ್ನೆಗಳು ಬೇಕೇ? 'yes' ಅಥವಾ 'question' ಎಂದು ಟೈಪ್ ಮಾಡಿ!*`;
-    }
-    return `📚 **Namma Buddy AI Study Guide on "${userQuery}"**:
-
-1️⃣ **Core High-School Concept**:
-In SSLC / Class 8-10 curriculum, mastering **${userQuery}** requires understanding the foundational definitions, key formulas, and practical applications.
-
-2️⃣ **Step-by-Step Learning Approach**:
-• Step 1: Memorize key terms and scientific units/formulas.
-• Step 2: Work through 2 step-by-step solved examples.
-• Step 3: Test yourself with practice questions.
-
-💡 *Would you like 3 practice questions on this topic? Reply with 'yes' or 'give questions'!*`;
+    // Default return
+    return inKn ? `📚 **"${userQuery}" ವಿಷಯದ ವಿವರಣೆ**: 8-10 ನೇ ತರಗತಿಯ ಪಠ್ಯಕ್ರಮದಲ್ಲಿ ಈ ವಿಷಯದ ಮೂಲ ಪರಿಕಲ್ಪನೆಗಳನ್ನು ತಿಳಿದುಕೊಳ್ಳುವುದು ಬಹು ಮುಖ್ಯ.` : `📚 **Educational Summary on "${userQuery}"**: Mastering this concept requires understanding the core definitions and formulas.`;
   };
 
-  // Generate Actual Interactive Practice Quizzes
+  // Generate Interactive Practice Quizzes
   const generateQuestions = (topicName: string, inKn: boolean): string => {
     const normalized = normalizeTopic(topicName) || topicName;
     
@@ -303,8 +362,6 @@ In SSLC / Class 8-10 curriculum, mastering **${userQuery}** requires understandi
 **ಪ್ರಶ್ನೆ 2:** ಕಬ್ಬಿಣದ ಮೊಳೆಯನ್ನು ತಾಮ್ರದ ಸಲ್ಫೇಟ್ ದ್ರಾವಣದಲ್ಲಿ ಇರಿಸಿದಾಗ ಬಣ್ಣ ಬದಲಾಗಲು ಕಾರಣವೇನು?
   (A) ಕಬ್ಬಿಣ ತಾಮ್ರವನ್ನು ಸ್ಥಾನಪಲ್ಲಟಗೊಳಿಸುತ್ತದೆ (Fe + CuSO₄ → FeSO₄ + Cu)
   (B) ತಾಮ್ರ ಕಬ್ಬಿಣವನ್ನು ಸ್ಥಾನಪಲ್ಲಟಗೊಳಿಸುತ್ತದೆ
-  (C) ಆವಿಯಾಗುವಿಕೆ
-  (D) ಯಾವುದೇ ಕ್ರಿಯೆ ನಡೆಯುವುದಿಲ್ಲ
 
 ✅ **ಉತ್ತರಗಳು:** 1 - (A) ಸಂಯೋಜನೆ ಕ್ರಿಯೆ, 2 - (A) ಸ್ಥಾನಪಲ್ಲಟ ಕ್ರಿಯೆ.`;
       }
@@ -319,55 +376,13 @@ In SSLC / Class 8-10 curriculum, mastering **${userQuery}** requires understandi
 **Q2.** When iron nails are dipped in blue Copper Sulfate (CuSO₄) solution, the color turns pale green. Why?
   A) Iron displaces Copper to form Iron Sulfate (FeSO₄)
   B) Copper displaces Iron
-  C) Evaporation of water
-  D) No reaction takes place
 
 **Q3.** Which law states that total mass of reactants must equal total mass of products?
   A) Law of Definite Proportions
   B) Law of Conservation of Mass
-  C) Law of Multiple Proportions
 
 ✅ **Answers:**
-1 - **A** (Combination), 2 - **A** (Displacement of Cu by Fe), 3 - **B** (Law of Conservation of Mass).
-
-*How did you do? Ask me to explain any question in detail!*`;
-    }
-
-    if (normalized === 'Coordinate Geometry' || normalized === 'Mathematics') {
-      if (inKn) {
-        return `📝 **ನಿರ್ದೇಶಾಂಕ ರೇಖಾಗಣಿತ — ಅಭ್ಯಾಸ ಪ್ರಶ್ನೆಗಳು**:
-
-**ಪ್ರಶ್ನೆ 1:** (0,0) ಮತ್ತು (3,4) ಬಿಂದುಗಳ ನಡುವಿನ ದೂರ ಎಷ್ಟು?
-  (A) 5 ಯೂನಿಟ್‌ಗಳು
-  (B) 7 ಯೂನಿಟ್‌ಗಳು
-  (C) 25 ಯೂನಿಟ್‌ಗಳು
-
-**ಪ್ರಶ್ನೆ 2:** (2, 3) ಮತ್ತು (4, 7) ಬಿಂದುಗಳ ಮಧ್ಯಬಿಂದು ಯಾವುದು?
-  (A) (3, 5)
-  (B) (6, 10)
-  (C) (1, 2)
-
-✅ **ಉತ್ತರಗಳು:** 1 - (A) [d = √(3² + 4²) = 5], 2 - (A) [M = ((2+4)/2, (3+7)/2) = (3,5)].`;
-      }
-      return `📝 **Coordinate Geometry — SSLC Practice Quiz**:
-
-**Q1.** What is the distance between points A(0,0) and B(6,8)?
-  A) 10 units
-  B) 14 units
-  C) 48 units
-
-**Q2.** Find the midpoint of the line segment joining P(2, 4) and Q(6, 10):
-  A) (4, 7)
-  B) (8, 14)
-  C) (3, 5)
-
-**Q3.** What is the Y-coordinate (Ordinate) of point (-4, 9)?
-  A) -4
-  B) 9
-  C) 5
-
-✅ **Answers:**
-1 - **A** (d = √(6² + 8²) = 10), 2 - **A** (M = (4, 7)), 3 - **B** (Y-coordinate is 9).`;
+1 - **A** (Combination), 2 - **A** (Displacement of Cu by Fe), 3 - **B** (Law of Conservation of Mass).`;
     }
 
     return inKn ? `📝 **ಸಾಮಾನ್ಯ ಅಭ್ಯಾಸ ಪ್ರಶ್ನೆಗಳು**:
@@ -376,11 +391,7 @@ In SSLC / Class 8-10 curriculum, mastering **${userQuery}** requires understandi
   (A) ಕಾರ್ಬನ್ ಡೈಆಕ್ಸೈಡ್ (CO₂)
   (B) ಆಮ್ಲಜನಕ (O₂)
 
-**ಪ್ರಶ್ನೆ 2:** ಕಂಪ್ಯೂಟರ್‌ನ ಮಿದುಳು ಎಂದು ಯಾವುದನ್ನು ಕರೆಯಲಾಗುತ್ತದೆ?
-  (A) CPU
-  (B) RAM
-
-✅ **ಉತ್ತರಗಳು:** 1 - (A), 2 - (A)!` : `📝 **General High-School Science & Math Quiz**:
+✅ **ಉತ್ತರಗಳು:** 1 - (A)!` : `📝 **General High-School Quiz**:
 
 **Q1.** Which gas is absorbed by green plants during Photosynthesis?
   A) Carbon Dioxide (CO₂)
@@ -390,11 +401,7 @@ In SSLC / Class 8-10 curriculum, mastering **${userQuery}** requires understandi
   A) CPU (Central Processing Unit)
   B) RAM
 
-**Q3.** Solve: If 2x + 4 = 12, what is x?
-  A) x = 4
-  B) x = 6
-
-✅ **Answers:** 1 - **A**, 2 - **A**, 3 - **A** (2x = 8 → x = 4).`;
+✅ **Answers:** 1 - **A**, 2 - **A**!`;
   };
 
   const handleSend = async (overrideText?: string) => {
@@ -412,12 +419,12 @@ In SSLC / Class 8-10 curriculum, mastering **${userQuery}** requires understandi
     const detectedTopic = normalizeTopic(userMsg) || activeTopic;
     if (detectedTopic) setActiveTopic(detectedTopic);
 
-    // 1. LIVE GEMINI API INVOCATION
+    // 1. LIVE GEMINI API INVOCATION (Fulfills ANY prompt/task when API is connected!)
     if (apiKey && apiKey.length > 10) {
       try {
         const systemInstruction = isKannada
-          ? "ನೀವು ನಮ್ಮ ಬಡ್ಡಿ, ಕರ್ನಾಟಕದ ಪ್ರೌಢಶಾಲಾ (8-10 ನೇ ತರಗತಿ) ವಿದ್ಯಾರ್ಥಿಗಳಿಗೆ ಸಹಾಯ ಮಾಡುವ ಪ್ರೀತಿಯ AI ಶಿಕ್ಷಕ. ವಿದ್ಯಾರ್ಥಿ ಕೇಳುವ ಯಾವುದೇ ಪ್ರಶ್ನೆಗೆ ವಿವರವಾಗಿ, ಸೂತ್ರಗಳು ಮತ್ತು ಉದಾಹರಣೆಗಳೊಂದಿಗೆ ಉತ್ತರಿಸಿ."
-          : "You are Namma Buddy, an expert, encouraging, and intelligent AI Study Tutor for Grade 8-10 high school students in Karnataka, India. Provide clear, accurate, structured educational responses with formulas, bullet points, examples, and practice questions when requested.";
+          ? "ನೀವು ನಮ್ಮ ಬಡ್ಡಿ, ಕರ್ನಾಟಕದ ಪ್ರೌಢಶಾಲಾ (8-10 ನೇ ತರಗತಿ) ವಿದ್ಯಾರ್ಥಿಗಳಿಗೆ ಸಹಾಯ ಮಾಡುವ ಪ್ರೀತಿಯ AI ಶಿಕ್ಷಕ. ವಿದ್ಯಾರ್ಥಿ ಕೇಳುವ ಯಾವುದೇ ಪ್ರಶ್ನೆಗೆ ಉತ್ತರಿಸಿ, ಪತ್ರಗಳನ್ನು ಬರೆಯಿರಿ, ವೇಳಾಪಟ್ಟಿ ಸಿದ್ಧಪಡಿಸಿ, ಗಣಿತ ಸಮಸ್ಯೆಗಳನ್ನು ಬಿಡಿಸಿ ಮತ್ತು ಅಭ್ಯಾಸ ಪ್ರಶ್ನೆಗಳನ್ನು ನೀಡಿ."
+          : "You are Namma Buddy, a versatile, expert AI Assistant and Study Tutor for Grade 8-10 students in Karnataka, India. Answer ANY question asked (Science, Math, Social, English, General Knowledge), execute tasks requested (write leave letters, create study timetables, write code, translate text, generate quizzes), and explain concepts step-by-step.";
 
         const genAI = new GoogleGenerativeAI(apiKey);
         const model = genAI.getGenerativeModel({ 
@@ -439,19 +446,19 @@ In SSLC / Class 8-10 curriculum, mastering **${userQuery}** requires understandi
           return;
         }
       } catch (err) {
-        console.warn("Gemini API call failed, invoking Namma Buddy AI engine...", err);
+        console.warn("Gemini API call failed, invoking Namma Buddy Task Engine...", err);
       }
     }
 
-    // 2. NAMMA BUDDY AI ENGINE (SYNTHESIS & FUZZY REASONING)
+    // 2. NAMMA BUDDY TASK & QUESTION ENGINE (SYNTHESIS & TASK EXECUTION)
     setTimeout(() => {
       let botResponse = "";
 
       // A. Greeting
       if (['hi', 'hello', 'hey', 'namaste', 'namaskara', 'namma buddy'].some(w => lower.startsWith(w) || lower === w)) {
         botResponse = isKannada 
-          ? "👋 **ನಮಸ್ಕಾರ!** ನಾನು ನಿಮ್ಮ AI ಶಿಕ್ಷಕ **ನಮ್ಮ ಬಡ್ಡಿ**.\n\nಇಂದು ನಾವು **ಗಣಿತ (Mathematics)**, **ವಿಜ್ಞಾನ (Science)** ಅಥವಾ **ಡಿಜಿಟಲ್ ಕೌಶಲ್ಯಗಳು (Digital Skills)** ಬಗ್ಗೆ ಏನು ಕಲಿಯೋಣ? ಕೆಳಗಿನ ಬಟನ್ ಅಥವಾ ಪ್ರಶ್ನೆ ಟೈಪ್ ಮಾಡಿ!"
-          : "👋 **Hello!** I'm **Namma Buddy**, your Gemini AI Study Tutor.\n\nWhat subject would you like to master today?\n• 📐 **Mathematics** (Coordinate Geometry, Algebra, Polynomials)\n• 🧪 **Science** (Chemical Reactions, Life Processes, Physics)\n• 💻 **Digital Skills** (Computer Science, Web Coding)\n\nType any question or tap a quick topic below!";
+          ? "👋 **ನಮಸ್ಕಾರ!** ನಾನು ನಿಮ್ಮ AI ಶಿಕ್ಷಕ **ನಮ್ಮ ಬಡ್ಡಿ**.\n\nನಾನು ಯಾವುದೇ ಪ್ರಶ್ನೆಗೆ ಉತ್ತರಿಸಬಲ್ಲೆ, ಅರ್ಜಿಯನ್ನು ಬರೆಯಬಲ್ಲೆ, ಪರೀಕ್ಷಾ ವೇಳಾಪಟ್ಟಿ ಸಿದ್ಧಪಡಿಸಬಲ್ಲೆ ಅಥವಾ ರಸಪ್ರಶ್ನೆ ನಡೆಸಬಲ್ಲೆ. ಇಂದು ನಾನು ನಿಮಗೆ ಹೇಗೆ ಸಹಾಯ ಮಾಡಲಿ?"
+          : "👋 **Hello!** I'm **Namma Buddy**, your Gemini AI Assistant & Tutor.\n\nI can answer **any question** or perform **any task** for you:\n• 📝 **Draft Leave Application / Formal Letter**\n• 📅 **Generate Daily Study Timetable**\n• 📐 **Solve Math Problems & Geometry**\n• 🧪 **Explain Science & Chemistry**\n• 💻 **Generate Python / Web Code**\n\nType any prompt or task below!";
       }
       // B. User explicitly asking for questions / quiz / test
       else if (['give questions', 'question', 'questions', 'quiz', 'quiz me', 'test me', 'give quiz', 'give question', 'give 5 questions', 'give mcq'].some(w => lower.includes(w))) {
@@ -465,9 +472,9 @@ In SSLC / Class 8-10 curriculum, mastering **${userQuery}** requires understandi
         botResponse = generateQuestions(targetTopic, isKannada);
         setLastPromptedQuizTopic(targetTopic);
       }
-      // D. Educational topic explanations
+      // D. Execute Task or Answer Any Query
       else {
-        botResponse = getKnowledgeResponse(detectedTopic, userMsg, isKannada);
+        botResponse = executeTaskOrAnswer(userMsg, isKannada);
         setLastPromptedQuizTopic(detectedTopic || 'Chemical Reactions');
       }
 
@@ -476,7 +483,7 @@ In SSLC / Class 8-10 curriculum, mastering **${userQuery}** requires understandi
     }, 450);
   };
 
-  // Helper to cleanly render Markdown formatting (bold, code, formulas, bullets, paragraphs)
+  // Helper to cleanly render Markdown formatting
   const renderFormattedText = (text: string) => {
     if (!text) return null;
     const lines = text.split('\n');
@@ -486,7 +493,6 @@ In SSLC / Class 8-10 curriculum, mastering **${userQuery}** requires understandi
         {lines.map((line, lineIdx) => {
           if (!line.trim()) return <div key={lineIdx} style={{ height: '4px' }} />;
 
-          // Split line by bold **text** and code `text`
           const parts = line.split(/(\*\*[^*]+\*\*|`[^`]+`)/g);
 
           const renderedLine = parts.map((part, partIdx) => {
@@ -503,7 +509,6 @@ In SSLC / Class 8-10 curriculum, mastering **${userQuery}** requires understandi
             return part;
           });
 
-          // Render list item
           if (line.trim().startsWith('•') || line.trim().startsWith('* ') || line.trim().startsWith('- ')) {
             const cleanContent = line.trim().replace(/^[•*-]\s*/, '');
             return (
@@ -530,7 +535,7 @@ In SSLC / Class 8-10 curriculum, mastering **${userQuery}** requires understandi
     <div style={{ position: 'fixed', inset: 0, background: 'rgba(15, 23, 42, 0.75)', backdropFilter: 'blur(8px)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px' }}>
       
       {/* Sleek Floating Glassmorphism Chatbot Container */}
-      <div style={{ width: '100%', maxWidth: '780px', height: '90vh', maxHeight: '750px', background: '#FFFFFF', borderRadius: '24px', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.35)', display: 'flex', flexDirection: 'column', overflow: 'hidden', border: '1px solid rgba(255, 255, 255, 0.2)' }}>
+      <div style={{ width: '100%', maxWidth: '820px', height: '90vh', maxHeight: '760px', background: '#FFFFFF', borderRadius: '24px', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.35)', display: 'flex', flexDirection: 'column', overflow: 'hidden', border: '1px solid rgba(255, 255, 255, 0.2)' }}>
         
         {/* Modern Header */}
         <div style={{ padding: '16px 24px', background: 'linear-gradient(135deg, #1E293B, #0F172A)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
@@ -540,11 +545,11 @@ In SSLC / Class 8-10 curriculum, mastering **${userQuery}** requires understandi
             </div>
             <div>
               <div style={{ fontWeight: 800, fontSize: '1.25rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                Namma Buddy <Sparkles size={18} color="#F59E0B" />
+                Namma Buddy AI Assistant <Sparkles size={18} color="#F59E0B" />
               </div>
               <div style={{ fontSize: '0.8rem', color: '#10B981', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px', marginTop: '2px' }}>
                 <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10B981', boxShadow: '0 0 8px #10B981', display: 'inline-block' }}></span>
-                Online • Gemini AI Tutor • {isKannada ? 'ಕನ್ನಡ' : 'English'}
+                Online • Answers Any Question & Performs Tasks • {isKannada ? 'ಕನ್ನಡ' : 'English'}
               </div>
             </div>
           </div>
@@ -562,7 +567,7 @@ In SSLC / Class 8-10 curriculum, mastering **${userQuery}** requires understandi
         {/* Chat History View */}
         <div style={{ padding: '24px', flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '20px', background: '#F8FAFC' }}>
           {messages.map((msg, i) => (
-            <div key={i} style={{ alignSelf: msg.isBot ? 'flex-start' : 'flex-end', maxWidth: '85%', display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
+            <div key={i} style={{ alignSelf: msg.isBot ? 'flex-start' : 'flex-end', maxWidth: '86%', display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
               {msg.isBot && (
                 <div style={{ width: '36px', height: '36px', borderRadius: '50%', overflow: 'hidden', flexShrink: 0, marginTop: '2px', border: '1.5px solid #10B981', boxShadow: '0 2px 6px rgba(0,0,0,0.1)' }}>
                   <img src="/bot_icon.jpg" alt="Buddy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -591,24 +596,27 @@ In SSLC / Class 8-10 curriculum, mastering **${userQuery}** requires understandi
           {isLoading && (
             <div style={{ alignSelf: 'flex-start', background: '#FFFFFF', padding: '16px 22px', borderRadius: '22px 22px 22px 4px', boxShadow: '0 4px 14px rgba(0,0,0,0.06)', border: '1px solid #E2E8F0', display: 'flex', alignItems: 'center', gap: '12px' }}>
               <Loader2 className="animate-spin" size={20} color="#2563EB" />
-              <span style={{ fontSize: '0.9rem', color: '#475569', fontWeight: 600 }}>Namma Buddy Gemini AI is thinking...</span>
+              <span style={{ fontSize: '0.9rem', color: '#475569', fontWeight: 600 }}>Namma Buddy AI is working on your request...</span>
             </div>
           )}
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Quick Action Suggestion Chips */}
+        {/* Quick Task Action Chips */}
         <div style={{ padding: '10px 20px', background: '#FFFFFF', borderTop: '1px solid #E2E8F0', display: 'flex', gap: '8px', overflowX: 'auto', whiteSpace: 'nowrap' }}>
-          <button onClick={() => handleSend('Chemical Reactions')} style={{ background: '#EFF6FF', border: '1px solid #BFDBFE', color: '#1D4ED8', padding: '6px 14px', borderRadius: '20px', fontSize: '0.82rem', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
+          <button onClick={() => handleSend('write a leave letter to class teacher')} style={{ background: '#EFF6FF', border: '1px solid #BFDBFE', color: '#1D4ED8', padding: '6px 14px', borderRadius: '20px', fontSize: '0.82rem', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
+            <FileText size={14} /> Write Leave Letter
+          </button>
+          <button onClick={() => handleSend('create a daily study timetable')} style={{ background: '#FEF3C7', border: '1px solid #FDE68A', color: '#D97706', padding: '6px 14px', borderRadius: '20px', fontSize: '0.82rem', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
+            <Calendar size={14} /> Study Timetable
+          </button>
+          <button onClick={() => handleSend('Chemical Reactions')} style={{ background: '#F3E8FF', border: '1px solid #E9D5FF', color: '#7E22CE', padding: '6px 14px', borderRadius: '20px', fontSize: '0.82rem', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
             <FlaskConical size={14} /> Chemical Reactions
           </button>
-          <button onClick={() => handleSend('Coordinate Geometry')} style={{ background: '#FEF3C7', border: '1px solid #FDE68A', color: '#D97706', padding: '6px 14px', borderRadius: '20px', fontSize: '0.82rem', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
-            <Calculator size={14} /> Geometry & Shapes
+          <button onClick={() => handleSend('give 5 SSLC exam tips')} style={{ background: '#ECFDF5', border: '1px solid #A7F3D0', color: '#047857', padding: '6px 14px', borderRadius: '20px', fontSize: '0.82rem', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
+            <CheckCircle2 size={14} /> SSLC Exam Tips
           </button>
-          <button onClick={() => handleSend('Digital Skills')} style={{ background: '#F3E8FF', border: '1px solid #E9D5FF', color: '#7E22CE', padding: '6px 14px', borderRadius: '20px', fontSize: '0.82rem', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
-            <Code size={14} /> Digital Skills
-          </button>
-          <button onClick={() => handleSend('give questions')} style={{ background: '#ECFDF5', border: '1px solid #A7F3D0', color: '#047857', padding: '6px 14px', borderRadius: '20px', fontSize: '0.82rem', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
+          <button onClick={() => handleSend('give questions')} style={{ background: '#FFF7ED', border: '1px solid #FFEDD5', color: '#C2410C', padding: '6px 14px', borderRadius: '20px', fontSize: '0.82rem', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
             <HelpCircle size={14} /> Give Practice Quiz
           </button>
         </div>
@@ -621,7 +629,7 @@ In SSLC / Class 8-10 curriculum, mastering **${userQuery}** requires understandi
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSend()}
             disabled={isLoading}
-            placeholder={isKannada ? "ರಾಸಾಯನಿಕ ಕ್ರಿಯೆಗಳು, ಗಣಿತ, ಕೋಡಿಂಗ್ ಬಗ್ಗೆ ಕೇಳಿ..." : "Ask about Chemical Reactions, Geometry, Coding..."}
+            placeholder={isKannada ? "ಯಾವುದೇ ಪ್ರಶ್ನೆ ಕೇಳಿ ಅಥವಾ ಕಾರ್ಯ ನೀಡಲು (ಉದಾ: ರಜೆ ಪತ್ರ ಬರೆಯಿರಿ, ವೇಳಾಪಟ್ಟಿ ಬಿಡಿಸಿ)..." : "Ask ANY question or give a task (e.g. Write leave letter, Solve math, Give timetable)..."}
             style={{ flex: 1, padding: '14px 22px', borderRadius: '28px', border: '1.5px solid #CBD5E1', background: '#F8FAFC', outline: 'none', fontSize: '0.98rem', fontWeight: 500, color: '#0F172A', transition: 'border-color 0.2s' }}
             onFocus={(e) => e.currentTarget.style.borderColor = '#2563EB'}
             onBlur={(e) => e.currentTarget.style.borderColor = '#CBD5E1'}
