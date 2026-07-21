@@ -48,6 +48,16 @@ export const RegistrationScreen = () => {
 
     // Set authenticated user role in AppContext
     setUserRole(selectedRole);
+
+    if (name.trim()) {
+      localStorage.setItem('nb_user_profile_name', name.trim());
+    }
+    if (school.trim()) {
+      localStorage.setItem('nb_user_profile_school', school.trim());
+    }
+    if (selectedClass) {
+      localStorage.setItem('nb_user_profile_class', selectedClass.toString());
+    }
     
     try {
       if (forgotPasswordMode) {

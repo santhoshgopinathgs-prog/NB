@@ -6,6 +6,8 @@ import {
   Calendar, Send, Sparkles, PieChart, BarChart2, ShieldAlert, LogOut
 } from 'lucide-react';
 
+import { supabase } from '../utils/supabaseClient';
+
 interface StudentData {
   id: string;
   name: string;
@@ -29,16 +31,85 @@ interface StudentData {
 const MOCK_STUDENTS: StudentData[] = [
   { id: 's1', name: 'Raju Kumar', rollNo: '801', className: 'Class 8', section: 'A', attendance: 96, score: 88, level: 4, xp: 850, badges: 5, lastLogin: 'Today, 8:30 AM', status: 'active', parentName: 'Suresh Kumar', parentPhone: '+91 98765 43210', strengths: ['Computer Basics', 'Mathematics'], weaknesses: ['English Vocabulary'], aiRecommendation: 'Recommend practice on English grammar modules.' },
   { id: 's2', name: 'Priya Gowda', rollNo: '802', className: 'Class 8', section: 'A', attendance: 92, score: 94, level: 5, xp: 1200, badges: 8, lastLogin: 'Today, 9:15 AM', status: 'active', parentName: 'Manjunath Gowda', parentPhone: '+91 98765 12345', strengths: ['Science Explorer', 'Typing'], weaknesses: ['Algebra Word Problems'], aiRecommendation: 'Outstanding performance! Ready for Advanced Science quiz.' },
-  { id: 's3', name: 'Anil Naik', rollNo: '803', className: 'Class 8', section: 'A', attendance: 68, score: 54, level: 2, xp: 320, badges: 2, lastLogin: '3 days ago', status: 'needs_help', parentName: 'Ramesh Naik', parentPhone: '+91 94480 99887', strengths: ['Digital Productivity'], weaknesses: ['Mathematics', 'Science'], aiRecommendation: 'Low attendance (<70%). Schedule a quick parent check-in.' },
-  { id: 's4', name: 'Kavya S', rollNo: '804', className: 'Class 8', section: 'A', attendance: 89, score: 79, level: 3, xp: 640, badges: 4, lastLogin: 'Yesterday', status: 'active', parentName: 'Shankar M', parentPhone: '+91 97412 33445', strengths: ['English Master'], weaknesses: ['Intro to Coding'], aiRecommendation: 'Encourage block coding activities.' },
-  { id: 's5', name: 'Chetan M', rollNo: '805', className: 'Class 8', section: 'A', attendance: 45, score: 42, level: 1, xp: 150, badges: 1, lastLogin: '7 days ago', status: 'inactive', parentName: 'Venkatesh M', parentPhone: '+91 98450 11223', strengths: ['Basic Hardware'], weaknesses: ['Attendance', 'All Academic Subjects'], aiRecommendation: 'High Dropout Risk! Require principal intervention.' },
-  { id: 's6', name: 'Deepika R', rollNo: '901', className: 'Class 9', section: 'B', attendance: 98, score: 95, level: 6, xp: 1650, badges: 10, lastLogin: 'Today, 7:45 AM', status: 'active', parentName: 'Ramachandra', parentPhone: '+91 99001 22334', strengths: ['All Subjects'], weaknesses: ['None'], aiRecommendation: 'Top Champion! Recommend for Board Exam Prep Track.' }
+  { id: 's3', name: 'Anil Naik', rollNo: '803', className: 'Class 8', section: 'A', attendance: 68, score: 54, level: 2, xp: 320, badges: 2, lastLogin: '3 days ago', status: 'needs_help', parentName: 'Ramesh Naik', parentPhone: '+91 94480 99887', strengths: ['Digital Productivity'], weaknesses: ['Mathematics', 'Science'], aiRecommendation: 'Low attendance (<70%). Schedule a quick parent check-in.' }
 ];
 
 export const TeacherDashboard: React.FC = () => {
-  const { language, user, setUserRole, logout } = useAppContext();
+  const { language, user, userXP, setUserRole, logout } = useAppContext();
   const [activeSubTab, setActiveSubTab] = useState<'overview' | 'students' | 'attendance' | 'assignments' | 'quizzes' | 'analytics' | 'ai' | 'reports'>('overview');
-  
+  const [students, setStudents] = useState<StudentData[]>(MOCK_STUDENTS);
+
+  React.useEffect(() => {
+    const fetchRealStudents = async () => {
+      try {
+        const { data: dbProfiles } = await supabase.from('profiles').select('*');
+        const { data: dbProgress } = await supabase.from('user_progress').select('*');
+
+        let combinedList: StudentData[] = [];
+
+        if (dbProfiles && dbProfiles.length > 0) {
+          combinedList = dbProfiles.map((p, idx) => {
+            const prog = dbProgress?.find(pr => pr.user_id === p.id);
+            const xpVal = prog?.total_xp || (p.id === user?.id ? userXP : 600);
+            return {
+              id: p.id,
+              name: p.name || 'Registered Student',
+              rollNo: `80${idx + 1}`,
+              className: p.class_level ? `Class ${p.class_level}` : 'Class 8',
+              section: 'A',
+              attendance: Math.min(100, 90 + (idx % 8)),
+              score: Math.min(100, Math.max(55, Math.floor(xpVal / 15) + 65)),
+              level: Math.floor(xpVal / 250) + 1,
+              xp: xpVal,
+              badges: Math.floor(xpVal / 200) + 1,
+              lastLogin: 'Today, Active',
+              status: xpVal > 400 ? 'active' : 'needs_help',
+              parentName: `${p.name?.split(' ')[0] || 'Parent'} Guardian`,
+              parentPhone: '+91 98765 43210',
+              strengths: ['Digital Skills', 'Mathematics'],
+              weaknesses: ['English Grammar'],
+              aiRecommendation: `Active learner from ${p.school || 'GHPS Anekal'}.`
+            };
+          });
+        }
+
+        // If registered user exists, ensure user's actual registered profile is included
+        if (user && user.name) {
+          const userExists = combinedList.some(s => s.id === user.id || s.name.toLowerCase() === user.name?.toLowerCase());
+          if (!userExists) {
+            combinedList.unshift({
+              id: user.id || 'user_current',
+              name: user.name,
+              rollNo: '801',
+              className: user.class ? `Class ${user.class}` : 'Class 8',
+              section: 'A',
+              attendance: 98,
+              score: 92,
+              level: Math.floor(userXP / 250) + 1,
+              xp: userXP,
+              badges: 6,
+              lastLogin: 'Active Now',
+              status: 'active',
+              parentName: `${user.name.split(' ')[0]} Guardian`,
+              parentPhone: '+91 98765 43210',
+              strengths: ['Mathematics', 'Digital Science'],
+              weaknesses: ['Vocabulary'],
+              aiRecommendation: 'Registered student active in curriculum!'
+            });
+          }
+        }
+
+        if (combinedList.length > 0) {
+          setStudents(combinedList);
+        }
+      } catch (err) {
+        console.error('Error fetching registered students:', err);
+      }
+    };
+
+    fetchRealStudents();
+  }, [user, userXP]);
+
   const handleTeacherLogout = () => {
     setUserRole('student');
     logout();
@@ -53,7 +124,7 @@ export const TeacherDashboard: React.FC = () => {
   // Attendance Module state
   const [attendanceDate, setAttendanceDate] = useState(new Date().toISOString().split('T')[0]);
   const [attendanceRecords, setAttendanceRecords] = useState<Record<string, 'present' | 'absent' | 'late'>>({
-    's1': 'present', 's2': 'present', 's3': 'absent', 's4': 'present', 's5': 'absent', 's6': 'present'
+    's1': 'present', 's2': 'present', 's3': 'absent'
   });
   const [attendanceSaved, setAttendanceSaved] = useState(false);
 
@@ -72,7 +143,7 @@ export const TeacherDashboard: React.FC = () => {
     { role: 'assistant', text: language === 'EN' ? 'Namaste Teacher! I am your AI Teaching Assistant. How can I support your classroom today?' : 'ನಮಸ್ತೆ ಶಿಕ್ಷಕರೇ! ನಾನು ನಿಮ್ಮ AI ಬೋಧನಾ ಸಹಾಯಕ. ಇಂದು ನಾನು ನಿಮಗೆ ಹೇಗೆ ಸಹಾಯ ಮಾಡಲಿ?' }
   ]);
 
-  const filteredStudents = MOCK_STUDENTS.filter(s => {
+  const filteredStudents = students.filter(s => {
     const matchesSearch = s.name.toLowerCase().includes(searchQuery.toLowerCase()) || s.rollNo.includes(searchQuery);
     const matchesClass = filterClass === 'all' || s.className === filterClass;
     const matchesStatus = filterStatus === 'all' || s.status === filterStatus;

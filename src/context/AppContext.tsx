@@ -171,7 +171,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       // 4. Fetch Certificates
       const { data: certs } = await supabase.from('user_certificates').select('subject, class_level').eq('user_id', userId);
 
-      const displayName = profile?.name || authUser.user_metadata?.name || (authUser.email ? authUser.email.split('@')[0] : 'User');
+      const storedName = localStorage.getItem('nb_user_profile_name');
+      const displayName = profile?.name || authUser.user_metadata?.name || storedName || (authUser.email ? authUser.email.split('@')[0] : 'User');
 
       setUser({
         id: authUser.id,

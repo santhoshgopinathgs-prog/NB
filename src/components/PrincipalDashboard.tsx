@@ -41,7 +41,7 @@ export const PrincipalDashboard: React.FC = () => {
   // AI Assistant Chat state
   const [aiInput, setAiInput] = useState('');
   const [aiChat, setAiChat] = useState<Array<{ role: 'user' | 'assistant', text: string }>>([
-    { role: 'assistant', text: language === 'EN' ? 'Greetings Principal Dr. Ramesh Kumar! I am your AI Executive School Advisor. How may I assist your administration today?' : 'ನಮಸ್ತೆ ಪ್ರಾಂಶುಪಾಲರಾದ ಡಾ. ರಮೇಶ್ ಕುಮಾರ್! ನಾನು ನಿಮ್ಮ AI ಶಾಲಾ ಕಾರ್ಯನಿರ್ವಾಹಕ ಸಲಹೆಗಾರ. ಇಂದು ಶಾಲಾ ನಿರ್ವಹಣೆಯಲ್ಲಿ ನಾನು ಹೇಗೆ ನೆರವಾಗಲಿ?' }
+    { role: 'assistant', text: language === 'EN' ? `Greetings Principal ${user?.name || ''}! I am your AI Executive School Advisor. How may I assist your administration today?` : `ನಮಸ್ತೆ ಪ್ರಾಂಶುಪಾಲರಾದ ${user?.name || ''}! ನಾನು ನಿಮ್ಮ AI ಶಾಲಾ ಕಾರ್ಯನಿರ್ವಾಹಕ ಸಲಹೆಗಾರ. ಇಂದು ಶಾಲಾ ನಿರ್ವಹಣೆಯಲ್ಲಿ ನಾನು ಹೇಗೆ ನೆರವಾಗಲಿ?` }
   ]);
 
   const handleSendAi = (textToSend?: string) => {
