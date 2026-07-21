@@ -80,7 +80,7 @@ export const Header: React.FC<HeaderProps> = ({ setActiveTab }) => {
       <div className="header-actions">
         
         {/* Active Role Badge */}
-        <div style={{
+        <div className="header-role-badge" style={{
           background: userRole === 'teacher' ? '#2563EB' : (userRole === 'principal' ? '#0F172A' : '#10B981'),
           color: 'white',
           borderRadius: '20px',
@@ -121,19 +121,19 @@ export const Header: React.FC<HeaderProps> = ({ setActiveTab }) => {
           <span style={{ padding: '4px 8px', borderRadius: '18px', background: language === 'KN' ? 'var(--accent-green)' : 'transparent', color: language === 'KN' ? '#FFFFFF' : 'var(--text-secondary)' }}>KN</span>
         </button>
 
-        {/* Streak */}
+        {/* Streak (Always prioritized & visible on mobile) */}
         <button 
           onClick={() => setActiveTab('achievements')}
-          className="header-pill"
-          style={{ display: 'flex', alignItems: 'center', gap: '5px', background: 'rgba(255, 200, 87, 0.2)', border: '1px solid rgba(255, 200, 87, 0.4)', padding: '6px 10px', borderRadius: '24px', color: '#D97706', fontWeight: 800, fontSize: '0.85rem', cursor: 'pointer' }}
+          className="header-pill header-streak-pill"
+          style={{ display: 'flex', alignItems: 'center', gap: '5px', background: 'rgba(255, 200, 87, 0.2)', border: '1px solid rgba(255, 200, 87, 0.4)', padding: '6px 10px', borderRadius: '24px', color: '#D97706', fontWeight: 800, fontSize: '0.85rem', cursor: 'pointer', flexShrink: 0 }}
         >
-          <Flame size={18} fill="#D97706" color="#D97706" /> {user?.streak || 0}
+          <Flame size={18} fill="#D97706" color="#D97706" /> {user?.streak || 1}
         </button>
         
         {/* XP / Coins */}
         <button 
           onClick={() => setActiveTab('achievements')}
-          className="header-pill"
+          className="header-pill header-coins-pill"
           style={{ display: 'flex', alignItems: 'center', gap: '5px', background: 'rgba(255, 200, 87, 0.2)', border: '1px solid rgba(255, 200, 87, 0.4)', padding: '6px 10px', borderRadius: '24px', color: '#D97706', fontWeight: 800, fontSize: '0.85rem', cursor: 'pointer' }}
         >
           <Coins size={18} fill="#FFC857" color="#FFC857" /> {userXP}

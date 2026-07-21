@@ -249,16 +249,35 @@ button {
 /* Mobile Screen Responsive Tweaks */
 @media (max-width: 600px) {
   .app-header {
-    padding: 12px 14px;
+    padding: 10px 12px;
+    gap: 6px;
+    overflow-x: hidden;
   }
 
   .header-actions {
-    gap: 6px;
+    gap: 4px;
+    flex-wrap: nowrap;
+  }
+
+  .header-role-badge {
+    padding: 4px 8px !important;
+    font-size: 0.72rem !important;
   }
 
   .header-pill {
-    padding: 4px 8px !important;
+    padding: 4px 7px !important;
     font-size: 0.75rem !important;
+  }
+
+  .header-streak-pill {
+    display: flex !important;
+    flex-shrink: 0 !important;
+    padding: 4px 8px !important;
+    font-size: 0.78rem !important;
+  }
+
+  .header-coins-pill {
+    display: none !important;
   }
 
   .page-container {
