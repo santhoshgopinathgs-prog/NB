@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import { Loader2, User, Sparkles, Send, X, HelpCircle, Code, FlaskConical, Calculator, Calendar, FileText, CheckCircle2 } from 'lucide-react';
+import { Loader2, User, Sparkles, Send, X, HelpCircle, Code, FlaskConical, Calculator, Calendar, FileText, CheckCircle2, Compass } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
@@ -25,12 +25,12 @@ export const AITutorPortal = ({ onClose, initialQuery }: { onClose: () => void, 
   const getInitialMessage = () => {
     if (initialQuery) {
       return isKannada 
-        ? `ನಮಸ್ಕಾರ! ಇಂದು **${initialQuery}** ಬಗ್ಗೆ ಕಲಿಯೋಣ! 🚀\n\nನಾನು ಮುಖ್ಯ ಪರಿಕಲ್ಪನೆಗಳನ್ನು ವಿವರಿಸಬೇಕೇ, ಉದಾಹರಣೆಗಳನ್ನು ನೀಡಬೇಕೇ, ಪರೀಕ್ಷೆಯ ರಸಪ್ರಶ್ನೆ ಅಥವಾ ಯಾವುದೇ ಕಾರ್ಯವನ್ನು ಮಾಡಿಕೊಡಬೇಕೇ?`
-        : `Hi! Let's work on **${initialQuery}** today! 🚀\n\nI can explain concepts, solve math problems, write letters, generate study timetables, or quiz you on any topic!`;
+        ? `ನಮಸ್ಕಾರ! ಇಂದು **${initialQuery}** ಬಗ್ಗೆ ಕಲಿಯೋಣ! 🚀\n\nನಾನು ಪರಿಕಲ್ಪನೆಗಳನ್ನು ವಿವರಿಸಬಲ್ಲೆ, ಗಣಿತ ಸಮಸ್ಯೆ ಬಿಡಿಸಬಲ್ಲೆ, ಉದ್ಯೋಗ ಮಾರ್ಗದರ್ಶನ ನೀಡಬಲ್ಲೆ ಅಥವಾ ಯಾವುದೇ ಕಾರ್ಯವನ್ನು ಮಾಡಿಕೊಡಬಲ್ಲೆ!`
+        : `Hi! Let's work on **${initialQuery}** today! 🚀\n\nI can explain concepts, solve math problems, provide career guidance, write letters, or answer any SSLC question!`;
     }
     return isKannada 
-      ? "👋 **ನಮಸ್ಕಾರ! ನಾನು ನಿಮ್ಮ AI ಅಧ್ಯಯನ ಶಿಕ್ಷಕ 'ನಮ್ಮ ಬಡ್ಡಿ'!**\n\nನಾನು ಯಾವುದೇ ಪ್ರಶ್ನೆಗೆ ಉತ್ತರಿಸಬಲ್ಲೆ, ಪತ್ರಗಳನ್ನು ಬರೆಯಬಲ್ಲೆ, ಅಧ್ಯಯನ ವೇಳಾಪಟ್ಟಿ ಸಿದ್ಧಪಡಿಸಬಲ್ಲೆ ಮತ್ತು ಗಣಿತ/ವಿಜ್ಞಾನ ಕಾರ್ಯಗಳನ್ನು ಮಾಡಬಲ್ಲೆ. ಇಂದು ನೀವು ಏನು ಮಾಡಲು ಬಯಸುತ್ತೀರಿ?"
-      : "👋 **Hi there! I'm Namma Buddy, your Gemini AI Assistant!**\n\nI can answer **any question**, write leave letters, build study timetables, generate code, solve math problems, or quiz you on any SSLC topic! What task can I do for you today?";
+      ? "👋 **ನಮಸ್ಕಾರ! ನಾನು ನಿಮ್ಮ AI ಅಧ್ಯಯನ ಶಿಕ್ಷಕ 'ನಮ್ಮ ಬಡ್ಡಿ'!**\n\nನಾನು ಯಾವುದೇ ಪ್ರಶ್ನೆಗೆ ಉತ್ತರಿಸಬಲ್ಲೆ, ವೃತ್ತಿ ಮಾರ್ಗದರ್ಶನ (Career Guidance) ನೀಡಬಲ್ಲೆ, ಪತ್ರ ಬರೆಯಬಲ್ಲೆ ಮತ್ತು ಪರೀಕ್ಷೆಗೆ ತಯಾರಿ ಮಾಡಿಸಬಲ್ಲೆ. ಇಂದು ನಿಮಗೆ ಏನು ಬೇಕು?"
+      : "👋 **Hi there! I'm Namma Buddy, your Gemini AI Assistant & Career Guide!**\n\nI can answer **any question**, guide you on **Career Options after Class 10/12**, draft leave letters, generate study timetables, or solve math & science problems! What would you like to ask today?";
   };
 
   const [messages, setMessages] = useState<ChatMessage[]>([
@@ -45,6 +45,9 @@ export const AITutorPortal = ({ onClose, initialQuery }: { onClose: () => void, 
   // Robust Fuzzy Topic Normalizer
   const normalizeTopic = (query: string): string => {
     const q = (query || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+    if (q.includes('career') || q.includes('carrier') || q.includes('after10') || q.includes('afterschool') || q.includes('stream') || q.includes('puc') || q.includes('diploma') || q.includes('future') || q.includes('job')) {
+      return 'Career Guidance';
+    }
     if (q.includes('chem') || q.includes('react') || q.includes('equat') || q.includes('acid') || q.includes('base') || q.includes('metal')) {
       return 'Chemical Reactions';
     }
@@ -66,11 +69,60 @@ export const AITutorPortal = ({ onClose, initialQuery }: { onClose: () => void, 
     return '';
   };
 
-  // Task & Command Execution Engine
+  // Comprehensive Educational, Career & General Question Engine
   const executeTaskOrAnswer = (query: string, inKn: boolean): string => {
     const q = query.toLowerCase().trim();
 
-    // TASK 1: Leave Letter / Application Drafting
+    // TASK 1: Career Options & Guidance after 10th / School in Karnataka
+    if (q.includes('career') || q.includes('carrier') || q.includes('after 10') || q.includes('after school') || q.includes('stream') || q.includes('puc') || q.includes('diploma') || q.includes('job')) {
+      if (inKn) {
+        return `🎓 **ಕರ್ನಾಟಕದಲ್ಲಿ SSLC / 10ನೇ ತರಗತಿಯ ನಂತರ ಲಭ್ಯವಿರುವ ಪ್ರಮುಖ ವೃತ್ತಿ ಮಾರ್ಗಗಳು (Career Options After Class 10)**:
+
+1️⃣ **PUC (Science - ವಿಜ್ಞಾನ ವಿಭಾಗ)**:
+• **ಕಾಂಬಿನೇಷನ್‌ಗಳು:** PCMB (Physics, Chemistry, Math, Biology) ಅಥವಾ PCMC (Computer Science).
+• **ಅವಕಾಶಗಳು:** ಇಂಜಿನಿಯರಿಂಗ್ (KCET), ಮೆಡಿಕಲ್ (NEET), ಬಿ.ಎಸ್ಸಿ, ಕೃತಕ ಬುದ್ಧಿಮತ್ತೆ (AI).
+
+2️⃣ **PUC (Commerce - ವಾಣಿಜ್ಯ ವಿಭಾಗ)**:
+• **ಕಾಂಬಿನೇಷನ್‌ಗಳು:** CEBA, SEBA, HEBA.
+• **ಅವಕಾಶಗಳು:** ಚಾರ್ಟರ್ಡ್ ಅಕೌಂಟೆಂಟ್ (CA), ಬಿ.ಕಾಂ, ಬ್ಯಾಂಕಿಂಗ್, ಬಿಸಿನೆಸ್ ಅನಾಲಿಟಿಕ್ಸ್.
+
+3️⃣ **PUC (Arts - ಕಲಾ ವಿಭಾಗ)**:
+• **ಕಾಂಬಿನೇಷನ್‌ಗಳು:** HEPS (History, Economics, Political Science, Sociology).
+• **ಅವಕಾಶಗಳು:** IAS/KAS ಐಎಎಸ್/ಕೆಎಎಸ್ ಸ್ಪರ್ಧಾತ್ಮಕ ಪರೀಕ್ಷೆಗಳು, ಪತ್ರಿಕೋದ್ಯಮ, ಕಾನೂನು (Law - CLAT).
+
+4️⃣ **ಪಾಲಿಟೆಕ್ನಿಕ್ ಡಿಪ್ಲೊಮಾ (3 ವರ್ಷಗಳ ಕೋರ್ಸ್)**:
+• ಕಂಪ್ಯೂಟರ್ ಸೈನ್ಸ್, ಮೆಕ್ಯಾನಿಕಲ್, ಸಿವಿಲ್, ಎಲೆಕ್ಟ್ರಾನಿಕ್ಸ್ ಡಿಪ್ಲೊಮಾ (ಕೋರ್ಸ್ ಮುಗಿಸಿ ನೇರವಾಗಿ BE 2ನೇ ವರ್ಷಕ್ಕೆ lateral entry ಪಡೆಯಬಹುದು!).
+
+5️⃣ **ITI ಮತ್ತು ಕೌಶಲ್ಯ ಕೋರ್ಸ್‌ಗಳು (1-2 ವರ್ಷಗಳು)**:
+• ಎಲೆಕ್ಟ್ರಿಷಿಯನ್, ಫಿಟ್ಟರ್, ಡಿಜಿಟಲ್ ಡಿಸೈನಿಂಗ್, ವೆಬ್ ಡೆವಲಪ್‌ಮೆಂಟ್.
+
+💡 *ನಿಮಗೆ ನಿರ್ದಿಷ್ಟ ವಿಭಾಗದ (Science/Commerce/Arts) ಕುರಿತು ಹೆಚ್ಚಿನ ಮಾಹಿತಿ ಬೇಕೇ? ಕೆಳಗೆ ಟೈಪ್ ಮಾಡಿ!*`;
+      }
+      return `🎓 **Career Options & Academic Pathways After Class 10 in Karnataka**:
+
+1️⃣ **PUC Science Stream (2 Years)**:
+• **Popular Combinations:** PCMB (Physics, Chemistry, Math, Biology) or PCMC (Maths, Computer Science).
+• **Best For:** Careers in Engineering (KCET/JEE), Medicine/Nursing (NEET), Data Science, AI, Biotechnology, and Research.
+
+2️⃣ **PUC Commerce Stream (2 Years)**:
+• **Popular Combinations:** CEBA (Computer, Econ, Biz, Acc) or HEBA.
+• **Best For:** Chartered Accountancy (CA), B.Com, BBA, Banking, Stock Market, Corporate Law, and Business Management.
+
+3️⃣ **PUC Arts & Humanities Stream (2 Years)**:
+• **Popular Combinations:** HEPS (History, Economics, Political Science, Sociology).
+• **Best For:** Civil Services (IAS/KAS UPSC Exams), Journalism, Mass Media, Psychology, Law (CLAT), and Teaching.
+
+4️⃣ **Polytechnic Diploma Courses (3 Years)**:
+• Direct specialized technical diplomas in Computer Engineering, Mechanical, Electrical, Civil.
+• *Advantage:* Allows direct admission into 2nd Year BE/B.Tech (Lateral Entry)!
+
+5️⃣ **ITI & Vocational Certification (1 to 2 Years)**:
+• Electrician, Fitter, Welder, Web Design, Graphic Animation — great for quick employment and practical skills!
+
+💡 *Which field interests you most (Engineering, Medicine, Business, Civil Services, or Arts)? Ask me for details!*`;
+    }
+
+    // TASK 2: Leave Letter / Application Drafting
     if (q.includes('letter') || q.includes('application') || q.includes('leave') || q.includes('permission')) {
       if (inKn) {
         return `📝 **ತರಗತಿ ಶಿಕ್ಷಕರಿಗೆ ರಜೆ ಕೋರಿ ಅರ್ಜಿ (Leave Letter Template)**:
@@ -91,9 +143,7 @@ export const AITutorPortal = ({ onClose, initialQuery }: { onClose: () => void, 
 
 ಧನ್ಯವಾದಗಳೊಂದಿಗೆ,
 ನಿಮ್ಮ ನಂಬುಗೆಯ ವಿದ್ಯಾರ್ಥಿ,
-**[ನಿಮ್ಮ ಸಹಿ / ಹೆಸರು]**
-
-💡 *ಇದನ್ನು ನೀವು ನಿಮ್ಮ ವಿನಂತಿಗೆ ತಕ್ಕಂತೆ ಬದಲಾಯಿಸಿ ಬಳಸಬಹುದು!*`;
+**[ನಿಮ್ಮ ಸಹಿ / ಹೆಸರು]**`;
       }
       return `📝 **Formal Leave Application Template (For School)**:
 
@@ -115,12 +165,10 @@ I will ensure to cover all missed homework and notes promptly upon my return. Ki
 
 Thanking you,
 Yours obediently,
-**[Your Name / Signature]**
-
-💡 *You can copy, edit dates, and submit this to your teacher!*`;
+**[Your Name / Signature]**`;
     }
 
-    // TASK 2: Daily Study Timetable Generator
+    // TASK 3: Daily Study Timetable Generator
     if (q.includes('timetable') || q.includes('schedule') || q.includes('routine') || q.includes('study plan') || q.includes('time table')) {
       if (inKn) {
         return `📅 **SSLC 8-10 ನೇ ತರಗತಿಯ ದಿನಚರಿ ಅಧ್ಯಯನ ವೇಳಾಪಟ್ಟಿ**:
@@ -132,9 +180,7 @@ Yours obediently,
 ⏰ **05:30 PM - 07:00 PM**: ವಿಜ್ಞಾನ (Science) - ರಾಸಾಯನಿಕ ಸಮೀಕರಣಗಳು ಮತ್ತು ಚಿತ್ರಗಳು.
 ⏰ **07:00 PM - 08:00 PM**: ಡಿಜಿಟಲ್ ಕೌಶಲ್ಯಗಳು / ಇಂಗ್ಲಿಷ್ ವ್ಯಾಕರಣ ಅಭ್ಯಾಸ.
 ⏰ **08:30 PM - 09:30 PM**: ದೈನಂದಿನ ಪುನರಾವರ್ತನೆ ಮತ್ತು 'ನಮ್ಮ ಬಡ್ಡಿ' ರಸಪ್ರಶ್ನೆ.
-⏰ **10:00 PM**: ನೆಮ್ಮದಿಯ ನಿದ್ರೆ 😴
-
-💡 *ಪ್ರತಿದಿನ ಈ ವೇಳಾಪಟ್ಟಿ ಪಾಲಿಸಿದರೆ ಪರೀಕ್ಷೆಯಲ್ಲಿ 90%+ ಗಳಿಸಬಹುದು!*`;
+⏰ **10:00 PM**: ನೆಮ್ಮದಿಯ ನಿದ್ರೆ 😴`;
       }
       return `📅 **High-School Daily Study Timetable (Grade 8-10 SSLC)**:
 
@@ -145,16 +191,7 @@ Yours obediently,
 ⏰ **05:30 PM - 07:00 PM**: **Science** (Diagrams, Chemical Equations & Life Processes).
 ⏰ **07:00 PM - 08:00 PM**: **Digital Skills & English** (Grammar & Coding logic).
 ⏰ **08:30 PM - 09:30 PM**: **Daily Revision & Namma Buddy Quiz**.
-⏰ **10:00 PM**: Good Night Sleep 😴
-
-💡 *Stick to this routine for 30 days to boost your marks by 20%!*`;
-    }
-
-    // TASK 3: Translation (Kannada <-> English)
-    if (q.includes('translate') || q.includes('meaning in english') || q.includes('meaning in kannada') || q.includes('in english') || q.includes('in kannada')) {
-      return inKn 
-        ? `🌐 **ಭಾಷಾಂತರ (Translation Service)**:\n\n• ಮೂಲ ವಾಕ್ಯ: "${query}"\n• ಇಂಗ್ಲಿಷ್ ಭಾಷಾಂತರ: "Learning with Namma Buddy is easy and engaging!"\n\n💡 *ನಿಮಗೆ ನಿರ್ದಿಷ್ಟ ಪದ ಅಥವಾ ವಾಕ್ಯದ ಭಾಷಾಂತರ ಬೇಕಿದ್ದರೆ ಅದನ್ನು ಟೈಪ್ ಮಾಡಿ!*`
-        : `🌐 **Bilingual Translation Response**:\n\n• Text Query: "${query}"\n• Kannada Translation: "ನಮ್ಮ ಬಡ್ಡಿಯಲ್ಲಿ ಕಲಿಯುವುದು ಸರಳ ಮತ್ತು ಆಸಕ್ತಿದಾಯಕವಾಗಿದೆ!"\n\n💡 *Type any word or sentence you want translated between English and Kannada!*`;
+⏰ **10:00 PM**: Good Night Sleep 😴`;
     }
 
     // TASK 4: Code Generation / Python / HTML Script
@@ -173,21 +210,10 @@ else:
 
 1️⃣ **Explanation**:
 • \`num % 2 == 0\` checks if remainder when divided by 2 is zero.
-• If remainder is 0, it's **Even**; otherwise **Odd**.
-
-💡 *Want HTML or JavaScript code snippets? Ask me anytime!*`;
+• If remainder is 0, it's **Even**; otherwise **Odd**.`;
     }
 
-    // TASK 5: Typing Test Prompt Generator
-    if (q.includes('typing') || q.includes('type practice') || q.includes('typing test')) {
-      return `⌨️ **Namma Buddy 50-Word Typing Speed Test**:
-
-*"Technology is transforming education across Karnataka government schools. Digital literacy empowers students with critical thinking, coding skills, and confidence to solve real-world problems. Keep practicing every day to reach 40 words per minute!"*
-
-💡 *Try typing this paragraph in your Typing Practice tab to test your Words Per Minute (WPM)!*`;
-    }
-
-    // TASK 6: SSLC Board Exam Preparation Tips
+    // TASK 5: SSLC Board Exam Preparation Tips
     if (q.includes('sslc') || q.includes('exam tips') || q.includes('board exam') || q.includes('score 90') || q.includes('important questions')) {
       return `🎯 **5 High-Yield SSLC Board Exam Scoring Strategies**:
 
@@ -195,35 +221,39 @@ else:
 2️⃣ **Math Formulas**: Create a formula sheet for Distance Formula, Section Formula, and Quadratic Formula.
 3️⃣ **Chemical Equations**: Practice balancing 10 key chemical equations from Chapter 1.
 4️⃣ **Time Management**: Spend 15 minutes reading the question paper first; attempt 4-mark questions early.
-5. **Daily Quizzes**: Practice 15 minutes on Namma Buddy quizzes daily to build speed and accuracy!`;
+5️⃣ **Daily Quizzes**: Practice 15 minutes on Namma Buddy quizzes daily to build speed and accuracy!`;
     }
 
-    // TASK 7: Educational Topic Knowledge Base
+    // TASK 6: Normalized Academic Topics
     const topic = normalizeTopic(query);
     if (topic) {
       return getKnowledgeResponse(topic, query, inKn);
     }
 
-    // DEFAULT: Answer ANY general question dynamically
+    // DEFAULT: Dynamic, intelligent, natural response for ANY question
     if (inKn) {
-      return `💡 **"${query}" ಕುರಿತು Namma Buddy ಉತ್ತರ**:
+      return `💡 **"${query}" ಕುರಿತು Namma Buddy ಮಾರ್ಗದರ್ಶನ**:
 
-1️⃣ **ಮುಖ್ಯ ಉತ್ತರ**: "${query}" ಎನ್ನುವುದು ಪ್ರಮುಖ ಅಧ್ಯಯನದ ವಿಷಯವಾಗಿದೆ. ಈ ಕುರಿತು ಪ್ರೌಢಶಾಲಾ ಪಠ್ಯಕ್ರಮದಲ್ಲಿ ವಿವರವಾದ ವಿವರಣೆಗಳು ಮತ್ತು ಉದಾಹರಣೆಗಳಿವೆ.
-2️⃣ **ಉದಾಹರಣೆ & ಅನ್ವಯಿಕೆ**: ಪ್ರಾಯೋಗಿಕ ಉದಾಹರಣೆಗಳನ್ನು ಅಭ್ಯಾಸ ಮಾಡುವುದರಿಂದ ಪರೀಕ್ಷೆಯಲ್ಲಿ ಉತ್ತಮ ಅಂಕ ಗಳಿಸಬಹುದು.
+1️⃣ **ಮುಖ್ಯ ವಿವರಣೆ**: 
+"${query}" ಎನ್ನುವುದು ಪಠ್ಯಕ್ರಮದಲ್ಲಿ ಅತ್ಯಂತ ಪ್ರಮುಖವಾದ ವಿಷಯವಾಗಿದೆ. ಈ ಪರಿಕಲ್ಪನೆಯನ್ನು ಚೆನ್ನಾಗಿ ಗ್ರಹಿಸಲು ಮುಖ್ಯ ವ್ಯಾಖ್ಯಾನಗಳು ಮತ್ತು ಉದಾಹರಣೆಗಳನ್ನು ಅಭ್ಯಾಸ ಮಾಡುವುದು ಸೂಕ್ತ.
 
-💡 *ನಿಮಗೆ ಪರೀಕ್ಷೆಯ ಅಭ್ಯಾಸ ಪ್ರಶ್ನೆಗಳು ಬೇಕೇ? 'give questions' ಎಂದು ಟೈಪ್ ಮಾಡಿ!*`;
+2️⃣ **ಅಧ್ಯಯನ ಸಲಹೆ**:
+• ವಿಷಯದ ಮುಖ್ಯ ಅಂಶಗಳನ್ನು ಸರಳ ಪಾಯಿಂಟ್‌ಗಳಾಗಿ ಗುರುತಿಸಿಕೊಳ್ಳಿ.
+• ಉದಾಹರಣೆಗಳನ್ನು ಬರೆದು ಅಭ್ಯಾಸ ಮಾಡಿ.
+
+💡 *ನಿಮಗೆ ಈ ವಿಷಯದಲ್ಲಿ ಅಭ್ಯಾಸ ಪ್ರಶ್ನೆಗಳು ಅಥವಾ ವಿವರಣೆ ಬೇಕಿದ್ದರೆ 'give questions' ಎಂದು ಕೇಳಿ!*`;
     }
-    return `💡 **Answer to "${query}"**:
+    return `💡 **Namma Buddy AI Study Guide on "${query}"**:
 
-1️⃣ **Core Answer & Concept**:
-"${query}" is an important topic in high-school education. Understanding the core definition and step-by-step logic helps solve both theory and numerical questions.
+1️⃣ **Overview & Core Concept**:
+"${query}" is a key topic in high-school education. Understanding the foundational principles, definitions, and practical applications will help you solve exam questions with confidence.
 
-2️⃣ **Key Takeaway**:
-• Memorize the main formula / definition.
-• Work through 2 practice examples.
-• Test yourself with quiz questions.
+2️⃣ **Key Actionable Strategy**:
+• **Step 1:** Learn the core definition and fundamental concepts.
+• **Step 2:** Study 2 real-life examples or solved numerical problems.
+• **Step 3:** Practice quiz questions to test your speed and accuracy.
 
-💡 *Would you like me to generate practice questions or a step-by-step example on this? Reply with 'yes' or 'give questions'!*`;
+💡 *Would you like practice questions or a step-by-step example on this? Reply with 'yes' or 'give questions'!*`;
   };
 
   // Knowledge Base Explanations
@@ -419,12 +449,12 @@ Mass can neither be created nor destroyed in a chemical reaction. Total mass of 
     const detectedTopic = normalizeTopic(userMsg) || activeTopic;
     if (detectedTopic) setActiveTopic(detectedTopic);
 
-    // 1. LIVE GEMINI API INVOCATION (Fulfills ANY prompt/task when API is connected!)
+    // 1. LIVE GEMINI API INVOCATION (Fulfills ANY prompt/task when API key or proxy is connected!)
     if (apiKey && apiKey.length > 10) {
       try {
         const systemInstruction = isKannada
-          ? "ನೀವು ನಮ್ಮ ಬಡ್ಡಿ, ಕರ್ನಾಟಕದ ಪ್ರೌಢಶಾಲಾ (8-10 ನೇ ತರಗತಿ) ವಿದ್ಯಾರ್ಥಿಗಳಿಗೆ ಸಹಾಯ ಮಾಡುವ ಪ್ರೀತಿಯ AI ಶಿಕ್ಷಕ. ವಿದ್ಯಾರ್ಥಿ ಕೇಳುವ ಯಾವುದೇ ಪ್ರಶ್ನೆಗೆ ಉತ್ತರಿಸಿ, ಪತ್ರಗಳನ್ನು ಬರೆಯಿರಿ, ವೇಳಾಪಟ್ಟಿ ಸಿದ್ಧಪಡಿಸಿ, ಗಣಿತ ಸಮಸ್ಯೆಗಳನ್ನು ಬಿಡಿಸಿ ಮತ್ತು ಅಭ್ಯಾಸ ಪ್ರಶ್ನೆಗಳನ್ನು ನೀಡಿ."
-          : "You are Namma Buddy, a versatile, expert AI Assistant and Study Tutor for Grade 8-10 students in Karnataka, India. Answer ANY question asked (Science, Math, Social, English, General Knowledge), execute tasks requested (write leave letters, create study timetables, write code, translate text, generate quizzes), and explain concepts step-by-step.";
+          ? "ನೀವು ನಮ್ಮ ಬಡ್ಡಿ, ಕರ್ನಾಟಕದ ಪ್ರೌಢಶಾಲಾ (8-10 ನೇ ತರಗತಿ) ವಿದ್ಯಾರ್ಥಿಗಳಿಗೆ ಸಹಾಯ ಮಾಡುವ ಪ್ರೀತಿಯ AI ಶಿಕ್ಷಕ ಮತ್ತು ವೃತ್ತಿ ಮಾರ್ಗದರ್ಶಕ. ವಿದ್ಯಾರ್ಥಿ ಕೇಳುವ ಯಾವುದೇ ಪ್ರಶ್ನೆಗೆ ಉತ್ತರಿಸಿ, ವೃತ್ತಿ ಮಾರ್ಗದರ್ಶನ (Career Options) ನೀಡಿ, ಪತ್ರಗಳನ್ನು ಬರೆಯಿರಿ, ವೇಳಾಪಟ್ಟಿ ಸಿದ್ಧಪಡಿಸಿ, ಗಣಿತ ಸಮಸ್ಯೆಗಳನ್ನು ಬಿಡಿಸಿ ಮತ್ತು ಅಭ್ಯಾಸ ಪ್ರಶ್ನೆಗಳನ್ನು ನೀಡಿ."
+          : "You are Namma Buddy, a versatile, expert AI Assistant, Career Counselor, and Study Tutor for Grade 8-10 students in Karnataka, India. Answer ANY question asked (Science, Math, Social, Career Options, General Knowledge), execute tasks requested (write leave letters, create study timetables, write code, translate text, generate quizzes), and explain concepts step-by-step.";
 
         const genAI = new GoogleGenerativeAI(apiKey);
         const model = genAI.getGenerativeModel({ 
@@ -457,8 +487,8 @@ Mass can neither be created nor destroyed in a chemical reaction. Total mass of 
       // A. Greeting
       if (['hi', 'hello', 'hey', 'namaste', 'namaskara', 'namma buddy'].some(w => lower.startsWith(w) || lower === w)) {
         botResponse = isKannada 
-          ? "👋 **ನಮಸ್ಕಾರ!** ನಾನು ನಿಮ್ಮ AI ಶಿಕ್ಷಕ **ನಮ್ಮ ಬಡ್ಡಿ**.\n\nನಾನು ಯಾವುದೇ ಪ್ರಶ್ನೆಗೆ ಉತ್ತರಿಸಬಲ್ಲೆ, ಅರ್ಜಿಯನ್ನು ಬರೆಯಬಲ್ಲೆ, ಪರೀಕ್ಷಾ ವೇಳಾಪಟ್ಟಿ ಸಿದ್ಧಪಡಿಸಬಲ್ಲೆ ಅಥವಾ ರಸಪ್ರಶ್ನೆ ನಡೆಸಬಲ್ಲೆ. ಇಂದು ನಾನು ನಿಮಗೆ ಹೇಗೆ ಸಹಾಯ ಮಾಡಲಿ?"
-          : "👋 **Hello!** I'm **Namma Buddy**, your Gemini AI Assistant & Tutor.\n\nI can answer **any question** or perform **any task** for you:\n• 📝 **Draft Leave Application / Formal Letter**\n• 📅 **Generate Daily Study Timetable**\n• 📐 **Solve Math Problems & Geometry**\n• 🧪 **Explain Science & Chemistry**\n• 💻 **Generate Python / Web Code**\n\nType any prompt or task below!";
+          ? "👋 **ನಮಸ್ಕಾರ!** ನಾನು ನಿಮ್ಮ AI ಶಿಕ್ಷಕ ಮತ್ತು ವೃತ್ತಿ ಮಾರ್ಗದರ್ಶಕ **ನಮ್ಮ ಬಡ್ಡಿ**.\n\nನಾನು ಯಾವುದೇ ಪ್ರಶ್ನೆಗೆ ಉತ್ತರಿಸಬಲ್ಲೆ, 10 ನೇ ತರಗತಿಯ ನಂತರದ ವೃತ್ತಿ ಮಾರ್ಗಗಳನ್ನು (Career Options) ವಿವರಿಸಬಲ್ಲೆ, ಅರ್ಜಿಯನ್ನು ಬರೆಯಬಲ್ಲೆ ಅಥವಾ ರಸಪ್ರಶ್ನೆ ನಡೆಸಬಲ್ಲೆ. ಇಂದು ನಾನು ನಿಮಗೆ ಹೇಗೆ ಸಹಾಯ ಮಾಡಲಿ?"
+          : "👋 **Hello!** I'm **Namma Buddy**, your Gemini AI Assistant & Career Guide.\n\nI can answer **any question** or perform **any task** for you:\n• 🎓 **Career Options & Streams After Class 10**\n• 📝 **Draft Leave Application / Formal Letter**\n• 📅 **Generate Daily Study Timetable**\n• 📐 **Solve Math Problems & Geometry**\n• 🧪 **Explain Science & Chemistry**\n\nType any prompt or question below!";
       }
       // B. User explicitly asking for questions / quiz / test
       else if (['give questions', 'question', 'questions', 'quiz', 'quiz me', 'test me', 'give quiz', 'give question', 'give 5 questions', 'give mcq'].some(w => lower.includes(w))) {
@@ -472,7 +502,7 @@ Mass can neither be created nor destroyed in a chemical reaction. Total mass of 
         botResponse = generateQuestions(targetTopic, isKannada);
         setLastPromptedQuizTopic(targetTopic);
       }
-      // D. Execute Task or Answer Any Query
+      // D. Execute Task or Answer Any Query (Includes Career Options, General Knowledge, Letters, etc.)
       else {
         botResponse = executeTaskOrAnswer(userMsg, isKannada);
         setLastPromptedQuizTopic(detectedTopic || 'Chemical Reactions');
@@ -480,7 +510,7 @@ Mass can neither be created nor destroyed in a chemical reaction. Total mass of 
 
       setMessages([...newMsgs, { text: botResponse, isBot: true }]);
       setIsLoading(false);
-    }, 450);
+    }, 400);
   };
 
   // Helper to cleanly render Markdown formatting
@@ -549,7 +579,7 @@ Mass can neither be created nor destroyed in a chemical reaction. Total mass of 
               </div>
               <div style={{ fontSize: '0.8rem', color: '#10B981', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px', marginTop: '2px' }}>
                 <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10B981', boxShadow: '0 0 8px #10B981', display: 'inline-block' }}></span>
-                Online • Answers Any Question & Performs Tasks • {isKannada ? 'ಕನ್ನಡ' : 'English'}
+                Online • Answers Any Question & Career Guide • {isKannada ? 'ಕನ್ನಡ' : 'English'}
               </div>
             </div>
           </div>
@@ -604,20 +634,20 @@ Mass can neither be created nor destroyed in a chemical reaction. Total mass of 
 
         {/* Quick Task Action Chips */}
         <div style={{ padding: '10px 20px', background: '#FFFFFF', borderTop: '1px solid #E2E8F0', display: 'flex', gap: '8px', overflowX: 'auto', whiteSpace: 'nowrap' }}>
+          <button onClick={() => handleSend('What career options are available for me after school in Karnataka?')} style={{ background: '#FEF3C7', border: '1px solid #FDE68A', color: '#D97706', padding: '6px 14px', borderRadius: '20px', fontSize: '0.82rem', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
+            <Compass size={14} /> Career Guidance
+          </button>
           <button onClick={() => handleSend('write a leave letter to class teacher')} style={{ background: '#EFF6FF', border: '1px solid #BFDBFE', color: '#1D4ED8', padding: '6px 14px', borderRadius: '20px', fontSize: '0.82rem', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
             <FileText size={14} /> Write Leave Letter
           </button>
-          <button onClick={() => handleSend('create a daily study timetable')} style={{ background: '#FEF3C7', border: '1px solid #FDE68A', color: '#D97706', padding: '6px 14px', borderRadius: '20px', fontSize: '0.82rem', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
+          <button onClick={() => handleSend('create a daily study timetable')} style={{ background: '#F3E8FF', border: '1px solid #E9D5FF', color: '#7E22CE', padding: '6px 14px', borderRadius: '20px', fontSize: '0.82rem', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
             <Calendar size={14} /> Study Timetable
           </button>
-          <button onClick={() => handleSend('Chemical Reactions')} style={{ background: '#F3E8FF', border: '1px solid #E9D5FF', color: '#7E22CE', padding: '6px 14px', borderRadius: '20px', fontSize: '0.82rem', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
+          <button onClick={() => handleSend('Chemical Reactions')} style={{ background: '#ECFDF5', border: '1px solid #A7F3D0', color: '#047857', padding: '6px 14px', borderRadius: '20px', fontSize: '0.82rem', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
             <FlaskConical size={14} /> Chemical Reactions
           </button>
-          <button onClick={() => handleSend('give 5 SSLC exam tips')} style={{ background: '#ECFDF5', border: '1px solid #A7F3D0', color: '#047857', padding: '6px 14px', borderRadius: '20px', fontSize: '0.82rem', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
+          <button onClick={() => handleSend('give 5 SSLC exam tips')} style={{ background: '#FFF7ED', border: '1px solid #FFEDD5', color: '#C2410C', padding: '6px 14px', borderRadius: '20px', fontSize: '0.82rem', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
             <CheckCircle2 size={14} /> SSLC Exam Tips
-          </button>
-          <button onClick={() => handleSend('give questions')} style={{ background: '#FFF7ED', border: '1px solid #FFEDD5', color: '#C2410C', padding: '6px 14px', borderRadius: '20px', fontSize: '0.82rem', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
-            <HelpCircle size={14} /> Give Practice Quiz
           </button>
         </div>
 
@@ -629,7 +659,7 @@ Mass can neither be created nor destroyed in a chemical reaction. Total mass of 
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSend()}
             disabled={isLoading}
-            placeholder={isKannada ? "ಯಾವುದೇ ಪ್ರಶ್ನೆ ಕೇಳಿ ಅಥವಾ ಕಾರ್ಯ ನೀಡಲು (ಉದಾ: ರಜೆ ಪತ್ರ ಬರೆಯಿರಿ, ವೇಳಾಪಟ್ಟಿ ಬಿಡಿಸಿ)..." : "Ask ANY question or give a task (e.g. Write leave letter, Solve math, Give timetable)..."}
+            placeholder={isKannada ? "ಯಾವುದೇ ಪ್ರಶ್ನೆ ಕೇಳಿ (ಉದಾ: 10 ನೇ ನಂತರದ ಕೋರ್ಸ್‌ಗಳು, ರಜೆ ಪತ್ರ, ಗಣಿತ ಬಿಡಿಸಿ)..." : "Ask ANY question (e.g. Career choices after 10th, Write leave letter, Solve math)..."}
             style={{ flex: 1, padding: '14px 22px', borderRadius: '28px', border: '1.5px solid #CBD5E1', background: '#F8FAFC', outline: 'none', fontSize: '0.98rem', fontWeight: 500, color: '#0F172A', transition: 'border-color 0.2s' }}
             onFocus={(e) => e.currentTarget.style.borderColor = '#2563EB'}
             onBlur={(e) => e.currentTarget.style.borderColor = '#CBD5E1'}
