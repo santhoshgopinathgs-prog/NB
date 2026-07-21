@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 
 import { supabase } from '../utils/supabaseClient';
+import { exportStudentsToCSV } from '../utils/exportToSheets';
 
 interface StudentData {
   id: string;
@@ -748,19 +749,19 @@ export const TeacherDashboard: React.FC = () => {
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px' }}>
               {[
-                { title: 'Class Academic Report', desc: 'Subject-wise marks and grades', type: 'PDF' },
-                { title: 'Monthly Attendance Register', desc: 'Official student presence logs', type: 'Excel' },
+                { title: 'Class Academic Report', desc: 'Subject-wise marks and grades', type: 'Google Sheets / Excel' },
+                { title: 'Monthly Attendance Register', desc: 'Official student presence logs', type: 'Google Sheets / Excel' },
                 { title: 'Student Progress Digest', desc: 'Parent-teacher meeting summary', type: 'PDF' },
-                { title: 'Digital Learning Adoption', desc: 'XP and app activity stats', type: 'Excel' }
+                { title: 'Digital Learning Adoption', desc: 'XP and app activity stats', type: 'Google Sheets / Excel' }
               ].map((rep, idx) => (
                 <div key={idx} style={{ padding: '16px', background: 'var(--bg-app)', borderRadius: '16px', border: '1px solid var(--border-light)' }}>
                   <h4 style={{ margin: '0 0 4px 0', fontWeight: 800, fontSize: '0.95rem' }}>{rep.title}</h4>
                   <div style={{ fontSize: '0.78rem', color: 'var(--text-tertiary)', marginBottom: '12px' }}>{rep.desc}</div>
                   <button 
-                    onClick={() => alert(`Generated ${rep.title} (${rep.type})`)}
-                    style={{ width: '100%', padding: '8px', background: '#10B981', color: 'white', border: 'none', borderRadius: '10px', fontWeight: 800, fontSize: '0.8rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
+                    onClick={() => exportStudentsToCSV(students, `Namma_Buddy_${rep.title.replace(/\s+/g, '_')}.csv`)}
+                    style={{ width: '100%', padding: '10px', background: '#10B981', color: 'white', border: 'none', borderRadius: '10px', fontWeight: 800, fontSize: '0.82rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', boxShadow: '0 4px 12px rgba(16,185,129,0.25)' }}
                   >
-                    <Download size={14} /> Download ({rep.type})
+                    <Download size={15} /> Export ({rep.type})
                   </button>
                 </div>
               ))}
