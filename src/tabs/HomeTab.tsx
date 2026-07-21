@@ -161,7 +161,56 @@ export const HomeTab = ({ navigateToChapter, setActiveTab }: { navigateToChapter
 
       {/* Today's Mission */}
       <div style={{ width: '100%', background: 'linear-gradient(135deg, var(--accent-green), #1E5E3A)', borderRadius: '24px', padding: '28px', color: 'white', position: 'relative', overflow: 'hidden', boxShadow: '0 8px 24px rgba(46, 139, 87, 0.3)' }}>
-        <div style={{ position: 'absolute', right: '-20px', bottom: '-20px', opacity: 0.1, fontSize: '160px' }}>📐</div>
+        {/* Multi-instrument Mathematical Vector Background (Set Square, Protractor, Compass, Ruler) */}
+        <svg 
+          viewBox="0 0 220 220" 
+          style={{ 
+            position: 'absolute', 
+            right: '-15px', 
+            bottom: '-25px', 
+            width: '230px', 
+            height: '230px', 
+            opacity: 0.22, 
+            pointerEvents: 'none',
+            color: '#FFFFFF'
+          }} 
+          fill="none" 
+          stroke="currentColor" 
+          strokeWidth="3.5" 
+          strokeLinecap="round" 
+          strokeLinejoin="round"
+        >
+          {/* Triangular Set Square / Ruler */}
+          <path d="M 50 180 L 180 180 L 50 50 Z" strokeWidth="4" />
+          <path d="M 72 158 L 145 158 L 72 85 Z" strokeWidth="3" />
+          {/* Set Square Tick Marks */}
+          <line x1="50" y1="70" x2="62" y2="70" />
+          <line x1="50" y1="90" x2="68" y2="90" />
+          <line x1="50" y1="110" x2="62" y2="110" />
+          <line x1="50" y1="130" x2="68" y2="130" />
+          <line x1="50" y1="150" x2="62" y2="150" />
+          <line x1="70" y1="180" x2="70" y2="168" />
+          <line x1="90" y1="180" x2="90" y2="162" />
+          <line x1="110" y1="180" x2="110" y2="168" />
+          <line x1="130" y1="180" x2="130" y2="162" />
+          <line x1="150" y1="180" x2="150" y2="168" />
+
+          {/* Protractor (Semi-circle Angle Meter) */}
+          <path d="M 100 80 A 50 50 0 0 1 200 80 Z" strokeWidth="3.5" />
+          <line x1="150" y1="80" x2="150" y2="35" strokeDasharray="3 3" />
+          <line x1="120" y1="80" x2="112" y2="46" />
+          <line x1="180" y1="80" x2="188" y2="46" />
+          <line x1="135" y1="80" x2="128" y2="38" />
+          <line x1="165" y1="80" x2="172" y2="38" />
+
+          {/* Drafting Geometry Compass */}
+          <path d="M 35 30 L 15 85" strokeWidth="4" />
+          <path d="M 35 30 L 55 85" strokeWidth="4" />
+          <circle cx="35" cy="22" r="6" fill="currentColor" />
+          <circle cx="15" cy="85" r="3" fill="currentColor" />
+          <circle cx="55" cy="85" r="3.5" fill="currentColor" />
+          <path d="M 10 85 L 60 85" strokeDasharray="3 3" strokeWidth="2" />
+        </svg>
         
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(255,255,255,0.2)', padding: '6px 16px', borderRadius: '20px', fontSize: '0.85rem', fontWeight: 700, marginBottom: '18px' }}>
           <Moon size={16} fill="var(--accent-orange)" color="var(--accent-orange)" /> {language === 'EN' ? "Today's Mission" : "ಇಂದಿನ ಮಿಷನ್"}
