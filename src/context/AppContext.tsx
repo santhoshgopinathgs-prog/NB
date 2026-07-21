@@ -26,6 +26,18 @@ export interface DailyQuests {
   typingClaimed: boolean;
 }
 
+const getFreshQuests = (dateStr: string): DailyQuests => ({
+  date: dateStr,
+  lessons: 0,
+  lessonsClaimed: false,
+  quiz80: false,
+  quiz80Claimed: false,
+  aiTutor: false,
+  aiTutorClaimed: false,
+  typing: false,
+  typingClaimed: false
+});
+
 interface AppContextType {
   language: Language;
   toggleLanguage: () => void;
@@ -73,30 +85,16 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [certificates, setCertificates] = useState<Certificate[]>([]);
   const [leaderboard, setLeaderboard] = useState<LeaderboardUser[]>([]);
 
-  // Daily Quests State
-  const [dailyQuests, setDailyQuests] = useState<DailyQuests>(() => {
-    const today = new Date().toISOString().split('T')[0];
-    const saved = localStorage.getItem('nb_daily_quests');
-    if (saved) {
-      const parsed = JSON.parse(saved);
-      if (parsed.date === today) return parsed;
-    }
-    return {
-      date: today,
-      lessons: 0,
-      lessonsClaimed: false,
-      quiz80: false,
-      quiz80Claimed: false,
-      aiTutor: false,
-      aiTutorClaimed: false,
-      typing: false,
-      typingClaimed: false
-    };
-  });
+  // Daily Quests State (Fresh initialization per user session)
+  const [dailyQuests, setDailyQuests] = useState<DailyQuests>(() => 
+    getFreshQuests(new Date().toISOString().split('T')[0])
+  );
 
   useEffect(() => {
-    localStorage.setItem('nb_daily_quests', JSON.stringify(dailyQuests));
-  }, [dailyQuests]);
+    if (user?.id) {
+      localStorage.setItem(`nb_daily_quests_${user.id}`, JSON.stringify(dailyQuests));
+    }
+  }, [dailyQuests, user?.id]);
 
   const incrementLessonsCompleted = () => {
     setDailyQuests(prev => ({ ...prev, lessons: Math.min(2, prev.lessons + 1) }));
@@ -171,7 +169,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       // 4. Fetch Certificates
       const { data: certs } = await supabase.from('user_certificates').select('subject, class_level').eq('user_id', userId);
 
-      const storedName = localStorage.getItem('nb_user_profile_name');
+      const storedName = localStorage.getItem(`nb_user_profile_name_${userId}`) || localStorage.getItem('nb_user_profile_name');
       const displayName = profile?.name || authUser.user_metadata?.name || storedName || (authUser.email ? authUser.email.split('@')[0] : 'User');
 
       setUser({
@@ -184,18 +182,27 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         lastActive: progress?.last_active || new Date().toISOString(),
         avatar: authUser.user_metadata?.avatar
       });
-      if (progress) {
-        setUserXP(progress.total_xp);
-      }
-      
-      if (quizzes) {
-        setCompletedQuizzes(quizzes.map(q => q.quiz_id));
+
+      // ALWAYS explicitly set user stats (starts at 0/empty for fresh accounts!)
+      setUserXP(progress?.total_xp ?? 0);
+      setCompletedQuizzes(quizzes ? quizzes.map(q => q.quiz_id) : []);
+      setCertificates(certs ? certs.map(c => ({ subject: c.subject, classLevel: c.class_level })) : []);
+
+      // Load user-scoped daily quests
+      const today = new Date().toISOString().split('T')[0];
+      const userQuestKey = `nb_daily_quests_${userId}`;
+      const savedQuests = localStorage.getItem(userQuestKey);
+      if (savedQuests) {
+        const parsed = JSON.parse(savedQuests);
+        if (parsed.date === today) {
+          setDailyQuests(parsed);
+        } else {
+          setDailyQuests(getFreshQuests(today));
+        }
+      } else {
+        setDailyQuests(getFreshQuests(today));
       }
 
-      if (certs) {
-        setCertificates(certs.map(c => ({ subject: c.subject, classLevel: c.class_level })));
-      }
-      
       await fetchLeaderboard();
       setIsAuthenticated(true);
     } catch (error) {
@@ -225,6 +232,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         setUserXP(0);
         setCompletedQuizzes([]);
         setCertificates([]);
+        setDailyQuests(getFreshQuests(new Date().toISOString().split('T')[0]));
       }
     });
 
@@ -292,6 +300,14 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = async () => {
     await supabase.auth.signOut();
+    setIsAuthenticated(false);
+    setUser(null);
+    setUserXP(0);
+    setCompletedQuizzes([]);
+    setCertificates([]);
+    setDailyQuests(getFreshQuests(new Date().toISOString().split('T')[0]));
+    localStorage.removeItem('nb_user_profile_name');
+    localStorage.removeItem('nb_daily_quests');
   };
 
   const t = (key: keyof typeof translations.EN) => {
