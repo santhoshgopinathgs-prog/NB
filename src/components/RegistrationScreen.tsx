@@ -200,7 +200,7 @@ export const RegistrationScreen = () => {
             fontSize: '0.78rem', color: '#64748B', margin: 0, 
             textTransform: 'uppercase', letterSpacing: '1.5px', fontWeight: 700
           }}>
-            {language === 'EN' ? 'Digital Learning Platform • Karnataka' : 'ಡಿಜಿಟಲ್ ಕಲಿಕಾ ವೇದಿಕೆ • ಕರ್ನಾಟಕ'}
+            {language === 'EN' ? 'Bridging the digital divide' : 'ಡಿಜಿಟಲ್ ವಿಭಜನೆಯನ್ನು ಸೇತುವೆ ಮಾಡುವುದು'}
           </p>
         </div>
 
