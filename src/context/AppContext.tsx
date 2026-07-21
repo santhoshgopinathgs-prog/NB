@@ -30,6 +30,8 @@ interface AppContextType {
   language: Language;
   toggleLanguage: () => void;
   t: (key: keyof typeof translations.EN) => string;
+  userRole: 'student' | 'teacher' | 'principal';
+  setUserRole: (role: 'student' | 'teacher' | 'principal') => void;
   user: { id: string; name: string; email: string; school: string; class: number; streak: number; lastActive: string; avatar?: string } | null;
   isAuthenticated: boolean;
   isLoading: boolean;
@@ -53,6 +55,16 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [language, setLanguage] = useState<Language>('EN');
+  const [userRole, setUserRoleState] = useState<'student' | 'teacher' | 'principal'>(() => {
+    const saved = localStorage.getItem('nb_user_role');
+    return (saved === 'teacher' || saved === 'principal' || saved === 'student') ? saved : 'student';
+  });
+
+  const setUserRole = (role: 'student' | 'teacher' | 'principal') => {
+    setUserRoleState(role);
+    localStorage.setItem('nb_user_role', role);
+  };
+
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState<{ id: string; name: string; email: string; school: string; class: number; streak: number; lastActive: string; avatar?: string } | null>(null);
@@ -284,7 +296,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AppContext.Provider value={{ language, toggleLanguage, t, user, isAuthenticated, isLoading, logout, completedQuizzes, markQuizComplete, userXP, certificates, leaderboard, fetchLeaderboard, updateUserAvatar,
+    <AppContext.Provider value={{ language, toggleLanguage, t, userRole, setUserRole, user, isAuthenticated, isLoading, logout, completedQuizzes, markQuizComplete, userXP, certificates, leaderboard, fetchLeaderboard, updateUserAvatar,
       dailyQuests,
       incrementLessonsCompleted,
       markQuiz80Percent,

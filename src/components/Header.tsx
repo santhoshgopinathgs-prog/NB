@@ -8,7 +8,7 @@ interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = ({ setActiveTab }) => {
-  const { t, language, toggleLanguage, user, userXP } = useAppContext();
+  const { t, language, toggleLanguage, user, userXP, userRole, setUserRole } = useAppContext();
   const [showNotifications, setShowNotifications] = useState(false);
   const [hasUnread, setHasUnread] = useState(true);
   const [isOffline, setIsOffline] = useState(!navigator.onLine);
@@ -38,7 +38,7 @@ export const Header: React.FC<HeaderProps> = ({ setActiveTab }) => {
       <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
         <div style={{ 
           width: '48px', height: '48px', borderRadius: '50%', 
-          background: 'var(--accent-blue)', display: 'flex', 
+          background: userRole === 'teacher' ? '#2563EB' : (userRole === 'principal' ? '#0F172A' : 'var(--accent-blue)'), display: 'flex', 
           alignItems: 'center', justifyContent: 'center',
           color: 'white', fontWeight: 800, fontSize: '1.4rem',
           overflow: 'hidden', boxShadow: 'var(--shadow-sm)'
@@ -46,19 +46,40 @@ export const Header: React.FC<HeaderProps> = ({ setActiveTab }) => {
           {user?.avatar ? (
             <img src={user.avatar} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           ) : (
-            user?.name.charAt(0).toUpperCase()
+            userRole === 'teacher' ? '👩‍🏫' : (userRole === 'principal' ? '🏛️' : user?.name.charAt(0).toUpperCase())
           )}
         </div>
         <div>
           <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 600 }}>{getSalutation()},</div>
-          <div style={{ fontSize: '1.2rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--text-primary)' }}>
-            {user?.name ? capitalize(user.name.split(' ')[0]) : ''} <span style={{fontSize: '1.2rem'}}>👋</span>
+          <div style={{ fontSize: '1.15rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--text-primary)' }}>
+            {userRole === 'teacher' ? 'Mrs. Suma' : (userRole === 'principal' ? 'Dr. Ramesh Kumar' : (user?.name ? capitalize(user.name.split(' ')[0]) : 'Learner'))} <span style={{fontSize: '1.2rem'}}>👋</span>
           </div>
         </div>
       </div>
       
       <div className="header-actions">
         
+        {/* Role Switcher Pill */}
+        <select
+          value={userRole}
+          onChange={(e) => setUserRole(e.target.value as any)}
+          style={{
+            background: userRole === 'teacher' ? '#2563EB' : (userRole === 'principal' ? '#0F172A' : '#10B981'),
+            color: 'white',
+            border: 'none',
+            borderRadius: '20px',
+            padding: '6px 12px',
+            fontSize: '0.8rem',
+            fontWeight: 800,
+            cursor: 'pointer',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
+          }}
+        >
+          <option value="student">🎓 Student View</option>
+          <option value="teacher">👩‍🏫 Teacher View</option>
+          <option value="principal">🏛️ Principal View</option>
+        </select>
+
         {isOffline && (
           <div style={{ background: 'var(--accent-red)', color: 'white', padding: '4px 10px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: 800 }}>
             Offline

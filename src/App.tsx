@@ -8,6 +8,8 @@ import { PracticeTab } from './tabs/PracticeTab';
 import { TopTab } from './tabs/TopTab';
 import { ProfileTab } from './tabs/ProfileTab';
 import { AchievementsTab } from './tabs/AchievementsTab';
+import { TeacherDashboard } from './components/TeacherDashboard';
+import { PrincipalDashboard } from './components/PrincipalDashboard';
 import { RegistrationScreen } from './components/RegistrationScreen';
 import { AvatarSelectionScreen } from './components/AvatarSelectionScreen';
 import { AITutorPortal } from './components/AITutorPortal';
@@ -22,7 +24,7 @@ function AppContent() {
     setTargetChapter({ subjectId, subjectDisplay, chapter });
     setActiveTab('learn');
   };
-  const { isAuthenticated, isLoading, user } = useAppContext();
+  const { isAuthenticated, isLoading, user, userRole } = useAppContext();
 
   React.useEffect(() => {
     // Always reset to home tab when auth state changes (login or logout)
@@ -45,7 +47,14 @@ function AppContent() {
     return <AvatarSelectionScreen />;
   }
 
-  const renderTab = () => {
+  const renderTabContent = () => {
+    if (userRole === 'teacher') {
+      return <TeacherDashboard />;
+    }
+    if (userRole === 'principal') {
+      return <PrincipalDashboard />;
+    }
+
     switch (activeTab) {
       case 'home': return <HomeTab navigateToChapter={navigateToChapter} setActiveTab={setActiveTab} />;
       case 'learn': return <LearnTab initialChapter={targetChapter} clearInitialChapter={() => setTargetChapter(null)} />;
@@ -60,23 +69,23 @@ function AppContent() {
   return (
     <div className="app-container">
       <div className="desktop-layout-wrapper">
-        <div className="main-content-area">
+        <div className="main-content-area" style={{ width: '100%' }}>
           {activeTab !== 'achievements' && <Header setActiveTab={setActiveTab} />}
           <main className="page-container" style={{ padding: activeTab === 'achievements' ? 0 : undefined }}>
-            {renderTab()}
+            {renderTabContent()}
           </main>
         </div>
 
-        {/* Right Sidebar for Desktop Web Users */}
-        {activeTab !== 'achievements' && (
+        {/* Right Sidebar for Desktop Web Users (Student Mode) */}
+        {activeTab !== 'achievements' && userRole === 'student' && (
           <div className="right-sidebar-container">
             <RightSidebar setActiveTab={setActiveTab} />
           </div>
         )}
       </div>
 
-      {/* Bottom Navigation Fixed at Bottom across Mobile, Tablet, and Desktop */}
-      {activeTab !== 'achievements' && <BottomNav activeTab={activeTab} setActiveTab={setActiveTab} />}
+      {/* Bottom Navigation Fixed at Bottom across Mobile, Tablet, and Desktop for Student Mode */}
+      {activeTab !== 'achievements' && userRole === 'student' && <BottomNav activeTab={activeTab} setActiveTab={setActiveTab} />}
 
       {/* Floating AI Buddy Button */}
       {isAuthenticated && (
