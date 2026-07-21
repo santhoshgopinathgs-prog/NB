@@ -374,7 +374,7 @@ export const HomeTab = ({ navigateToChapter, setActiveTab }: { navigateToChapter
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', width: '100%' }}>
           <QuickAccessBtn onClick={() => setActivePortal('leaderboard')} icon={<Trophy size={36} color="#f59e0b" />} label="Leaderboard" bg="#FEF3C7" />
           <QuickAccessBtn onClick={() => setActiveTab && setActiveTab('practice')} icon={<Gamepad2 size={36} color="#8b5cf6" />} label="Challenge" bg="#EDE9FE" />
-          <QuickAccessBtn onClick={() => setActivePortal('certificates')} icon={<GraduationCap size={36} color="#1f2937" />} label="Certificates" bg="#F3F4F6" />
+          <QuickAccessBtn onClick={() => setActiveTab && setActiveTab('profile')} icon={<GraduationCap size={36} color="#1f2937" />} label="Certificates" bg="#F3F4F6" />
           <QuickAccessBtn onClick={() => { setAiInitialQuery('What career options are available for me after school in Karnataka?'); setActivePortal('ai'); }} icon={<Target size={36} color="#ef4444" />} label="Career" bg="#FEE2E2" />
         </div>
       </div>
