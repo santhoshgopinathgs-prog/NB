@@ -171,17 +171,19 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       // 4. Fetch Certificates
       const { data: certs } = await supabase.from('user_certificates').select('subject, class_level').eq('user_id', userId);
 
-      if (profile && progress) {
-        setUser({
-          id: profile.id,
-          name: profile.name,
-          email: profile.email,
-          school: profile.school,
-          class: profile.class_level,
-          streak: progress.streak,
-          lastActive: progress.last_active,
-          avatar: authUser.user_metadata?.avatar
-        });
+      const displayName = profile?.name || authUser.user_metadata?.name || (authUser.email ? authUser.email.split('@')[0] : 'User');
+
+      setUser({
+        id: authUser.id,
+        name: displayName,
+        email: authUser.email || profile?.email || '',
+        school: profile?.school || authUser.user_metadata?.school || 'GHPS Anekal',
+        class: profile?.class_level || authUser.user_metadata?.class_level || 8,
+        streak: progress?.streak || 1,
+        lastActive: progress?.last_active || new Date().toISOString(),
+        avatar: authUser.user_metadata?.avatar
+      });
+      if (progress) {
         setUserXP(progress.total_xp);
       }
       

@@ -34,9 +34,21 @@ export const Header: React.FC<HeaderProps> = ({ setActiveTab }) => {
   const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
 
   const getAvatarLetter = () => {
-    if (userRole === 'teacher') return 'S';
-    if (userRole === 'principal') return 'R';
-    return user?.name ? user.name.charAt(0).toUpperCase() : 'S';
+    if (user?.name && user.name.trim().length > 0) {
+      return user.name.trim().charAt(0).toUpperCase();
+    }
+    if (userRole === 'teacher') return 'T';
+    if (userRole === 'principal') return 'P';
+    return 'S';
+  };
+
+  const getUserDisplayName = () => {
+    if (user?.name && user.name.trim().length > 0) {
+      return user.name;
+    }
+    if (userRole === 'teacher') return 'Teacher';
+    if (userRole === 'principal') return 'Principal';
+    return 'Learner';
   };
 
   return (
@@ -60,7 +72,7 @@ export const Header: React.FC<HeaderProps> = ({ setActiveTab }) => {
         <div>
           <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 600 }}>{getSalutation()},</div>
           <div style={{ fontSize: '1.15rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--text-primary)' }}>
-            {userRole === 'teacher' ? 'Mrs. Suma' : (userRole === 'principal' ? 'Dr. Ramesh Kumar' : (user?.name ? capitalize(user.name.split(' ')[0]) : 'Learner'))} <span style={{fontSize: '1.2rem'}}>👋</span>
+            {getUserDisplayName()} <span style={{fontSize: '1.2rem'}}>👋</span>
           </div>
         </div>
       </div>

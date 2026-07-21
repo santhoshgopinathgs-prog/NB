@@ -36,7 +36,7 @@ const MOCK_STUDENTS: StudentData[] = [
 ];
 
 export const TeacherDashboard: React.FC = () => {
-  const { language, setUserRole, logout } = useAppContext();
+  const { language, user, setUserRole, logout } = useAppContext();
   const [activeSubTab, setActiveSubTab] = useState<'overview' | 'students' | 'attendance' | 'assignments' | 'quizzes' | 'analytics' | 'ai' | 'reports'>('overview');
   
   const handleTeacherLogout = () => {
@@ -119,7 +119,9 @@ export const TeacherDashboard: React.FC = () => {
             <div style={{ background: 'rgba(255,255,255,0.2)', color: '#FFFFFF', padding: '4px 12px', borderRadius: '16px', fontSize: '0.78rem', fontWeight: 800, width: 'fit-content', marginBottom: '8px' }}>
               👩‍🏫 Teacher Portal • GHPS Anekal
             </div>
-            <h1 style={{ fontSize: '1.6rem', margin: 0, fontWeight: 900 }}>Welcome, Mrs. Suma</h1>
+            <h1 style={{ fontSize: '1.6rem', margin: 0, fontWeight: 900 }}>
+              Welcome, {user?.name || 'Teacher'}
+            </h1>
             <p style={{ margin: '4px 0 0 0', opacity: 0.9, fontSize: '0.92rem' }}>
               Assigned Classes: <strong>Class 8-A & Class 9-B</strong> • Today: {new Date().toLocaleDateString('en-IN', { weekday: 'short', month: 'short', day: 'numeric' })}
             </p>

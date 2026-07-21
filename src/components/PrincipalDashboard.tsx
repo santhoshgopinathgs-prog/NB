@@ -25,7 +25,7 @@ const MOCK_TEACHERS: TeacherItem[] = [
 ];
 
 export const PrincipalDashboard: React.FC = () => {
-  const { language, setUserRole, logout } = useAppContext();
+  const { language, user, setUserRole, logout } = useAppContext();
   const [activeSubTab, setActiveSubTab] = useState<'overview' | 'analytics' | 'teachers' | 'classes' | 'dropout' | 'ai' | 'announcements' | 'reports'>('overview');
 
   const handlePrincipalLogout = () => {
@@ -79,7 +79,9 @@ export const PrincipalDashboard: React.FC = () => {
             <div style={{ background: 'rgba(255,255,255,0.15)', color: '#38BDF8', padding: '4px 12px', borderRadius: '16px', fontSize: '0.78rem', fontWeight: 800, width: 'fit-content', marginBottom: '8px' }}>
               🏫 Executive Principal Dashboard • GHPS Anekal
             </div>
-            <h1 style={{ fontSize: '1.65rem', margin: 0, fontWeight: 900 }}>Dr. Ramesh Kumar</h1>
+            <h1 style={{ fontSize: '1.65rem', margin: 0, fontWeight: 900 }}>
+              {user?.name || 'Principal'}
+            </h1>
             <p style={{ margin: '4px 0 0 0', opacity: 0.85, fontSize: '0.92rem' }}>
               Karnataka Government High School Anekal • BEO Office Region: Bengaluru South
             </p>
