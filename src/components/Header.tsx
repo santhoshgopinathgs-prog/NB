@@ -59,26 +59,21 @@ export const Header: React.FC<HeaderProps> = ({ setActiveTab }) => {
       
       <div className="header-actions">
         
-        {/* Role Switcher Pill */}
-        <select
-          value={userRole}
-          onChange={(e) => setUserRole(e.target.value as any)}
-          style={{
-            background: userRole === 'teacher' ? '#2563EB' : (userRole === 'principal' ? '#0F172A' : '#10B981'),
-            color: 'white',
-            border: 'none',
-            borderRadius: '20px',
-            padding: '6px 12px',
-            fontSize: '0.8rem',
-            fontWeight: 800,
-            cursor: 'pointer',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
-        >
-          <option value="student">🎓 Student View</option>
-          <option value="teacher">👩‍🏫 Teacher View</option>
-          <option value="principal">🏛️ Principal View</option>
-        </select>
+        {/* Active Role Badge */}
+        <div style={{
+          background: userRole === 'teacher' ? '#2563EB' : (userRole === 'principal' ? '#0F172A' : '#10B981'),
+          color: 'white',
+          borderRadius: '20px',
+          padding: '6px 12px',
+          fontSize: '0.8rem',
+          fontWeight: 800,
+          display: 'flex',
+          alignItems: 'center',
+          gap: '4px',
+          boxShadow: '0 2px 6px rgba(0,0,0,0.15)'
+        }}>
+          {userRole === 'teacher' ? '👩‍🏫 Teacher' : (userRole === 'principal' ? '🏛️ Principal' : '🎓 Student')}
+        </div>
 
         {isOffline && (
           <div style={{ background: 'var(--accent-red)', color: 'white', padding: '4px 10px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: 800 }}>

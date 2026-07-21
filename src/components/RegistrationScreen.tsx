@@ -4,7 +4,8 @@ import { useAppContext } from '../context/AppContext';
 import { supabase } from '../utils/supabaseClient';
 
 export const RegistrationScreen = () => {
-  const { language, toggleLanguage } = useAppContext();
+  const { language, toggleLanguage, userRole, setUserRole } = useAppContext();
+  const [selectedRole, setSelectedRole] = useState<'student' | 'teacher' | 'principal'>(userRole || 'student');
   const [isLoginMode, setIsLoginMode] = useState(true);
   const [forgotPasswordMode, setForgotPasswordMode] = useState(false);
   
@@ -26,6 +27,9 @@ export const RegistrationScreen = () => {
     setIsLoading(true);
     setErrorMsg('');
     setSuccessMsg('');
+
+    // Set selected role in AppContext
+    setUserRole(selectedRole);
     
     try {
       if (forgotPasswordMode) {
@@ -48,7 +52,8 @@ export const RegistrationScreen = () => {
             data: {
               name: name.trim(),
               school: school.trim(),
-              class_level: selectedClass
+              class_level: selectedClass,
+              role: selectedRole
             }
           }
         });
@@ -180,6 +185,50 @@ export const RegistrationScreen = () => {
           {successMsg && (
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '12px', background: '#D1FAE5', color: '#10B981', borderRadius: '8px', fontSize: '0.85rem', fontWeight: 600 }}>
               <CheckCircle2 size={18} /> {successMsg}
+            </div>
+          )}
+
+          {/* Role Selection Cards */}
+          {!forgotPasswordMode && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <label style={labelStyle}>
+                {language === 'EN' ? 'Portal Login Role' : 'ಲಾಗಿನ್ ಪಾತ್ರ'}
+              </label>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px' }}>
+                {[
+                  { id: 'student', label: language === 'EN' ? 'Student' : 'ವಿದ್ಯಾರ್ಥಿ', icon: '🎓', color: '#10B981' },
+                  { id: 'teacher', label: language === 'EN' ? 'Teacher' : 'ಶಿಕ್ಷಕ', icon: '👩‍🏫', color: '#2563EB' },
+                  { id: 'principal', label: language === 'EN' ? 'Principal' : 'ಪ್ರಾಂಶುಪಾಲರು', icon: '🏛️', color: '#0F172A' }
+                ].map(role => (
+                  <button
+                    key={role.id}
+                    type="button"
+                    onClick={() => {
+                      setSelectedRole(role.id as any);
+                      setUserRole(role.id as any);
+                    }}
+                    style={{
+                      padding: '10px 4px',
+                      borderRadius: '12px',
+                      border: selectedRole === role.id ? `2.5px solid ${role.color}` : '1.5px solid #D1CFC7',
+                      background: selectedRole === role.id ? `${role.color}15` : '#FFFFFF',
+                      color: selectedRole === role.id ? role.color : '#64748B',
+                      fontWeight: 900,
+                      fontSize: '0.78rem',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      gap: '4px',
+                      boxShadow: selectedRole === role.id ? `0 4px 10px ${role.color}30` : 'none',
+                      transition: 'all 0.2s'
+                    }}
+                  >
+                    <span style={{ fontSize: '1.25rem' }}>{role.icon}</span>
+                    <span>{role.label}</span>
+                  </button>
+                ))}
+              </div>
             </div>
           )}
 
