@@ -2,6 +2,8 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 import { Language, translations, mockQuizzes } from '../data/mockData';
 import { supabase } from '../utils/supabaseClient';
 
+import { COLLECTED_STUDENTS } from '../data/collectedStudents';
+
 export interface Certificate {
   subject: string;
   classLevel: number;
@@ -83,7 +85,15 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [completedQuizzes, setCompletedQuizzes] = useState<string[]>([]);
   const [userXP, setUserXP] = useState<number>(0);
   const [certificates, setCertificates] = useState<Certificate[]>([]);
-  const [leaderboard, setLeaderboard] = useState<LeaderboardUser[]>([]);
+  
+  const [leaderboard, setLeaderboard] = useState<LeaderboardUser[]>(() => {
+    return COLLECTED_STUDENTS.map(s => ({
+      id: s.id,
+      name: s.name,
+      xp: s.points,
+      avatar: s.name.charAt(0).toUpperCase()
+    }));
+  });
 
   // Daily Quests State (Fresh initialization per user session)
   const [dailyQuests, setDailyQuests] = useState<DailyQuests>(() => 
@@ -132,11 +142,11 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
           user_id,
           profiles ( name, email )
         `)
-        .order('total_xp', { ascending: false })
-        .limit(10);
+        .order('total_xp', { ascending: false });
       
-      if (data && !error) {
-        const formattedLeaderboard = data.map(item => {
+      let dbLeaderboard: LeaderboardUser[] = [];
+      if (data && !error && data.length > 0) {
+        dbLeaderboard = data.map(item => {
           const profile = item.profiles as any; 
           const name = profile?.name || profile?.email?.split('@')[0] || 'User';
           return {
@@ -146,8 +156,24 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
             avatar: name.charAt(0).toUpperCase()
           };
         });
-        setLeaderboard(formattedLeaderboard);
       }
+
+      const collectedFormatted: LeaderboardUser[] = COLLECTED_STUDENTS.map(s => ({
+        id: s.id,
+        name: s.name,
+        xp: s.points,
+        avatar: s.name.charAt(0).toUpperCase()
+      }));
+
+      const combined = [...dbLeaderboard];
+      for (const cs of collectedFormatted) {
+        if (!combined.some(u => u.name.toLowerCase() === cs.name.toLowerCase())) {
+          combined.push(cs);
+        }
+      }
+
+      combined.sort((a, b) => b.xp - a.xp);
+      setLeaderboard(combined);
     } catch (err) {
       console.error('Error fetching leaderboard:', err);
     }

@@ -9,6 +9,8 @@ import {
 import { supabase } from '../utils/supabaseClient';
 import { exportStudentsToCSV } from '../utils/exportToSheets';
 
+import { COLLECTED_STUDENTS } from '../data/collectedStudents';
+
 interface StudentData {
   id: string;
   name: string;
@@ -29,16 +31,30 @@ interface StudentData {
   aiRecommendation: string;
 }
 
-const MOCK_STUDENTS: StudentData[] = [
-  { id: 's1', name: 'Raju Kumar', rollNo: '801', className: 'Class 8', section: 'A', attendance: 96, score: 88, level: 4, xp: 850, badges: 5, lastLogin: 'Today, 8:30 AM', status: 'active', parentName: 'Suresh Kumar', parentPhone: '+91 98765 43210', strengths: ['Computer Basics', 'Mathematics'], weaknesses: ['English Vocabulary'], aiRecommendation: 'Recommend practice on English grammar modules.' },
-  { id: 's2', name: 'Priya Gowda', rollNo: '802', className: 'Class 8', section: 'A', attendance: 92, score: 94, level: 5, xp: 1200, badges: 8, lastLogin: 'Today, 9:15 AM', status: 'active', parentName: 'Manjunath Gowda', parentPhone: '+91 98765 12345', strengths: ['Science Explorer', 'Typing'], weaknesses: ['Algebra Word Problems'], aiRecommendation: 'Outstanding performance! Ready for Advanced Science quiz.' },
-  { id: 's3', name: 'Anil Naik', rollNo: '803', className: 'Class 8', section: 'A', attendance: 68, score: 54, level: 2, xp: 320, badges: 2, lastLogin: '3 days ago', status: 'needs_help', parentName: 'Ramesh Naik', parentPhone: '+91 94480 99887', strengths: ['Digital Productivity'], weaknesses: ['Mathematics', 'Science'], aiRecommendation: 'Low attendance (<70%). Schedule a quick parent check-in.' }
-];
+const INITIAL_COLLECTED_STUDENTS: StudentData[] = COLLECTED_STUDENTS.map((s, idx) => ({
+  id: s.id,
+  name: s.name,
+  rollNo: s.rollNo || `80${idx + 1}`,
+  className: `Class ${s.classLevel}`,
+  section: 'A',
+  attendance: s.attendance || 90,
+  score: s.score || 75,
+  level: s.level || 1,
+  xp: s.points,
+  badges: Math.max(1, Math.floor(s.points / 20)),
+  lastLogin: 'Active Today',
+  status: s.status || (s.points >= 50 ? 'active' : 'needs_help'),
+  parentName: `${s.name.split(' ')[0]} Guardian`,
+  parentPhone: '+91 98765 43210',
+  strengths: ['Digital Skills', 'Mathematics'],
+  weaknesses: ['English Grammar'],
+  aiRecommendation: `Student from ${s.school}. ${s.points} XP collected.`
+}));
 
 export const TeacherDashboard: React.FC = () => {
   const { language, user, userXP, setUserRole, logout } = useAppContext();
   const [activeSubTab, setActiveSubTab] = useState<'overview' | 'students' | 'attendance' | 'assignments' | 'quizzes' | 'analytics' | 'ai' | 'reports'>('overview');
-  const [students, setStudents] = useState<StudentData[]>(MOCK_STUDENTS);
+  const [students, setStudents] = useState<StudentData[]>(INITIAL_COLLECTED_STUDENTS);
 
   React.useEffect(() => {
     const fetchRealStudents = async () => {
@@ -49,9 +65,9 @@ export const TeacherDashboard: React.FC = () => {
         let combinedList: StudentData[] = [];
 
         if (dbProfiles && dbProfiles.length > 0) {
-          combinedList = dbProfiles.map((p, idx) => {
+          const dbList: StudentData[] = dbProfiles.map((p, idx) => {
             const prog = dbProgress?.find(pr => pr.user_id === p.id);
-            const xpVal = prog?.total_xp || (p.id === user?.id ? userXP : 600);
+            const xpVal = prog?.total_xp || (p.id === user?.id ? userXP : 60);
             return {
               id: p.id,
               name: p.name || 'Registered Student',
@@ -64,7 +80,7 @@ export const TeacherDashboard: React.FC = () => {
               xp: xpVal,
               badges: Math.floor(xpVal / 200) + 1,
               lastLogin: 'Today, Active',
-              status: xpVal > 400 ? 'active' : 'needs_help',
+              status: xpVal > 40 ? ('active' as const) : ('needs_help' as const),
               parentName: `${p.name?.split(' ')[0] || 'Parent'} Guardian`,
               parentPhone: '+91 98765 43210',
               strengths: ['Digital Skills', 'Mathematics'],
@@ -72,36 +88,16 @@ export const TeacherDashboard: React.FC = () => {
               aiRecommendation: `Active learner from ${p.school || 'GHPS Anekal'}.`
             };
           });
-        }
 
-        // If registered user exists, ensure user's actual registered profile is included
-        if (user && user.name) {
-          const userExists = combinedList.some(s => s.id === user.id || s.name.toLowerCase() === user.name?.toLowerCase());
-          if (!userExists) {
-            combinedList.unshift({
-              id: user.id || 'user_current',
-              name: user.name,
-              rollNo: '801',
-              className: user.class ? `Class ${user.class}` : 'Class 8',
-              section: 'A',
-              attendance: 98,
-              score: 92,
-              level: Math.floor(userXP / 250) + 1,
-              xp: userXP,
-              badges: 6,
-              lastLogin: 'Active Now',
-              status: 'active',
-              parentName: `${user.name.split(' ')[0]} Guardian`,
-              parentPhone: '+91 98765 43210',
-              strengths: ['Mathematics', 'Digital Science'],
-              weaknesses: ['Vocabulary'],
-              aiRecommendation: 'Registered student active in curriculum!'
-            });
+          const combined = [...dbList];
+          for (const cs of INITIAL_COLLECTED_STUDENTS) {
+            if (!combined.some(s => s.name.toLowerCase() === cs.name.toLowerCase())) {
+              combined.push(cs);
+            }
           }
-        }
-
-        if (combinedList.length > 0) {
-          setStudents(combinedList);
+          setStudents(combined);
+        } else {
+          setStudents(INITIAL_COLLECTED_STUDENTS);
         }
       } catch (err) {
         console.error('Error fetching registered students:', err);
@@ -346,7 +342,7 @@ export const TeacherDashboard: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {MOCK_STUDENTS.slice(0, 4).map(s => (
+                  {students.slice(0, 5).map((s: StudentData) => (
                     <tr key={s.id} style={{ borderBottom: '1px solid var(--border-light)' }}>
                       <td style={{ padding: '12px 10px', fontWeight: 800, color: 'var(--text-primary)' }}>{s.name}</td>
                       <td style={{ padding: '12px 10px', color: 'var(--text-secondary)' }}>{s.className}-{s.section}</td>
@@ -553,7 +549,7 @@ export const TeacherDashboard: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {MOCK_STUDENTS.map(s => (
+                  {students.map((s: StudentData) => (
                     <tr key={s.id} style={{ borderBottom: '1px solid var(--border-light)' }}>
                       <td style={{ padding: '12px 10px', fontWeight: 800 }}>{s.rollNo}</td>
                       <td style={{ padding: '12px 10px', fontWeight: 800 }}>{s.name}</td>
