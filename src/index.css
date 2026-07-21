@@ -60,6 +60,30 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Floating Animations for Lively Objects */
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(3deg); }
+}
+@keyframes floatMedium {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-7px) rotate(-4deg); }
+}
+@keyframes floatFast {
+  0%, 100% { transform: translateY(0px) scale(1); }
+  50% { transform: translateY(-12px) scale(1.05); }
+}
+
+.animate-float-slow {
+  animation: floatSlow 4.5s ease-in-out infinite;
+}
+.animate-float-medium {
+  animation: floatMedium 3.6s ease-in-out infinite;
+}
+.animate-float-fast {
+  animation: floatFast 3s ease-in-out infinite;
+}
+
 /* App Layout */
 #root {
   width: 100%;

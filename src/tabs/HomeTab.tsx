@@ -160,80 +160,121 @@ export const HomeTab = ({ navigateToChapter, setActiveTab }: { navigateToChapter
       </div>
 
       {/* Today's Mission */}
-      <div style={{ width: '100%', background: 'linear-gradient(135deg, var(--accent-green), #1E5E3A)', borderRadius: '24px', padding: '28px', color: 'white', position: 'relative', overflow: 'hidden', boxShadow: '0 8px 24px rgba(46, 139, 87, 0.3)' }}>
-        {/* Multi-instrument Mathematical Vector Background (Set Square, Protractor, Compass, Ruler) */}
-        <svg 
-          viewBox="0 0 220 220" 
-          style={{ 
-            position: 'absolute', 
-            right: '-15px', 
-            bottom: '-25px', 
-            width: '230px', 
-            height: '230px', 
-            opacity: 0.22, 
-            pointerEvents: 'none',
-            color: '#FFFFFF'
-          }} 
-          fill="none" 
-          stroke="currentColor" 
-          strokeWidth="3.5" 
-          strokeLinecap="round" 
-          strokeLinejoin="round"
-        >
-          {/* Triangular Set Square / Ruler */}
-          <path d="M 50 180 L 180 180 L 50 50 Z" strokeWidth="4" />
-          <path d="M 72 158 L 145 158 L 72 85 Z" strokeWidth="3" />
-          {/* Set Square Tick Marks */}
-          <line x1="50" y1="70" x2="62" y2="70" />
-          <line x1="50" y1="90" x2="68" y2="90" />
-          <line x1="50" y1="110" x2="62" y2="110" />
-          <line x1="50" y1="130" x2="68" y2="130" />
-          <line x1="50" y1="150" x2="62" y2="150" />
-          <line x1="70" y1="180" x2="70" y2="168" />
-          <line x1="90" y1="180" x2="90" y2="162" />
-          <line x1="110" y1="180" x2="110" y2="168" />
-          <line x1="130" y1="180" x2="130" y2="162" />
-          <line x1="150" y1="180" x2="150" y2="168" />
-
-          {/* Protractor (Semi-circle Angle Meter) */}
-          <path d="M 100 80 A 50 50 0 0 1 200 80 Z" strokeWidth="3.5" />
-          <line x1="150" y1="80" x2="150" y2="35" strokeDasharray="3 3" />
-          <line x1="120" y1="80" x2="112" y2="46" />
-          <line x1="180" y1="80" x2="188" y2="46" />
-          <line x1="135" y1="80" x2="128" y2="38" />
-          <line x1="165" y1="80" x2="172" y2="38" />
-
-          {/* Drafting Geometry Compass */}
-          <path d="M 35 30 L 15 85" strokeWidth="4" />
-          <path d="M 35 30 L 55 85" strokeWidth="4" />
-          <circle cx="35" cy="22" r="6" fill="currentColor" />
-          <circle cx="15" cy="85" r="3" fill="currentColor" />
-          <circle cx="55" cy="85" r="3.5" fill="currentColor" />
-          <path d="M 10 85 L 60 85" strokeDasharray="3 3" strokeWidth="2" />
-        </svg>
+      <div style={{ width: '100%', background: 'linear-gradient(135deg, #15803D 0%, #166534 60%, #064E3B 100%)', borderRadius: '28px', padding: '32px 36px', color: 'white', position: 'relative', overflow: 'hidden', boxShadow: '0 12px 30px rgba(22, 101, 52, 0.35)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '24px' }}>
         
-        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(255,255,255,0.2)', padding: '6px 16px', borderRadius: '20px', fontSize: '0.85rem', fontWeight: 700, marginBottom: '18px' }}>
-          <Moon size={16} fill="var(--accent-orange)" color="var(--accent-orange)" /> {language === 'EN' ? "Today's Mission" : "ಇಂದಿನ ಮಿಷನ್"}
+        {/* Left Info Section */}
+        <div style={{ position: 'relative', zIndex: 2, flex: '1 1 320px', maxWidth: '580px' }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(255,255,255,0.18)', backdropFilter: 'blur(8px)', padding: '8px 18px', borderRadius: '24px', fontSize: '0.85rem', fontWeight: 800, marginBottom: '20px', border: '1px solid rgba(255,255,255,0.25)', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
+            <Moon size={16} fill="#FFC857" color="#FFC857" /> {language === 'EN' ? "Today's Mission" : "ಇಂದಿನ ಮಿಷನ್"}
+          </div>
+          
+          <h2 style={{ fontSize: '2.1rem', marginBottom: '12px', fontFamily: 'Georgia, "Times New Roman", Times, serif', fontWeight: 800, textShadow: '0 2px 10px rgba(0,0,0,0.2)', letterSpacing: '-0.5px' }}>
+            {language === 'EN' ? "Coordinate Geometry" : "ನಿರ್ದೇಶಾಂಕ ರೇಖಾಗಣಿತ"}
+          </h2>
+          
+          <div style={{ fontSize: '1.05rem', color: 'rgba(255,255,255,0.95)', marginBottom: '28px', display: 'flex', alignItems: 'center', gap: '10px', fontWeight: 700 }}>
+            <span>{language === 'EN' ? "Chapter 3 • 5 Questions" : "ಅಧ್ಯಾಯ 3 • 5 ಪ್ರಶ್ನೆಗಳು"}</span>
+            <span style={{ background: 'rgba(255,200,87,0.25)', color: '#FFC857', padding: '3px 12px', borderRadius: '12px', border: '1px solid rgba(255,200,87,0.4)', fontSize: '0.9rem', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+              ⚡ 50 XP
+            </span>
+          </div>
+          
+          <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+            <button 
+              onClick={() => navigateToChapter && navigateToChapter('Mathematics', 'Mathematics', 'Coordinate Geometry')}
+              style={{ background: '#FFFFFF', color: '#15803D', padding: '14px 32px', borderRadius: '30px', fontWeight: 800, fontSize: '1.05rem', border: 'none', cursor: 'pointer', boxShadow: '0 6px 20px rgba(0, 0, 0, 0.25)', transition: 'all 0.2s ease', display: 'flex', alignItems: 'center', gap: '8px' }}
+              onMouseOver={(e) => { e.currentTarget.style.transform = 'translateY(-2px) scale(1.03)'; e.currentTarget.style.boxShadow = '0 10px 25px rgba(0,0,0,0.3)'; }}
+              onMouseOut={(e) => { e.currentTarget.style.transform = 'translateY(0px) scale(1)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(0, 0, 0, 0.25)'; }}
+            >
+              {language === 'EN' ? "Start Now 🚀" : "ಈಗ ಪ್ರಾರಂಭಿಸಿ 🚀"}
+            </button>
+            <span style={{ fontSize: '0.95rem', color: 'rgba(255,255,255,0.9)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px' }}>
+              ⏱ ~5 min
+            </span>
+          </div>
         </div>
-        
-        <h2 style={{ fontSize: '1.8rem', marginBottom: '10px', position: 'relative', zIndex: 1, fontFamily: 'Georgia, "Times New Roman", Times, serif', fontWeight: 800 }}>{language === 'EN' ? "Coordinate Geometry" : "ನಿರ್ದೇಶಾಂಕ ರೇಖಾಗಣಿತ"}</h2>
-        <div style={{ fontSize: '1rem', color: 'rgba(255,255,255,0.95)', marginBottom: '28px', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 600 }}>
-          {language === 'EN' ? "Chapter 3 • 5 Questions" : "ಅಧ್ಯಾಯ 3 • 5 ಪ್ರಶ್ನೆಗಳು"} <span style={{ color: 'var(--accent-orange)' }}>⚡</span> 50 XP
-        </div>
-        
-        <div style={{ display: 'flex', alignItems: 'center', gap: '20px', position: 'relative', zIndex: 1 }}>
-          <button 
-            onClick={() => navigateToChapter && navigateToChapter('Mathematics', 'Mathematics', 'Coordinate Geometry')}
-            style={{ background: '#FFFFFF', color: '#1E5E3A', padding: '12px 28px', borderRadius: '28px', fontWeight: 800, fontSize: '1rem', border: 'none', cursor: 'pointer', boxShadow: '0 4px 14px rgba(0, 0, 0, 0.2)', transition: 'transform 0.1s' }}
-            onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
-            onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
-            onMouseDown={(e) => e.currentTarget.style.transform = 'scale(0.95)'}
-            onMouseUp={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+
+        {/* Right Section: SPACIOUS & LIVELY Animated Math Instruments (Drafting Compass, Protractor, Set Square) */}
+        <div style={{ position: 'relative', width: '270px', height: '180px', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1, flexShrink: 0 }}>
+          
+          {/* Subtle Ambient Glowing Radial Aura */}
+          <div style={{ position: 'absolute', width: '210px', height: '210px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 70%)', pointerEvents: 'none' }} />
+
+          {/* Instrument 1: Floating Drafting Compass (Top-Left Badge) */}
+          <div 
+            className="animate-float-slow"
+            style={{ 
+              position: 'absolute', top: '0px', left: '10px', 
+              background: 'rgba(255, 255, 255, 0.18)', backdropFilter: 'blur(10px)', 
+              border: '1.5px solid rgba(255, 255, 255, 0.35)', borderRadius: '20px', 
+              padding: '12px', boxShadow: '0 8px 24px rgba(0, 0, 0, 0.2)', 
+              display: 'flex', alignItems: 'center', justifyContent: 'center' 
+            }}
+            title="Geometry Compass"
           >
-            {language === 'EN' ? "Start Now 🚀" : "ಈಗ ಪ್ರಾರಂಭಿಸಿ 🚀"}
-          </button>
-          <span style={{ fontSize: '0.95rem', color: 'rgba(255,255,255,0.95)', fontWeight: 600 }}>⏱ ~5 min</span>
+            <svg width="40" height="40" viewBox="0 0 60 60" fill="none" stroke="#FFC857" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="30" cy="12" r="5" fill="#FFC857" />
+              <path d="M 30 17 L 15 50" strokeWidth="4" />
+              <path d="M 30 17 L 45 50" strokeWidth="4" />
+              <circle cx="15" cy="50" r="3" fill="#FFFFFF" />
+              <circle cx="45" cy="50" r="3.5" fill="#FFFFFF" />
+              <path d="M 10 50 L 50 50" strokeDasharray="3 3" strokeWidth="2.5" stroke="#FFFFFF" />
+            </svg>
+          </div>
+
+          {/* Instrument 2: Floating Angle Protractor (Top-Right Badge) */}
+          <div 
+            className="animate-float-medium"
+            style={{ 
+              position: 'absolute', top: '15px', right: '5px', 
+              background: 'rgba(255, 255, 255, 0.18)', backdropFilter: 'blur(10px)', 
+              border: '1.5px solid rgba(255, 255, 255, 0.35)', borderRadius: '20px', 
+              padding: '12px', boxShadow: '0 8px 24px rgba(0, 0, 0, 0.2)', 
+              display: 'flex', alignItems: 'center', justifyContent: 'center' 
+            }}
+            title="Angle Protractor"
+          >
+            <svg width="42" height="42" viewBox="0 0 60 60" fill="none" stroke="#FFFFFF" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M 10 42 A 20 20 0 0 1 50 42 Z" strokeWidth="3.5" fill="rgba(255,255,255,0.1)" />
+              <line x1="30" y1="42" x2="30" y2="24" stroke="#FFC857" strokeWidth="2.5" strokeDasharray="2 2" />
+              <line x1="18" y1="42" x2="14" y2="28" />
+              <line x1="42" y1="42" x2="46" y2="28" />
+              <line x1="23" y1="42" x2="20" y2="25" />
+              <line x1="37" y1="42" x2="40" y2="25" />
+            </svg>
+          </div>
+
+          {/* Instrument 3: Floating Set Square Ruler (Bottom Center Badge) */}
+          <div 
+            className="animate-float-fast"
+            style={{ 
+              position: 'absolute', bottom: '0px', right: '60px', 
+              background: 'rgba(255, 255, 255, 0.22)', backdropFilter: 'blur(12px)', 
+              border: '1.5px solid rgba(255, 255, 255, 0.45)', borderRadius: '22px', 
+              padding: '14px 18px', boxShadow: '0 10px 28px rgba(0, 0, 0, 0.25)', 
+              display: 'flex', alignItems: 'center', justifyContent: 'center' 
+            }}
+            title="Set Square Ruler"
+          >
+            <svg width="52" height="52" viewBox="0 0 70 70" fill="none" stroke="#FFFFFF" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M 12 58 L 58 58 L 12 12 Z" strokeWidth="4" fill="rgba(255,255,255,0.15)" />
+              <path d="M 22 48 L 44 48 L 22 26 Z" strokeWidth="2.5" stroke="#FFC857" />
+              <line x1="12" y1="22" x2="19" y2="22" />
+              <line x1="12" y1="30" x2="22" y2="30" />
+              <line x1="12" y1="38" x2="19" y2="38" />
+              <line x1="12" y1="46" x2="22" y2="46" />
+              <line x1="22" y1="58" x2="22" y2="51" />
+              <line x1="30" y1="58" x2="30" y2="48" />
+              <line x1="38" y1="58" x2="38" y2="51" />
+              <line x1="46" y1="58" x2="46" y2="48" />
+            </svg>
+          </div>
+
+          {/* Floating Math Sparkles */}
+          <span className="animate-float-slow" style={{ position: 'absolute', top: '5px', left: '120px', fontSize: '1.1rem' }}>✨</span>
+          <span className="animate-float-fast" style={{ position: 'absolute', bottom: '10px', left: '0px', fontSize: '1.2rem' }}>📐</span>
         </div>
+
       </div>
 
       {/* Daily Quests */}
