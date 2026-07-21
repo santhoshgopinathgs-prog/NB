@@ -67,10 +67,10 @@ export const NotificationsMenu = ({ onClose }: { onClose: () => void }) => {
         style={{ position: 'fixed', inset: 0, zIndex: 99 }} 
         onClick={onClose}
       ></div>
-      <div style={{ 
+      <div className="notifications-menu-box" style={{ 
         position: 'absolute', top: '32px', right: 0, width: '280px', 
         background: 'white', borderRadius: '16px', boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)', 
-        border: '1px solid var(--border-light)', zIndex: 100, overflow: 'hidden', textAlign: 'left'
+        border: '1px solid var(--border-light)', zIndex: 1000, overflow: 'hidden', textAlign: 'left'
       }}>
         <div style={{ padding: '16px', borderBottom: '1px solid var(--border-light)', fontWeight: 800, fontSize: '0.9rem', color: 'var(--text-primary)' }}>
           {language === 'EN' ? 'Notifications' : 'ಅಧಿಸೂಚನೆಗಳು'}

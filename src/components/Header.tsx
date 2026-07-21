@@ -53,15 +53,16 @@ export const Header: React.FC<HeaderProps> = ({ setActiveTab }) => {
 
   return (
     <header className="app-header">
-      <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-        <div style={{ 
-          width: '48px', height: '48px', borderRadius: '50%', 
+      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <div className="header-avatar" style={{ 
+          width: '44px', height: '44px', borderRadius: '50%', 
           background: userRole === 'teacher' ? 'linear-gradient(135deg, #2563EB, #1D4ED8)' : (userRole === 'principal' ? 'linear-gradient(135deg, #0F172A, #1E293B)' : 'var(--accent-blue)'), 
           display: 'flex', 
           alignItems: 'center', justifyContent: 'center',
-          color: 'white', fontWeight: 900, fontSize: '1.4rem',
+          color: 'white', fontWeight: 900, fontSize: '1.3rem',
           overflow: 'hidden', boxShadow: '0 4px 12px rgba(0,0,0,0.18)',
-          border: '2px solid rgba(255,255,255,0.8)'
+          border: '2px solid rgba(255,255,255,0.8)',
+          flexShrink: 0
         }}>
           {userRole === 'student' && user?.avatar ? (
             <img src={user.avatar} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -69,10 +70,10 @@ export const Header: React.FC<HeaderProps> = ({ setActiveTab }) => {
             <span>{getAvatarLetter()}</span>
           )}
         </div>
-        <div>
-          <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 600 }}>{getSalutation()},</div>
-          <div style={{ fontSize: '1.15rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--text-primary)' }}>
-            {getUserDisplayName()} <span style={{fontSize: '1.2rem'}}>👋</span>
+        <div className="header-user-greeting">
+          <div className="header-salutation" style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', fontWeight: 600 }}>{getSalutation()},</div>
+          <div className="header-user-name" style={{ fontSize: '1.1rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--text-primary)' }}>
+            {getUserDisplayName()} <span style={{fontSize: '1.1rem'}}>👋</span>
           </div>
         </div>
       </div>
@@ -96,7 +97,7 @@ export const Header: React.FC<HeaderProps> = ({ setActiveTab }) => {
         </div>
 
         {isOffline && (
-          <div style={{ background: 'var(--accent-red)', color: 'white', padding: '4px 10px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: 800 }}>
+          <div style={{ background: 'var(--accent-red)', color: 'white', padding: '4px 8px', borderRadius: '12px', fontSize: '0.72rem', fontWeight: 800, flexShrink: 0 }}>
             Offline
           </div>
         )}
@@ -109,47 +110,49 @@ export const Header: React.FC<HeaderProps> = ({ setActiveTab }) => {
             background: 'var(--bg-surface)', 
             border: '1px solid var(--border-light)',
             borderRadius: '24px',
-            padding: '3px',
+            padding: '2px',
             display: 'flex',
             alignItems: 'center',
-            fontSize: '0.8rem',
+            fontSize: '0.78rem',
             fontWeight: 800,
-            cursor: 'pointer'
+            cursor: 'pointer',
+            flexShrink: 0
           }}
         >
-          <span style={{ padding: '4px 8px', borderRadius: '18px', background: language === 'EN' ? 'var(--accent-green)' : 'transparent', color: language === 'EN' ? '#FFFFFF' : 'var(--text-secondary)' }}>EN</span>
-          <span style={{ padding: '4px 8px', borderRadius: '18px', background: language === 'KN' ? 'var(--accent-green)' : 'transparent', color: language === 'KN' ? '#FFFFFF' : 'var(--text-secondary)' }}>KN</span>
+          <span style={{ padding: '4px 7px', borderRadius: '18px', background: language === 'EN' ? 'var(--accent-green)' : 'transparent', color: language === 'EN' ? '#FFFFFF' : 'var(--text-secondary)' }}>EN</span>
+          <span style={{ padding: '4px 7px', borderRadius: '18px', background: language === 'KN' ? 'var(--accent-green)' : 'transparent', color: language === 'KN' ? '#FFFFFF' : 'var(--text-secondary)' }}>KN</span>
         </button>
 
         {/* Streak (Always prioritized & visible on mobile) */}
         <button 
           onClick={() => setActiveTab('achievements')}
           className="header-pill header-streak-pill"
-          style={{ display: 'flex', alignItems: 'center', gap: '5px', background: 'rgba(255, 200, 87, 0.2)', border: '1px solid rgba(255, 200, 87, 0.4)', padding: '6px 10px', borderRadius: '24px', color: '#D97706', fontWeight: 800, fontSize: '0.85rem', cursor: 'pointer', flexShrink: 0 }}
+          style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'rgba(255, 200, 87, 0.2)', border: '1px solid rgba(255, 200, 87, 0.4)', padding: '5px 9px', borderRadius: '24px', color: '#D97706', fontWeight: 800, fontSize: '0.82rem', cursor: 'pointer', flexShrink: 0 }}
         >
-          <Flame size={18} fill="#D97706" color="#D97706" /> {user?.streak || 1}
+          <Flame size={16} fill="#D97706" color="#D97706" /> {user?.streak || 1}
         </button>
         
         {/* XP / Coins */}
         <button 
           onClick={() => setActiveTab('achievements')}
           className="header-pill header-coins-pill"
-          style={{ display: 'flex', alignItems: 'center', gap: '5px', background: 'rgba(255, 200, 87, 0.2)', border: '1px solid rgba(255, 200, 87, 0.4)', padding: '6px 10px', borderRadius: '24px', color: '#D97706', fontWeight: 800, fontSize: '0.85rem', cursor: 'pointer' }}
+          style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'rgba(255, 200, 87, 0.2)', border: '1px solid rgba(255, 200, 87, 0.4)', padding: '5px 9px', borderRadius: '24px', color: '#D97706', fontWeight: 800, fontSize: '0.82rem', cursor: 'pointer', flexShrink: 0 }}
         >
-          <Coins size={18} fill="#FFC857" color="#FFC857" /> {userXP}
+          <Coins size={16} fill="#FFC857" color="#FFC857" /> {userXP}
         </button>
 
         {/* Bell & Notifications Dropdown */}
-        <div style={{ position: 'relative' }}>
+        <div className="header-bell-container" style={{ position: 'relative', flexShrink: 0 }}>
           <button 
             onClick={() => {
               setShowNotifications(!showNotifications);
               setHasUnread(false);
             }}
-            style={{ position: 'relative', background: 'none', border: 'none', padding: 0, cursor: 'pointer', display: 'flex' }}
+            style={{ position: 'relative', background: 'none', border: 'none', padding: '4px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            title="Notifications"
           >
-            <Bell size={24} color="var(--text-primary)" />
-            {hasUnread && <div style={{ position: 'absolute', top: -2, right: -2, width: '12px', height: '12px', background: 'var(--accent-red)', borderRadius: '50%', border: '2px solid white' }}></div>}
+            <Bell size={22} color="var(--text-primary)" />
+            {hasUnread && <div style={{ position: 'absolute', top: 2, right: 2, width: '10px', height: '10px', background: 'var(--accent-red)', borderRadius: '50%', border: '2px solid white' }}></div>}
           </button>
 
           {showNotifications && (

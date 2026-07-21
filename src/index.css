@@ -247,25 +247,47 @@ button {
 }
 
 /* Mobile Screen Responsive Tweaks */
-@media (max-width: 600px) {
+@media (max-width: 640px) {
   .app-header {
     padding: 10px 12px;
-    gap: 6px;
+    gap: 8px;
+    justify-content: space-between;
+    width: 100%;
+    box-sizing: border-box;
     overflow-x: hidden;
   }
 
-  .header-actions {
-    gap: 4px;
-    flex-wrap: nowrap;
+  .header-avatar {
+    width: 38px !important;
+    height: 38px !important;
+    font-size: 1.1rem !important;
   }
 
+  .header-salutation {
+    display: none !important; /* Save horizontal space on mobile */
+  }
+
+  .header-user-name {
+    font-size: 0.95rem !important;
+    max-width: 95px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .header-actions {
+    gap: 4px !important;
+    flex-wrap: nowrap !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Hide static role badge on small mobile screens to guarantee bell icon and streak fit 100% */
   .header-role-badge {
-    padding: 4px 8px !important;
-    font-size: 0.72rem !important;
+    display: none !important;
   }
 
   .header-pill {
-    padding: 4px 7px !important;
+    padding: 3px 6px !important;
     font-size: 0.75rem !important;
   }
 
@@ -280,8 +302,39 @@ button {
     display: none !important;
   }
 
+  .header-bell-container {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Notifications Popup Mobile Centering & Positioning */
+  .notifications-menu-box {
+    position: fixed !important;
+    top: 58px !important;
+    right: 12px !important;
+    left: 12px !important;
+    width: calc(100vw - 24px) !important;
+    max-width: 340px !important;
+    margin: 0 auto;
+    box-shadow: 0 20px 40px rgba(15, 23, 42, 0.25) !important;
+    border: 1.5px solid var(--border-light) !important;
+  }
+
+  /* Page & Card Alignment Adjustments */
   .page-container {
-    padding: 0 12px 100px 12px;
+    padding: 0 12px 110px 12px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Floating Bot Button Mobile Placement */
+  .floating-bot-btn {
+    bottom: 84px !important;
+    right: 12px !important;
+    width: 52px !important;
+    height: 52px !important;
   }
 
   .bottom-nav {
